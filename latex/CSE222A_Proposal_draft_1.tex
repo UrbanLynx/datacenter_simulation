@@ -32,32 +32,29 @@ As mentioned Section \ref{introduction}, the proposed project consists of two pa
 
 \section{Related Work}
 
-Besides the seminal work of Chowdhury et al on coflows and coflow scheduling \cite{chowdhury2012coflow, chowdhury2014varys, chowdhury2015aalo}, 
+So far, we have focused on the seminal work of Chowdhury et al on coflows and coflow scheduling \cite{chowdhury2012coflow, chowdhury2014varys, chowdhury2015aalo}. Though Aalo is the more recent result and the authors argue its overall merits over Varys, the code does not appear to be publically available (we have not contacted the authors). We thus focus on Varys, with a experimental setup that should be easily exendtible to Aalo, as both schedulers are implemented in Scala and expected to work with the coflow simulation code in \cite{website:coflow-repo}. Other work on coflow scheduling includes \cite{zhao2015rapier}, which integrates routing for a performance improvement, as well as other works cited in Section 9 of the August 2015 Aalo paper \cite{chowdhury2015aalo}. Since our primary interest is ultimately in examining the performance of coflow scheduling with less than 100\% labeling of coflows, we chose to use Varys, which is authored by the inventors of the coflow concept and for which the code is available. However, since Varys (AND Aalo) are based on heuristics, it is not currently clear to us what impact this has on the result for all possible coflow schedulers.
 
-NEED TO FINISH THIS SECTION
-Three types of papers to look for
-1. on the concept of coflows in general
-2. on coflow scheduling
---Varys paper alludes to non-preemptive coflow schedulers
-3. on coflow identification
---office hours: "intervention" experimental approach (stop a flow and see which application suffers)
+We are not currently aware of other work that performs validation of the Varys result and examines the performance of Varys with unidentified coflows, but plan further reading on coflow identification to continue searching for such. 
+
+Additional literature search and reading we need to do are on the coflow concept, coflow scheduling (for example, \cite{chowdhury2014varys} references non-preemptive coflow schedulers, with claims that Varys outperforms by a factor of 5), and coflow identification.
 
 \section{Plan}
 
---How? 
-Applications Used: Describe simulation environment
-Metrics for evaluation
+First, we will set up a cluster simulation environment. Class resources have made 10 virtual machines available for our use. We plan to use Mininet \cite{website:mininet} (BRIEF DISCUSSION OF MININET) to create a virtual cluster environment wherein each virtual machine contains 10 Mininet hosts, for a total of 100 hosts which will all be connected by Mininet switches as show in figure: INCLUDE FIGURE. Data rate must be selected appropriately to ensure that virtualization does not impact our experiment results, and testing performed to verify the correctness of our setup.
+
+The scheduler performance metrics were coflow completion time (CCT) and number of coflows meeting their deadline over a per-flow scheduler. (It is not clear at a glance how stringent these deadlines were set.) We need think carefully about the evaluation of these metrics in our experimental setup.
+
 --When Done?
 
 \section{Schedule}
 
-Milestones 11/5 (2 weeks)
+By each of the given milestones, we plan to complete the following tasks.
 
-Milestone 11/24 (2.5 weeks)
+1. Milestones 11/5 (2 weeks)
 
-Deliverables 12/3 Poster Draft
-Deliverable 12/8 8:00 am Poster Presentation
-12/8 Midnight Final Report Due
+2. Milestone 11/24 (2.5 weeks)
+
+3. Deliverable 12/8 Poster and Final Report (2 weeks)
 
 %\begin{thebibliography}{9}
 %
