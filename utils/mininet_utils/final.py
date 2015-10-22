@@ -1,12 +1,8 @@
 #!/usr/bin/python
 
 #####################################################################
-# Below python script will configure a single lower level mininet VM.
-# It has depth 1 and fanout 11. All the links are limited to 1mbps.
-# Additionally it assigns unique IP address/macs etc to every mininet
-# entity. It also creates a GRE tunnel to the master mininet VM."
 #
-# USAGE: sudo python ./low_mn.py 192.168.0.14 11 10
+# USAGE: sudo python final.py 10 10 3
 # arg1: No of hosts under each layer 2 switch
 # arg2: No of layer 2 switches
 # arg3: No of layer 1 switches
