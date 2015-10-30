@@ -8,5 +8,11 @@
     <artifactId>actor</artifactId>
     <version>0.1-SNAPSHOT</version>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>net.varys</groupId>
+            <artifactId>varys-core</artifactId>
+            <version>0.2.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>
