@@ -1,11 +1,25 @@
 package Simulation;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 /**
  * Created by Stanislav-macbook on 30.10.2015.
  */
-public class Simulation {
-    public SimulationConfig simulationConfig;
-    public Simulation(SimulationConfig simConfig){
-        simulationConfig = simConfig;
+public abstract class Simulation {
+    protected ArrayList<SimTask> simTasks;
+
+    public Simulation( ArrayList<SimTask> simTasks){
+        this.simTasks = simTasks;
+    }
+
+    public void conductSimulation(){
+        for (SimTask simTask : simTasks){
+            executeTask(simTask);
+        }
+    }
+
+    public void executeTask(SimTask simTask){
+
     }
 }

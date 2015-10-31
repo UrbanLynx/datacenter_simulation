@@ -11,4 +11,5 @@ public class SimulationConfig {
     public DateTime simulationStartTime;
     public Boolean isVarys;
     public String varysMasterUrl;
+    public int serverPort = 8080;
 }
