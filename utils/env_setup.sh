@@ -31,4 +31,13 @@ echo "############## Setting up Java on the machine #####################"
 sudo apt-get install openjdk-7-jre-headless
 sudo apt-get install openjdk-7-jdk
 cd ~
+
+echo "############ Installing FNSS and python dependencies ##############"
+sudo apt-get install python-numpy python-scipy
+git clone https://github.com/fnss/fnss
+cd fnss/core
+sudo python setup.py install
+echo "###################################################################"
+echo ""
+
 echo "DONE!"
