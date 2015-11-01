@@ -53,7 +53,17 @@ echo "################ Building varys ################################"
 cd ~/varys/
 ./sbt/sbt package
 echo "Varys built"
-
 cd ~
+echo "###################################################################"
 echo ""
+
+echo "############ Installing FNSS and python dependencies ##############"
+sudo apt-get install python-numpy python-scipy
+git clone https://github.com/fnss/fnss
+cd fnss/core
+sudo python setup.py install
+cd ~
+echo "###################################################################"
+echo ""
+
 echo "DONE!"
