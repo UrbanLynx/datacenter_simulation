@@ -51,17 +51,17 @@ def build_topology():
 	link_types = nx.get_edge_attributes(topology, 'type')
 
 	edge_leaf_links = [link for link in link_types
-                   if link_types[link] == 'edge_leaf']
+                if link_types[link] == 'edge_leaf']
 
-    aggregation_edge_links = [link for link in link_types
-                   if link_types[link] == 'aggregation_edge']
+    	aggregation_edge_links = [link for link in link_types
+                if link_types[link] == 'aggregation_edge']
 
-    core_edge_links = [link for link in link_types
-                   if link_types[link] == 'core_edge']
+    	core_edge_links = [link for link in link_types
+                if link_types[link] == 'core_edge']
 
-    # Set the link speeds
-    fnss.set_capacities_constant(topology, edgeLinkCapacity[0], edgeLinkCapacity[1], edge_leaf_links)
-    fnss.set_capacities_constant(topology, aggrLinkCapacity[0], aggrLinkCapacity[1], aggregation_edge_links)
+    	# Set the link speeds
+    	fnss.set_capacities_constant(topology, edgeLinkCapacity[0], edgeLinkCapacity[1], edge_leaf_links)
+    	fnss.set_capacities_constant(topology, aggrLinkCapacity[0], aggrLinkCapacity[1], aggregation_edge_links)
 	fnss.set_capacities_constant(topology, coreLinkCapacity[0], coreLinkCapacity[1], core_edge_links)
 
 	# Set default weight of 1 to all links
