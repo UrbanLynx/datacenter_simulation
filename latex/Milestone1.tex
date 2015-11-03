@@ -36,6 +36,27 @@ We created topology generator code using Python, namely topo\_gen.py \cite{repo}
 \section{Trace segregator}
 
 \section{Host programs and controller}
+For conducting network simulation we built a program which  operates on each host. This program (called Actor) accept during launch:
+\begin{itemize}
+\item configuration file which helps synchronize all hosts for starting in the same time and contain simulation parameters
+\item file with tasks which should be executed during simulation.
+\item After launch Actor synchronizes with other hosts and start simulation.
+\item It has two modes of simulation:
+
+\begin{itemize}
+\item traditional simulation, which uses regular flows
+\item Vary's simulation, which uses coflows
+\end{itemize}
+\end{itemize}
+
+For each simulation type Actor takes each task and execute it according to simulation type, sending amount of data specified by task to another host.
+For now, it executes all tasks sequentially and opens new connection for each new task. In future, the program will be updated to 
+
+\begin{itemize}
+\item open one connection for each Reducer and hold it till finishing of MapReduce
+\item send data in parallel
+\item log all actions and give them back for analysis
+\end{itemize}
 
 \section{Next steps}
 
