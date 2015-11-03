@@ -1,0 +1,56 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{CSE 222A PROJECT - GROUP 6}
+
+\author{Sreejith Unnikrishnan, Stanislav Mushits, Amit Borase, Ritvik Jaiswal }
+\date{November 4 2015}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+\textbf{Milestone report}
+\end{center}
+
+
+\section{Project Topic}
+We are working towards verification of varys scheduler\cite{varys} and associated performance improvement in a data center environment. As a part of this goal, we have completed the following tasks.
+
+\section{Setting up Virtual Machines}
+The first step we performed was to setup the allotted virtual machine. We analyzed the required programming environment, tools and dependencies. Based on the analysis we ensured that the required programs and API`s are installed on the machine. A shell script was written to automate this task, under utils directory of our repository. This makes the process of adding a new VM to our setup easier.
+
+\section{Deciding the network topology}
+Datacenter environment is unique in terms of traffic patterns and topology and because of that we gave special care while designing our network topology. Given that the topology will affect the data transmission efficiency of different coflows, we decided to work on a fat-tree based network setup. It consists of hosts, edge switches, aggregation layer switches and core switches. We use the open source library 'Fast Network Simulation Setup (FNSS)' \cite{fnss} for topology development, which then later on is used to deploy mininets. We made sure that the important topology parameters can be easily configured and the software structure flexible enough to accommodate future changes.
+
+\section{Topology development}
+We created topology generator code using Python, namely topo\_gen.py \cite{repo}, using the FNSS framework. The topology generator requires 'network.config' file as an input. It parses the file to get the K value for fat-tree topology, the link speeds, link delay etc. By changing these values we can simulate different network environments as required without altering the code. Once the topology is created using FNSS, we port the topology into an XML file, so that it could be reused by other programs. We then convert the FNSS topology into mininet topology which can be deployed in the VM. Finally we ensure all the hosts are working by doing a ping test.
+
+\section{Tracefile generator}
+
+
+\section{Trace segregator}
+
+\section{Host programs and controller}
+
+\section{Next steps}
+
+
+\bibliographystyle{plain}
+\begin{thebibliography}{10}
+\bibitem{varys}
+Efficient Coflow Scheduling with Varys, Mosharaf Chowdhury, Yuan Zhong, Ion Stoica, ACM SIGCOMM, 2014.
+
+\bibitem{fnss}
+Fast Network Simulation Setup \textit{https://github.com/fnss/fnss/}
+
+\bibitem{repo}
+Team 06 Github Repo \textit{https://github.com/ucsdcse222a/group6}
+
+\end{thebibliography}
+
+\end{document}
