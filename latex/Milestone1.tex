@@ -19,80 +19,60 @@
 
 
 \section{Project Topic}
-We are working towards verification of varys scheduler\cite{varys} and associated performance improvement in a data center environment. As a part of this goal, we have completed the following tasks.
+The objective of our project is to verify the varys scheduler\cite{varys} and associated performance improvement in a data center environment. 
 
-\section{Setting up Virtual Machines}
-The first step we performed was to setup the allotted virtual machine. We analyzed the required programming environment, tools and dependencies. Based on the analysis we ensured that the required programs and API`s are installed on the machine. A shell script was written to automate this task, under utils directory of our repository. This makes the process of adding a new VM to our setup easier.
-
-\section{Deciding the network topology}
-Datacenter environment is unique in terms of traffic patterns and topology and because of that we gave special care while designing our network topology. Given that the topology will affect the data transmission efficiency of different coflows, we decided to work on a fat-tree based network setup. It consists of hosts, edge switches, aggregation layer switches and core switches. We use the open source library 'Fast Network Simulation Setup (FNSS)' \cite{fnss} for topology development, which then later on is used to deploy mininets. We made sure that the important topology parameters can be easily configured and the software structure is flexible enough to accommodate future changes.
-
-\section{Topology development}
-We created topology generator code using Python, namely topo\_gen.py \cite{repo}, using the FNSS framework. The topology generator requires 'network.config' file as an input. It parses the file to get the K value for fat-tree topology, the link speeds, link delay etc. By changing these values we can simulate different network environments as required without altering the code. Once the topology is created using FNSS, we port the topology into an XML file, so that it could be reused by other programs. We then convert the FNSS topology into mininet topology which can be deployed in the VM. Finally we ensure all the hosts are working by doing a ping test.
-
-\section{Tracefile generator}
-
-
-\section{Trace segregator}
-Network traces thus generated consists of event schedules for all the network hosts (mappers and reducers bith) in a single big XML dataset. To be able to schedule this traffic individually, we need to segregate it into per network hosts dataset. We achieved this by writing a python based segregator that parses and writes XML data to individual host's network traces.
-
-\section{Host programs and controller}
-For conducting network simulation we built a program which  operates on each host. This program (called Actor) accept during launch:
-\begin{itemize}
-\item configuration file which helps synchronize all hosts for starting in the same time and contain simulation parameters
-\item file with tasks which should be executed during simulation.
-\item After launch Actor synchronizes with other hosts and start simulation.
-\item It has two modes of simulation:
+\section{Progress So Far}
+As a part of this goal, we have completed the following tasks.
 
 \begin{itemize}
-\item traditional simulation, which uses regular flows
-\item Vary's simulation, which uses coflows
-\end{itemize}
-\end{itemize}
+\item Analyse and select various frameworks and technologies to be used.
+\item Automate the development and simulation environment setup on the allotted virtual machines.
+\item Study and analyse various network topologies prevalent in data center environments. Chose fat-tree topology for its increasing popularity in data center solutions.
+\item Automate the deployment of the fat-tree topology that can be configured as per need.
+\item Generate sample map-reduce traces that simulates the map-reduce traffic patterns over the network.
+\item Segregate such network traces into set of per-host schedulable network events.
+\item  Develop an actor program that runs on every hosts. It listens for launch signals from controllers, and based on current host's network traces and additional configuration files, it simulates network traffic originating from current host. Actor can work in two modes, in traditional mode (no coflow scheduling) and varys mode (coflow scheduled using varys). Currently it works sequentially and lacks parallelization.
+\item Develop a populator program that synchronizes various map-reduce schedule times by issuing launch commands to hosts in the network.
 
-For each simulation type Actor takes each task and execute it according to simulation type, sending amount of data specified by task to another host.
-For now, it executes all tasks sequentially and opens new connection for each new task. In future, the program will be updated to 
-
-\begin{itemize}
-\item open one connection for each Reducer and hold it till finishing of MapReduce
-\item send data in parallel
-\item log all actions and give them back for analysis
 \end{itemize}
 
-\section{System structure}
+\subsection{System structure}
 \includegraphics[scale = 0.75]{flow_diagram}
 \begin{itemize}
 \item The deployer program takes network.config file and creates the required topology.
-\item The trace generator generates trace files for each host
-\item The populator program in the VM host launches varys in each hosts and launches actor program
-\item The actor machine gathers trace file, host config and run the simulation. The results are logged
+\item The trace generator generates segregated trace files for each host.
+\item The populator program runs on the VM host and launches varys scheduler along with actor program on each host.
+\item The actor machine gathers per host trace file, host.config and runs the simulation. It also probes for various network parameters and logs the results.
 \end{itemize}
 
-\section{Challenges faced}
-One of the main challenges was to design the proper and efficient topology that simulates a datacenter network. To make our simulation more realistic, we studied different papers regarding datacenter networks, the ones discussed during classes and beyond that. We decided on fat tree topology since it is widely used at the moment and provides efficient bisection bandwidth for all the hosts. We found an open source tool FNSS, written at University College of London, which provides effective API`s to model fat tree topology for data centers. We used the FNSS API to generate the topology. However we need to run Varys scheduler in each of the hosts. That means we would have to go with mininet. So in our program we generate the topology with FNSS and then convert it to Mininet.
+\subsection{Challenges faced}
+One of the main challenges was to adopt a topology that efficiently simulates a data-center network. To make our simulation more realistic, we studied various papers on recent data-center advances, the ones discussed during classes and beyond. We selected fat tree topology for our simulations since it is widely used currently and provides efficient bisection bandwidth for all the hosts in the data-center. We use an open source tool FNSS \cite{fnss}, that provides effective API`s to model fat tree topology for data-centers. However we need to run Varys scheduler on each of the hosts. That means we would have to go with mininet. So to benefit from FNSS and mininet both, we generate topology using FNSS and instantiate it on the mininet.
 
-The next task is to model and generate Map reduce traffic. To understand the traffic pattern we read through many papers including the Facebook paper written by Prof. Porter \cite{facebook}, which helped understand fundamental differences between web traffic pattern and map reduce jobs. We created a trace file in accordance with our study results and we are planning to use the same for our future.
-
-Once we ensured we have the proper information regarding data traffic to be generated, our next job was to work on the system architecture. This was also a challenging task since the code should be simple, flexible for future changes and simulate the data center environment accurately. We ensured the design was modular and all the important parameters configurable.
-
-\section{Graphs}
-We will be reporting the following graphs after the experiments
-\begin{itemize}
-\item Compatison of coflow completion times with and without varys scheduler for map reduce traffic. We evaluate whether coflow scheduler improves the performance of such traffic patterns. X axis will have the Coflow completion time while y axis will contain the factor of improvement.
-\item Comparison of coflow completion times with varying coflow sizes, with and without varys scheduler running. X axis will contain the coflow completion times for different coflow sizes and y axis plots the improvement factor with and without varys scheduler.
-\end{itemize}
+Another challenging task is to model and generate network traffic that closely mimics the real-life map-reduce deployments. To understand the traffic pattern we read through various papers including 'Inside the Social Network's (Datacenter) Network' co-authored by Prof. Porter \cite{facebook}. This helped us to understand fundamental differences between web traffic pattern and map reduce jobs. We created a network traces for simulations, in accordance with these traffic patterns.
 
 \section{Next steps}
 
-The next steps we are planning to complete are as follows,
+Below are the set of pending tasks in the project:
 
 \begin{itemize}
-\item Integrate individual parts to bring up the system
-\item Using a simple test verify that the setup is up and running
-\item Run the test with proper data using varys scheduler
-\item Run similar test with hosts not running varys scheduler
-\item Measure and compare the results
+\item Improve actor and controller program by incorporating multiple connections and data parallelisation.
+\item Integrate individual pieces together to bring up the complete setup.
+\item Using sample network schedules, verify that the setup is up and running.
+\item Run the tests with realistic network traces, with actor program running in varys scheduler mode. Collect and analyze the results.
+\item Run the same set of tests with actor program running without involving varys scheduler. Collect and analyze the results.
+\item Compare and verify the obtained results for various network parameters.
 \end{itemize}
+
+\section{Graphical Analysis}
+We plan to collect data-points such as coflow completion times, coflow sizes, coflow fractions, job completion times and job completion percentages for map-reduce traffic patterns, followed by analyze such data to report below set of graphs.
+\begin{itemize}
+\item Comparison of coflow completion times with varying coflow sizes, with and without varys scheduler for map reduce traffic. We evaluate whether varys scheduler improves the performance of such traffic patterns, if yes then to what extent. The X-axis will plot the Coflow completion time while Y-axis will plot factor of improvement.
+\item Comparison of coflow completion times with fraction of the coflows involved, with and without varys scheduler running. The X-axis will plot the coflow completion times and the Y-axis will plot the fractions of coflows involved.
+\item Comparison of Job completion times, with and without varys scheduler for map reduce traffic. This graph will show whether or not the varys scheduling results in the improvement of job completions times. The X-axis of such graph will plot the job completion times and the Y-axis will plot the factor of improvement.
+\item Comparison of percentage of coflows that met their deadlines, with and without varys scheduler for map reduce traffic. This graph will show whether or not the varys scheduling results in the increased number of coflows meeting their deadlines. The X-axis of such graph will plot the percentage of coflows meeting their deadlines and the Y-axis will plot the deadline times.
+\item Comparison of percentage of coflows that met their deadlines with the number of concurrent coflows, with and without varys scheduler for map reduce traffic. This graph will show the effect of coflow concurrency on the percentage of coflows meeting their deadlines. The X-axis of such graph will plot the number of concurrent coflows involved and the Y-axis will plot the percentage of coflows meeting their deadlines.
+\end{itemize}
+
 
 \bibliographystyle{plain}
 \begin{thebibliography}{10}
@@ -112,3 +92,4 @@ Inside the Social Network’s (Datacenter) Network - SIGCOMM 2015
 \end{thebibliography}
 
 \end{document}
+
