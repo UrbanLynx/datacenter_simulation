@@ -50,7 +50,7 @@ def segregate_traces(num_hosts):
 		head_h[i] = ET.Element("event-schedule")
 
 	# initialize xml-tree for network.xml
-	tree = ET.parse('./network.xml')
+	tree = ET.parse('./event_schedule.xml')
 	head = tree.getroot()
 
 	# Push the first three properties (t_unit, t_start, t_end) to all hosts
@@ -78,8 +78,8 @@ def segregate_traces(num_hosts):
 		ET.ElementTree(head_h[i]).write('./h%d.xml' % (i+1), encoding='utf-8')
 
 if __name__ == "__main__":
-        # Check if the network.trace file exists
-        if os.path.isfile('./network.xml'):
+        # Check if the event_schedule.xml file exists
+        if os.path.isfile('./event_schedule.xml'):
                 segregate_traces(int(sys.argv[1]))
                 print ("SUCCESS: Network trace segregation complete.\n")
         else:

@@ -58,7 +58,7 @@ event_schedule.add(time=0.967, event={'source': mappers[11], 'destination': redu
 event_schedule.add(time=0.967, event={'source': mappers[11], 'destination': reducers[2], "finishTime": 4.337, "name": "attempt_201312301708_0016_m_000002_0", "type": "MAP", 'data_speed': 500, 'coflow_id': 1}, absolute_time=True)
 event_schedule.add(time=0.967, event={'source': mappers[11], 'destination': reducers[3], "finishTime": 4.337, "name": "attempt_201312301708_0016_m_000002_0", "type": "MAP", 'data_speed': 500, 'coflow_id': 1}, absolute_time=True)
 
-print event_schedule.event[0]
+#print event_schedule.event[0]
 # Write topology and event schedule to files
 #fnss.write_topology(topology, 'topology.xml')
 fnss.write_event_schedule(event_schedule, 'event_schedule.xml')
