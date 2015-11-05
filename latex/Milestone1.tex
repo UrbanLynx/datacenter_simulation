@@ -31,8 +31,8 @@ As a part of this goal, we have completed the following tasks.
 \item Automate the deployment of the fat-tree topology that can be configured as per need.
 \item Generate sample map-reduce traces that simulates the map-reduce traffic patterns over the network.
 \item Segregate such network traces into set of per-host schedulable network events.
-\item  Develop an actor program that runs on every hosts. It listens for launch signals from controllers, and based on current host's network traces and additional configuration files, it simulates network traffic originating from current host. Actor can work in two modes, in traditional mode (no coflow scheduling) and varys mode (coflow scheduled using varys). Currently it works sequentially and lacks parallelization.
-\item Develop a populator program that synchronizes various map-reduce schedule times by issuing launch commands to hosts in the network.
+\item  Develop an actor program that runs on every hosts. It listens for launch signals from controllers, and kicks off traffic. Actor can work in two modes, in traditional mode (no coflow scheduling) and varys mode (coflow scheduled using varys). It is partially implemented right now.
+\item Develop a populator program that synchronizes various map-reduce schedule times by issuing launch commands to hosts in the network (partially implemented).
 
 \end{itemize}
 
@@ -55,7 +55,7 @@ Another challenging task is to model and generate network traffic that closely m
 Below are the set of pending tasks in the project:
 
 \begin{itemize}
-\item Improve actor and controller program by incorporating multiple connections and data parallelisation.
+\item Complete the actor and populator program implementation.
 \item Integrate individual pieces together to bring up the complete setup.
 \item Using sample network schedules, verify that the setup is up and running.
 \item Run the tests with realistic network traces, with actor program running in varys scheduler mode. Collect and analyze the results.
