@@ -4,6 +4,7 @@ import Simulation.VarysSimulation;
 import Simulation.TraditionalSimulation;
 
 import Simulation.SimulationConfig;
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 
@@ -35,6 +36,13 @@ public class Manager {
     }
 
     public static void waitForStartOfSimulation(SimulationConfig simConfig){
+        // Read the simulation start time and wait till that moment
+        DateTime startTime = simConfig.simulationStartTime;
+        DateTime currTime = new DateTime();
+        // Wait till current time is after
+        while (currTime.isBefore(startTime)) {
+            currTime = DateTime.now();
+        }
         return;
     }
 
