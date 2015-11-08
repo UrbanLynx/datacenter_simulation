@@ -27,5 +27,13 @@
             <version>1.1.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>net.varys</groupId>
+            <artifactId>varys-core</artifactId>
+            <version>0.2.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/varys-core_2.10-0.2.0-SNAPSHOT.jar</systemPath>
+        </dependency>
+
     </dependencies>
 </project>

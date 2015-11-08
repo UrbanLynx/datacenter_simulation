@@ -5,6 +5,7 @@ import org.joda.time.DateTimeZone;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 
@@ -14,6 +15,13 @@ import java.util.ArrayList;
 public class ConfigParser {
 
     public ArrayList<SimTask> parseTaskFile(String filename){
+        ArrayList<SimTask> tasks;
+        try {
+            FileReader reader = new FileReader(filename);
+            
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
