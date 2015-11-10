@@ -12,6 +12,8 @@ from mininet.util import dumpNodeConnections
 from mininet.log import setLogLevel
 from mininet.node import OVSController
 
+import networkx as nx
+
 def build_topology():
 
 	# We use fat tree topology for datacenters
@@ -22,7 +24,7 @@ def build_topology():
 	linkDelay		 = [10, 'ns']
 
 	# Get the value from the network.config file
-	lines = open('./network.config', 'r').readLines()
+	lines = open('./network.config', 'r').readlines()
 	for line in lines:
 		val = line.split()
 		if val[0] == "K_VALUE":
