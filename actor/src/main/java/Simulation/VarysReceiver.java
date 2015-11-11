@@ -14,13 +14,18 @@ public class VarysReceiver implements Runnable{
     protected boolean      isStopped    = false;
     protected Thread       runningThread= null;
 
+    public VarysReceiver(SimulationConfig simConfig) {
+        url = simConfig.varysMasterUrl;
+    }
+
     public void run() {
         synchronized(this){
             this.runningThread = Thread.currentThread();
         }
         //openServerSocket();
-        while(! isStopped()){
-            /*Socket clientSocket = null;
+        this.receive();
+        /*while(! isStopped()){
+            Socket clientSocket = null;
             try {
                 clientSocket = this.serverSocket.accept();
             } catch (IOException e) {
@@ -29,8 +34,8 @@ public class VarysReceiver implements Runnable{
                     return;
                 }
                 throw new RuntimeException("Error accepting client connection", e);
-            }*/
-        }
+            }
+        }*/
 
         System.out.println("Server Stopped.");
     }
@@ -67,6 +72,7 @@ public class VarysReceiver implements Runnable{
     int coflowId;
 
     public void receive(){
+        coflowId = 0;
         TestListener listener = new TestListener();
         VarysClient client = new VarysClient("ReceiverClientObject", url, (ClientListener) listener);
         client.start();

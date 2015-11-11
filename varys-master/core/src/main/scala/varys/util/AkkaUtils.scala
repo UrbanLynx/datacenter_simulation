@@ -41,6 +41,8 @@ private[varys] object AkkaUtils {
         loggers = ["akka.event.slf4j.Slf4jLogger"]
         extensions = ["com.romix.akka.serialization.kryo.KryoSerializationExtension$"]
 
+        logger-startup-timeout = 30s
+        
         actor {
           debug {
             # receive = on
@@ -52,6 +54,8 @@ private[varys] object AkkaUtils {
          
           provider = "akka.remote.RemoteActorRefProvider"
 
+          creation-timeout = 20s
+          
           serializers {  
             java = "akka.serialization.JavaSerializer"
             kryo = "com.romix.akka.serialization.kryo.KryoSerializer"

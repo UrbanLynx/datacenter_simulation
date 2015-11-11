@@ -1,5 +1,6 @@
 package Simulation;
 
+import scala.Enumeration.Value;
 import junit.framework.AssertionFailedError;
 import junit.framework.Test;
 import junit.framework.TestListener;
@@ -17,7 +18,11 @@ import varys.framework.client.VarysClient;
  */
 public class VarysSender {
     String url;
-    String coflowId;
+    int coflowId;
+
+    public VarysSender(SimulationConfig simConfig) {
+        url = simConfig.varysMasterUrl;
+    }
 
     public void init(String url, int coflowId){
 
@@ -40,6 +45,7 @@ public class VarysSender {
 
 
     public void send(byte[] data) {
+        coflowId = 0;
         String OBJ_NAME = "OBJ"; // to the args
         int NUM_ELEMS = data.length;
         byte[] toSend = data;
@@ -50,7 +56,7 @@ public class VarysSender {
 
         // Last argument deadline, ms - what to write?
         CoflowDescription desc = new CoflowDescription("DEFAULT", CoflowType.DEFAULT(), 1, NUM_ELEMS * 4,1000);
-        coflowId = client.registerCoflow(desc);
+        coflowId = Integer.parseInt(client.registerCoflow(desc));
 
         int SLEEP_MS1 = 5000;
         System.out.println("Registered coflow " + coflowId + ". Now sleeping for " + SLEEP_MS1 + " milliseconds.");
@@ -61,7 +67,7 @@ public class VarysSender {
         }
 
         // Didnt have last arg, so i inserted null
-        client.putObject(OBJ_NAME, toSend, coflowId, NUM_ELEMS * 4, 1,null);
+        client.putObject(OBJ_NAME, toSend, String.valueOf(coflowId), NUM_ELEMS * 4, 1,null);
         System.out.println("Put an Array[Int] of " + NUM_ELEMS + " elements. Now waiting to die.");
 
         // client.unregisterCoflow(coflowId)
