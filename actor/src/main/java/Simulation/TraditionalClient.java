@@ -17,6 +17,7 @@ public class TraditionalClient {
             DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
             outToServer.write(data);
             clientSocket.close();
+            System.out.println("Sent data to " + host);
         }
         catch (Exception e) {
             e.printStackTrace();

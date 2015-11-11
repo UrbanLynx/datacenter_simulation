@@ -36,6 +36,7 @@ public class VarysSimulation extends Simulation {
 
 
     public void receiveAll(){
+        System.out.println("Starting server");
         new Thread(server).start();
         /*ServerSocket ssock = new ServerSocket(simulationConfig.serverPort);
         System.out.println("Listening");
