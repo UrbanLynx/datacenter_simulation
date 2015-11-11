@@ -19,6 +19,7 @@ public class VarysSimulationTest extends TestCase {
 
         SimulationConfig config = new SimulationConfig();
         config.serverPort = 8080;
+        config.varysMasterUrl = "varys://Stanislavs-MacBook-Air.local:1606";
 
         VarysSimulation simulation = new VarysSimulation(tasks, config);
         simulation.receiveAll();

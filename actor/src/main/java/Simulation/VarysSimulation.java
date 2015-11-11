@@ -14,8 +14,8 @@ public class VarysSimulation extends Simulation {
     public VarysSimulation(ArrayList<SimTask> simTasks, SimulationConfig simConfig) {
         super(simTasks);
         simulationConfig = simConfig;
-        client = new VarysSender();
-        server = new VarysReceiver();
+        client = new VarysSender(simConfig);
+        server = new VarysReceiver(simConfig);
     }
 
     public void init() {
@@ -37,7 +37,8 @@ public class VarysSimulation extends Simulation {
 
     public void receiveAll(){
         System.out.println("Starting server");
-        new Thread(server).start();
+        // new Thread(server).start();
+        server.receive();
         /*ServerSocket ssock = new ServerSocket(simulationConfig.serverPort);
         System.out.println("Listening");
         while (true) {
