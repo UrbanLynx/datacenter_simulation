@@ -78,7 +78,10 @@ def build_topology():
 	# Create mininet topology from fnss with renaming to mininet format
 	mn_topo = fnss.to_mininet(topology, relabel_nodes=True)
 
-	net = Mininet(topo=mn_topo, link=TCLink, controller=OVSController)
+	net = Mininet(topo=mn_topo, link=TCLink, controller=None)
+
+	net.addController('floodlight', controller=RemoteController, ip="127.0.0.1", port=6653)
+
 	net.start()
 
 	# Dump host connections
