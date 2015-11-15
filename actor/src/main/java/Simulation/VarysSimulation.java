@@ -24,8 +24,9 @@ public class VarysSimulation extends Simulation {
 
     @Override
     public void executeTask(SimTask task) {
-        byte[] data = GenerateData(task.dataSize);
-        client.send(data);
+        //byte[] data = GenerateData(task.dataSize);
+        new Thread(client).start();
+        //client.send(data);
     }
 
     private byte[] GenerateData(int dataSize) {
@@ -37,8 +38,10 @@ public class VarysSimulation extends Simulation {
 
     public void receiveAll(){
         System.out.println("Starting server");
+        server.coflowId = client.coflowId;
         new Thread(server).start();
-        // server.receive();
+        //server.run();
+        //server.receive();
         /*ServerSocket ssock = new ServerSocket(simulationConfig.serverPort);
         System.out.println("Listening");
         while (true) {
