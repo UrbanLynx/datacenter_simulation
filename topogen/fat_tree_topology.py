@@ -7,6 +7,8 @@ from mininet.link import Link, Intf, TCLink
 from mininet.topo import Topo
 from mininet.util import dumpNodeConnections
 from mininet.log import setLogLevel, info
+from mininet.util import waitListening
+
 import os
 import logging
 import sys
@@ -73,7 +75,7 @@ class fat_tree_topo(Topo):
         for i in range(0, (kval*kval/4)):
             for j in range(0, kval):
                 x = ((j*kval/2) + (i/(kval/2)))
-                self.addLink(self.csw[i], self.asw[x], bw=1000, loss=5)
+                self.addLink(self.csw[i], self.asw[x], bw=400, delay='2ms', loss=2)
 
         # setup links between aggregation and edge switches
         for i in range(0, kval):
@@ -81,7 +83,7 @@ class fat_tree_topo(Topo):
                 x = ((i*kval/2) + j)
                 for k in range(0, kval/2):
                     y = ((i*kval/2) + k)
-                    self.addLink(self.asw[x], self.esw[y], bw=100)
+                    self.addLink(self.asw[x], self.esw[y], bw=100, delay='2ms', loss=2)
 
         # setup links between edge switches and end hosts
         for i in range(0, kval):
@@ -89,7 +91,23 @@ class fat_tree_topo(Topo):
                 x = ((i*kval/2) + j)
                 for k in range(0, kval/2):
                     y = ((x*kval/2) + k)
-                    self.addLink(self.esw[x], self.host[y])
+                    self.addLink(self.esw[x], self.host[y], bw=25, delay='2ms')
+
+def enable_ssh(net):
+    # start sshd on each host
+    print("**** Starting ssh daemons on each host ****")
+    for host in net.hosts:
+        host.cmd('/usr/sbin/sshd -D &' )
+
+    print("**** sshd is running at following addresses: ****")
+    for host in net.hosts:
+        print(host.name, host.IP())
+
+def disable_ssh(net):
+    # stop sshd on each host before we destroy network
+    print("**** Stopping ssh daemons running on all hosts ****")
+    for host in net.hosts:
+        host.cmd('kill %/usr/sbin/sshd')
 
 def ip_mac_setup(net, kval):
     for i in range(0, kval):
@@ -99,7 +117,7 @@ def ip_mac_setup(net, kval):
                 host.setIP('10.%d.%d.%d/8' % (i, j, (k+2)))
                 host.setMAC('00.00.00.0%d.0%d.0%d' % (i, j, (k+2)))
 
-def enableSTP(kval):
+def enable_stp(kval):
     for i in range(0, (kval*kval/4)):
         cmd = "ovs-vsctl set Bridge 1%d stp_enable=true" % i
         os.system(cmd)
@@ -134,14 +152,18 @@ def setup_fattree_topo(kval):
     # start the netwrok
     net.start()
    
+    # start sshd on each host
+    enable_ssh(net)
+
     # enable STP
-    enableSTP(kval)
+    enable_stp(kval)
 
     dumpNodeConnections(net.hosts)
     #net.pingAll()
 
     # grab mininet CLI
     CLI(net)
+    disable_ssh(net)
     net.stop()
 
 if __name__ == '__main__':
