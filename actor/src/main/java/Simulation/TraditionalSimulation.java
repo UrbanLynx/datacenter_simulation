@@ -25,14 +25,18 @@ public class TraditionalSimulation extends Simulation  {
 
     @Override
     public void executeTask(SimTask task) {
-        byte[] data = GenerateData(task.dataSize);
-        client.sendTo(task.host,task.port,data);
+        String data = GenerateData(task.size);
+        for (int i =0 ;i < 1024; ++i)
+            client.sendTo(task.dstAddress,task.dstPort,data);
     }
 
-    private byte[] GenerateData(int dataSize) {
-        byte[] b = new byte[dataSize];
-        new Random().nextBytes(b);
-        return b;
+    private String GenerateData(long dataSize) {
+        // data Size is larger than int maximum.
+        // Convert into kilobytes
+        String s = "";
+        for (int i=0; i<dataSize; ++i)
+            s.concat(String.valueOf(new Random().nextInt()));
+        return s;
     }
 
 

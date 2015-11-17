@@ -11,11 +11,11 @@ import java.net.Socket;
  */
 public class TraditionalClient {
 
-    public void sendTo(String host, int port, byte[] data){
+    public void sendTo(String host, int port, String data){
         try{
             Socket clientSocket = new Socket(host, port);
             DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-            outToServer.write(data);
+            outToServer.writeBytes(data);
             clientSocket.close();
         }
         catch (Exception e) {
