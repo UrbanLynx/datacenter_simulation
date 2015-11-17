@@ -22,6 +22,17 @@ cd mininet
 echo "###################################################################"
 echo ""
 
+echo "################ Installing Floodlight Controller #################"
+sudo apt-get install build-essential default-jdk ant python-dev eclipse
+cd ~
+git clone git://github.com/floodlight/floodlight.git
+cd floodlight
+ant
+sudo mkdir /var/lib/floodlight
+sudo chmod 777 /var/lib/floodlight
+echo "###################################################################"
+echo ""
+
 echo "################# Installing pox and ltprotocol ###################"
 cd ~
 git clone http://github.com/noxrepo/pox
@@ -67,3 +78,5 @@ echo "###################################################################"
 echo ""
 
 echo "DONE!"
+
+
