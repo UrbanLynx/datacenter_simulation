@@ -11,9 +11,9 @@ public class TraditionalSimulationTest extends TestCase {
 
     public void testExecuteTask() throws Exception {
         SimTask task = new SimTask();
-        task.host = "localhost";
-        task.port = 8080;
-        task.dataSize = 10;
+        task.dstAddress = "localhost";
+        task.dstPort = 8080;
+        task.size = 10000000;
         ArrayList<SimTask> tasks = new ArrayList<SimTask>();
         tasks.add(task);
 
