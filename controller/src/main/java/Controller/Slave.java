@@ -1,7 +1,6 @@
 package Controller;
 
 import varys.framework.client.VarysClient;
-import varys.framework.client.ClientListener;
 
 /**
  * Created by ruby on 11/17/15.
@@ -10,8 +9,17 @@ import varys.framework.client.ClientListener;
 // Incorporate Varys scheduler
 public class Slave extends BasicSlave {
 
-    Slave(int portNumber) {
+    int ID;     // Controller makes sure every slave has a unique ID
+    String varysMasterURL;
+    VarysClient varysClient;
+
+    Slave(int ID, int portNumber, String varysMasterURL) {
         super(portNumber);
+        this.ID = ID;
+        this.varysMasterURL = varysMasterURL;
+        TestListener listener = new TestListener();
+        varysClient = new VarysClient("SimulationSlave-"+ID, varysMasterURL, listener);
+        varysClient.start();
     }
 
 }

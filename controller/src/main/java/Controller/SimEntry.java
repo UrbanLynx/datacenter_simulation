@@ -6,14 +6,14 @@ package Controller;
 public class SimEntry extends BasicSimEntry {
 
     Boolean isCoflow;
-    int coflowNum;
+    int coflowID;
 
     public SimEntry(int senderIndex, int receiverIndex,
                     long startTimeMs, long numBytes,
-                    Boolean isCoflow, int coflowNum) {
+                    Boolean isCoflow, int coflowID) {
         super(senderIndex, receiverIndex, startTimeMs, numBytes);
         this.isCoflow = isCoflow;
-        this.coflowNum = coflowNum;
+        this.coflowID = coflowID;
     }
 
 }
