@@ -9,10 +9,12 @@ public class SimEventDesc implements Serializable {
 
     public SimEventType event;
     public int numBytes;
+    public int portNumber;
 
-    public SimEventDesc(SimEventType event, int numBytes) {
+    public SimEventDesc(SimEventType event, int numBytes, int portNum) {
         this.event = event;
         this.numBytes = numBytes;
+        this.portNumber = portNum;
     }
 
     public String toString() {

@@ -97,30 +97,35 @@ public class BasicController {
             // TODO: ***(In Controller, not BasicController) register coflows with scheduler **when appropriate**
 
             // for now just send a message with instruction to execute simulation event
-            //TODO: this is hard coded for now for testing:
-            int numBytes = 100;
-            // a single simulation event has a pair of commands
-            try {
-                /*
-                // debug
-                connections[0].oos.writeObject(new Integer(4));
-                connections[1].oos.writeObject(new Integer(5));
-                 */
-                SimEventDesc instruction;
-                // these have to be done in this order
-                // receiver
-                instruction = new SimEventDesc(SimEventType.RECEIVE, numBytes);
-                System.out.println("created instruction: " + instruction);
-                connections[0].oos.writeObject(instruction);
-                // sender
-                instruction = new SimEventDesc(SimEventType.SEND, numBytes);
-                System.out.println("created instruction: " + instruction);
-                connections[1].oos.writeObject(instruction);
-            } catch ( IOException e) {
-                System.out.println("BasicController.executeSimulation() exception: " + e.getMessage());
-                e.printStackTrace();
-            }
+                //TODO: this is hard coded for now for testing:
+                int numBytes = 100;
+                int portNum = 11;
+                // send some traffic from host 0 to host 1
+                executeSingleEvent(0, 1, portNum, numBytes);
+                // now send traffic in opposite direction
+                executeSingleEvent(1, 0, portNum, numBytes);
+                // reverse direction again
+                executeSingleEvent(0, 1, portNum, numBytes);
 
+        }
+    }
+
+    private void executeSingleEvent(int senderIndex, int receiverIndex, int portNumber, int numBytes) {
+        // a single simulation event has a pair of commands, send and receive
+        SimEventDesc instruction;
+        try {
+            // these have to be done in this order
+            // receiver
+            instruction = new SimEventDesc(SimEventType.RECEIVE, numBytes, portNumber);
+            System.out.println("created instruction: " + instruction);
+            connections[receiverIndex].oos.writeObject(instruction);
+            // sender
+            instruction = new SimEventDesc(SimEventType.SEND, numBytes, portNumber);
+            System.out.println("created instruction: " + instruction);
+            connections[senderIndex].oos.writeObject(instruction);
+        } catch ( IOException e) {
+            System.out.println("BasicController.executeSimulation() exception: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

@@ -52,42 +52,23 @@ public class BasicSlave {
             boolean continueSimulation = true;
             Object received = null;
             SimEventDesc instruction = null;
-            System.out.println("Awaiting simulation instructions");
+            System.out.println("Awaiting simulation instructions...\n");
             do {
                 try {
                     // read an object and check its type
                     received = ois.readObject();
-                    /*
-                    // debug
-                    if ( received.getClass() == Integer.class ) {
-                        System.out.println("Received an Integer: " + received);
-                        int portNum = 11;
-                        int numBytes = 100;
-                        String hostName = "localhost";
-                        switch ( (Integer)received ) {
-                            case 4:
-                                receive(portNum, numBytes);
-                            case 5:
-                                send(hostName, portNum, numBytes);
-                            default:
-                                ;
-                        }
-                    }
-                    */
                     if ( received.getClass() == SimEventDesc.class ) {
                         // we received a simulation instruction, check its type and execute
                         instruction = (SimEventDesc)received;
                         System.out.println("Received simulation instruction " + instruction);
                         // TODO: remove hard coding
-                        int portNum = 11;
-                        int numBytes = 100;
                         String hostName = "localhost";
                         switch ( instruction.event ) {
                             case SEND:
-                                send(hostName, portNum, numBytes);
+                                send(hostName, instruction.portNumber, instruction.numBytes);
                                 break;
                             case RECEIVE:
-                                receive(portNum, numBytes);
+                                receive(instruction.portNumber, instruction.numBytes);
                                 break;
                             case TERMINATE:
                                 continueSimulation = false;
@@ -100,7 +81,6 @@ public class BasicSlave {
                 } catch (IOException e) {
                     // TODO: is this the best thing to do?? is it supposed to be like this??
                     // do nothing
-                    //System.out.println("Exception 4: " + e.getMessage());
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -127,7 +107,7 @@ public class BasicSlave {
 
     public void send(String hostName, int portNum, int numBytes) {
 
-        System.out.println("Attempting to send " + numBytes + " bytes");
+        System.out.println("Attempting to send " + numBytes + " bytes\n");
 
         // create some fake data according to specified number of bytes
         byte[] data = new byte[numBytes];
@@ -173,6 +153,7 @@ public class BasicSlave {
         } else {
             System.out.println("Read " + numBytesRead + " bytes, was expecting " + numBytes + "bytes");
         }
+        System.out.print("\n");
 
     }
 
