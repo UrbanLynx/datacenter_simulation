@@ -117,7 +117,6 @@ public class BasicController {
         executeSingleEvent(0, 1, portNumHost1, numBytes);
     }
 
-
     public void executeTestThreeHosts() {
         // TODO: some more interesting tests with more than two hosts
         System.out.println("Test is starting now\n");
