@@ -8,11 +8,12 @@ public class SimEntry extends BasicSimEntry {
     Boolean isCoflow;
     int coflowNum;
 
-    public SimEntry(String sendHost, String receiveHost,
+    public SimEntry(int senderIndex, int receiverIndex,
                     long startTimeMs, long numBytes,
                     Boolean isCoflow, int coflowNum) {
-        super(sendHost, receiveHost, startTimeMs, numBytes);
+        super(senderIndex, receiverIndex, startTimeMs, numBytes);
         this.isCoflow = isCoflow;
         this.coflowNum = coflowNum;
     }
+
 }

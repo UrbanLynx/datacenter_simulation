@@ -3,6 +3,7 @@ package Controller;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Random;
 
 /**
  * Created by ruby on 11/17/15.
@@ -20,7 +21,7 @@ public class BasicSlave {
         try {
             serverSocket = new ServerSocket(portNumber);
         } catch (IOException e) {
-            System.out.println("Exception 1 : " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -30,7 +31,7 @@ public class BasicSlave {
         try {
             clientSocket = serverSocket.accept();
         } catch (IOException e) {
-            System.out.println("Exception 2 : " + e.getMessage());
+            e.printStackTrace();
         }
 
         if ( clientSocket != null ) {
@@ -40,7 +41,7 @@ public class BasicSlave {
                 oos = new ObjectOutputStream(clientSocket.getOutputStream());
                 ois = new ObjectInputStream(clientSocket.getInputStream());
             } catch (IOException e) {
-                System.out.println("Exception 3: " + e.getMessage());
+                e.printStackTrace();
             }
             // debug
             if ( oos != null && ois != null ) {
@@ -48,53 +49,62 @@ public class BasicSlave {
             }
 
             // read instructions until receive terminatation instruction
-            boolean simulationRunning = true;
+            boolean continueSimulation = true;
             Object received = null;
             SimEventDesc instruction = null;
             System.out.println("Awaiting simulation instructions");
             do {
                 try {
+                    // read an object and check its type
                     received = ois.readObject();
                     // debug
-                    //System.out.println("received an object of type: " + received.getClass());
-                    /*
-                    if ( received.getClass() == null || received.getClass() == SimEventDesc.class )
-                        simulationRunning = true;
-                    else
-                        simulationRunning = false;
-                        */
-                    if ( received.getClass() == SimEventDesc.class ) {
-                        instruction = (SimEventDesc)received;
-                        System.out.println("Received " + instruction);
-                        if ( instruction.event == SimEventType.TERMINATE) {
-                            simulationRunning = false;
+                    if ( received.getClass() == Integer.class ) {
+                        System.out.println("Received an Integer: " + received);
+                        int portNum = 11;
+                        int numBytes = 100;
+                        String hostName = "localhost";
+                        switch ( (Integer)received ) {
+                            case 4:
+                                receive(portNum, numBytes);
+                            case 5:
+                                send(hostName, portNum, numBytes);
+                            default:
+                                ;
                         }
                     }
-                /*
-                switch ( instruction.event ) {
-                    case SEND:
-                        // create socket to destination host:port and send specified number of bytes
-                        Socket socket = new Socket(dest, port);
-                    case RECEIVE:
-                        // listen for client on simulationServerSocket
-                    default:
-                }
-                */
+                    if ( received.getClass() == SimEventDesc.class ) {
+                        // we received a simulation instruction, check its type and execute
+                        instruction = (SimEventDesc)received;
+                        System.out.println("Received simulation instruction " + instruction);
+                        // TODO: remove hard coding
+                        int portNum = 11;
+                        int numBytes = 100;
+                        String hostName = "localhost";
+                        switch ( instruction.event ) {
+                            case SEND:
+                                send(hostName, portNum, numBytes);
+                            case RECEIVE:
+                                receive(portNum, numBytes);
+                            case TERMINATE:
+                                continueSimulation = false;
+                            default:
+                        }
+                    }
                 } catch (IOException e) {
                     // TODO: is this the best thing to do?? is it supposed to be like this??
                     // do nothing
                     //System.out.println("Exception 4: " + e.getMessage());
                 } catch (ClassNotFoundException e) {
-                    System.out.println("Exception 5: " + e.getMessage());
+                    e.printStackTrace();
                 }
-            } while ( simulationRunning );
+            } while ( continueSimulation );
 
             // close streams
             try {
                 ois.close();
                 oos.close();
             } catch (IOException e) {
-                System.out.println("Exception 6: " + e.getMessage());
+                e.printStackTrace();
             }
         }
 
@@ -102,16 +112,64 @@ public class BasicSlave {
         try {
             clientSocket.close();
         } catch (IOException e) {
-            System.out.println("Exception 7 : " + e.getMessage());
+            e.printStackTrace();
         }
 
     }
+
+
+    public void send(String hostName, int portNum, int numBytes) {
+        // create some fake data according to specified number of bytes
+        byte[] data = new byte[numBytes];
+        new Random().nextBytes(data);
+        //  send it!
+        try {
+            Socket socket = new Socket(hostName, portNum);
+            ObjectOutputStream simOOS = new ObjectOutputStream(socket.getOutputStream());
+            simOOS.write(data);
+            simOOS.close();
+            socket.close();
+        } catch ( IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void receive(int portNumber, int numBytes) {
+
+        ServerSocket simServerSocket;
+        Socket simClientSocket;
+        byte[] buf = new byte[numBytes];
+        int numBytesRead = 0;
+        // attempt to receive data
+        try {
+            simServerSocket = new ServerSocket(portNumber);
+            simClientSocket = simServerSocket.accept();
+            if ( simClientSocket != null ) {
+                ObjectInputStream simOIS = new ObjectInputStream(simClientSocket.getInputStream());
+                numBytesRead = simOIS.read(buf, 0, numBytes);
+                simOIS.close();
+            }
+            simServerSocket.close();
+            simClientSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // print how many bytes received
+        if ( numBytesRead == numBytes ) {
+            System.out.println("Read " + numBytesRead + " bytes, as expected");
+        } else {
+            System.out.println("Read " + numBytesRead + " bytes, was expecting " + numBytes + "bytes");
+        }
+
+    }
+
 
     public void stopServer() {
         try {
             serverSocket.close();
         } catch (IOException e) {
-            System.out.println("Exception 8: " + e.getMessage());
+            e.printStackTrace();
         }
 
     }
@@ -125,11 +183,13 @@ public class BasicSlave {
         }
         */
 
-        // for now, just have each slave liten on a single port
+        // for now, just have each slave listen on a single port
         if ( args.length == 0 ) {
             System.out.println("usage: BasicSlave <port number>");
             return;
         }
+
+        System.out.println("Simulation host process started");
 
         int portNumber = Integer.parseInt(args[0]);
 
