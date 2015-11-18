@@ -1,5 +1,7 @@
 package Controller;
 
+import scala.tools.cmd.gen.AnyVals;
+
 import java.net.Socket;
 import java.io.*;
 import java.util.ArrayList;
@@ -73,6 +75,7 @@ public class BasicController {
         for ( int k=0; k<connections.length; ++k ) {
             System.out.println("Connection " + k + " : " + connections[k].description);
         }
+        System.out.print("\n");
 
     }
 
@@ -86,7 +89,7 @@ public class BasicController {
 
 
     public void executeSimulation() {
-        System.out.println("Simulation is starting now");
+        System.out.println("Simulation is starting now\n");
         Iterator<BasicSimEntry> it = simEvents.iterator();
         while ( it.hasNext() ) {
             BasicSimEntry event = it.next();
@@ -96,42 +99,77 @@ public class BasicController {
             // TODO: implement timer
             // TODO: ***(In Controller, not BasicController) register coflows with scheduler **when appropriate**
 
-            // for now just send a message with instruction to execute simulation event
-                //TODO: this is hard coded for now for testing:
-                int numBytes = 100;
-                int portNum = 11;
-                // send some traffic from host 0 to host 1
-                executeSingleEvent(0, 1, portNum, numBytes);
-                // now send traffic in opposite direction
-                executeSingleEvent(1, 0, portNum, numBytes);
-                // reverse direction again
-                executeSingleEvent(0, 1, portNum, numBytes);
-
         }
     }
 
+    public void executeTest() {
+        System.out.println("Test is starting now\n");
+        //TODO: this is hard coded for now for testing:
+        int numBytes = 100;
+        int portNumHost0 = 40;
+        int portNumHost1 = 41;
+        // send some traffic from host 0 to host 1
+        executeSingleEvent(0, 1, portNumHost1, numBytes);
+        // now send traffic in opposite direction
+        executeSingleEvent(1, 0, portNumHost0, numBytes);
+        // reverse direction again
+        executeSingleEvent(0, 1, portNumHost1, numBytes);
+    }
+
+    public void terminate() {
+
+        // instruct all slaves to terminate and close connection
+        SimEventDesc instruction = new SimEventDesc(SimEventType.TERMINATE, 0, null, 0);
+        for ( ConnectionDesc slaveConnection : connections ) {
+            try {
+                slaveConnection.oos.writeObject(instruction);
+                slaveConnection.oos.close();
+                slaveConnection.ois.close();
+                slaveConnection.socket.close();
+            } catch ( IOException e ) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
+    /**
+     * send numBytes bytes from host represented by connections[senderIndex] to
+     * portNumber on host represented by connections[receiverIndex]
+     */
     private void executeSingleEvent(int senderIndex, int receiverIndex, int portNumber, int numBytes) {
+
+        System.out.print("Simulation event: ");
+        System.out.println("Sender: host " + senderIndex + ", Receiver: host " + receiverIndex +
+                " on port " + portNumber + ", " + numBytes + " bytes");
+
         // a single simulation event has a pair of commands, send and receive
         SimEventDesc instruction;
+        String receiveHostName = connections[receiverIndex].description.hostName;
         try {
-            // these have to be done in this order
+            // these have to be done in this order, I think
             // receiver
-            instruction = new SimEventDesc(SimEventType.RECEIVE, numBytes, portNumber);
+            instruction = new SimEventDesc(SimEventType.RECEIVE, numBytes, receiveHostName, portNumber);
             System.out.println("created instruction: " + instruction);
             connections[receiverIndex].oos.writeObject(instruction);
             // sender
-            instruction = new SimEventDesc(SimEventType.SEND, numBytes, portNumber);
+            instruction = new SimEventDesc(SimEventType.SEND, numBytes, receiveHostName, portNumber);
             System.out.println("created instruction: " + instruction);
             connections[senderIndex].oos.writeObject(instruction);
         } catch ( IOException e) {
             System.out.println("BasicController.executeSimulation() exception: " + e.getMessage());
             e.printStackTrace();
         }
+
+        System.out.print("\n");
+
     }
 
     public static void main(String[] args) {
         BasicController controller = new BasicController();
-        controller.executeSimulation();
+        controller.executeTest();
+        controller.terminate();
     }
 
 }

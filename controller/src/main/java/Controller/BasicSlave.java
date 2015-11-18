@@ -61,11 +61,9 @@ public class BasicSlave {
                         // we received a simulation instruction, check its type and execute
                         instruction = (SimEventDesc)received;
                         System.out.println("Received simulation instruction " + instruction);
-                        // TODO: remove hard coding
-                        String hostName = "localhost";
                         switch ( instruction.event ) {
                             case SEND:
-                                send(hostName, instruction.portNumber, instruction.numBytes);
+                                send(instruction.receiveHostName, instruction.portNumber, instruction.numBytes);
                                 break;
                             case RECEIVE:
                                 receive(instruction.portNumber, instruction.numBytes);
