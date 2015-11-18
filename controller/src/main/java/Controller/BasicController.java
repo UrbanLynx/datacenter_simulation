@@ -43,8 +43,9 @@ public class BasicController {
     // TODO: implement actual functionality, pass in File, or filename. For now hard coded.
     // NOTE: in actual simulation setup, each host will listen for controller on a fixed port
     private void parseSlaveFile() {
-        slaves.add(new SlaveDesc("localhost",7));
-        slaves.add(new SlaveDesc("localhost",8));
+        slaves.add(new SlaveDesc("localhost",1));
+        slaves.add(new SlaveDesc("localhost",2));
+        slaves.add(new SlaveDesc("localhost",3));
     }
 
     private void connectToSlaves() {
@@ -102,18 +103,37 @@ public class BasicController {
         }
     }
 
-    public void executeTest() {
+    public void executeTestTwoHosts() {
+        // TODO: some more interesting tests with more than two hosts
         System.out.println("Test is starting now\n");
-        //TODO: this is hard coded for now for testing:
         int numBytes = 100;
-        int portNumHost0 = 40;
-        int portNumHost1 = 41;
+        int portNumHost0 = 30;
+        int portNumHost1 = 31;
         // send some traffic from host 0 to host 1
         executeSingleEvent(0, 1, portNumHost1, numBytes);
         // now send traffic in opposite direction
         executeSingleEvent(1, 0, portNumHost0, numBytes);
         // reverse direction again
         executeSingleEvent(0, 1, portNumHost1, numBytes);
+    }
+
+
+    public void executeTestThreeHosts() {
+        // TODO: some more interesting tests with more than two hosts
+        System.out.println("Test is starting now\n");
+        int numBytes = 100;
+        int portNumHost0 = 30;
+        int portNumHost1 = 31;
+        int portNumHost2 = 32;
+        // send some traffic from host 0 to host 1
+        executeSingleEvent(0, 1, portNumHost1, numBytes);
+        // now send traffic in opposite direction
+        executeSingleEvent(1, 0, portNumHost0, numBytes);
+        // reverse direction again
+        executeSingleEvent(0, 1, portNumHost1, numBytes);
+
+        // send traffic from host 2 to host 1
+        executeSingleEvent(2, 1, portNumHost1, numBytes);
     }
 
     public void terminate() {
@@ -148,17 +168,24 @@ public class BasicController {
         SimEventDesc instruction;
         String receiveHostName = connections[receiverIndex].description.hostName;
         try {
-            // these have to be done in this order, I think
-            // receiver
+            // these have to be done in this order, and controller needs confirmation that receiving host is ready
+            // command receiver
             instruction = new SimEventDesc(SimEventType.RECEIVE, numBytes, receiveHostName, portNumber);
             System.out.println("created instruction: " + instruction);
             connections[receiverIndex].oos.writeObject(instruction);
-            // sender
+            // get confirmation
+            Object received = connections[receiverIndex].ois.readObject();
+            if ( received.getClass() != Confirm.class ) {
+                System.err.println("Did not get correct confirmation from slave");
+            }
+            // command sender
             instruction = new SimEventDesc(SimEventType.SEND, numBytes, receiveHostName, portNumber);
             System.out.println("created instruction: " + instruction);
             connections[senderIndex].oos.writeObject(instruction);
         } catch ( IOException e) {
             System.out.println("BasicController.executeSimulation() exception: " + e.getMessage());
+            e.printStackTrace();
+        } catch ( ClassNotFoundException e ) {
             e.printStackTrace();
         }
 
@@ -168,7 +195,8 @@ public class BasicController {
 
     public static void main(String[] args) {
         BasicController controller = new BasicController();
-        controller.executeTest();
+        controller.executeTestTwoHosts();
+        controller.executeTestThreeHosts();
         controller.terminate();
     }
 

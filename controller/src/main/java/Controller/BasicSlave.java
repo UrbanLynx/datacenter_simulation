@@ -10,16 +10,16 @@ import java.util.Random;
  */
 public class BasicSlave {
 
-    int portNumber;
-    ServerSocket serverSocket;
-    Socket clientSocket;
-    ObjectOutputStream oos;
-    ObjectInputStream ois;
+    int ctrlPortNumber;
+    ServerSocket ctrlServerSocket;
+    Socket ctrlClientSocket;
+    ObjectOutputStream ctrlOOS;
+    ObjectInputStream ctrlOIS;
 
-    BasicSlave(int portNumber) {
-        this.portNumber = portNumber;
+    BasicSlave(int ctrlPortNumber) {
+        this.ctrlPortNumber = ctrlPortNumber;
         try {
-            serverSocket = new ServerSocket(portNumber);
+            ctrlServerSocket = new ServerSocket(this.ctrlPortNumber);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -29,22 +29,22 @@ public class BasicSlave {
 
         // get connection from controller
         try {
-            clientSocket = serverSocket.accept();
+            ctrlClientSocket = ctrlServerSocket.accept();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        if ( clientSocket != null ) {
+        if ( ctrlClientSocket != null ) {
 
             // open input/output streams
             try {
-                oos = new ObjectOutputStream(clientSocket.getOutputStream());
-                ois = new ObjectInputStream(clientSocket.getInputStream());
+                ctrlOOS = new ObjectOutputStream(ctrlClientSocket.getOutputStream());
+                ctrlOIS = new ObjectInputStream(ctrlClientSocket.getInputStream());
             } catch (IOException e) {
                 e.printStackTrace();
             }
             // debug
-            if ( oos != null && ois != null ) {
+            if ( ctrlOOS != null && ctrlOIS != null ) {
                 System.out.println("opened output/input streams");
             }
 
@@ -56,7 +56,7 @@ public class BasicSlave {
             do {
                 try {
                     // read an object and check its type
-                    received = ois.readObject();
+                    received = ctrlOIS.readObject();
                     if ( received.getClass() == SimEventDesc.class ) {
                         // we received a simulation instruction, check its type and execute
                         instruction = (SimEventDesc)received;
@@ -86,8 +86,8 @@ public class BasicSlave {
 
             // close streams
             try {
-                ois.close();
-                oos.close();
+                ctrlOIS.close();
+                ctrlOOS.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -95,7 +95,7 @@ public class BasicSlave {
 
         // close sockets
         try {
-            clientSocket.close();
+            ctrlClientSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -133,6 +133,9 @@ public class BasicSlave {
         // attempt to receive data
         try {
             simServerSocket = new ServerSocket(portNumber);
+            // send confirmation to controller
+            ctrlOOS.writeObject(new Confirm());
+            // listen for connection
             simClientSocket = simServerSocket.accept();
             if ( simClientSocket != null ) {
                 ObjectInputStream simOIS = new ObjectInputStream(simClientSocket.getInputStream());
@@ -157,8 +160,9 @@ public class BasicSlave {
 
 
     public void stopServer() {
+        System.out.println("stopping server for control");
         try {
-            serverSocket.close();
+            ctrlServerSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
