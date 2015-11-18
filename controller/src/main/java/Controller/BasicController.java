@@ -1,7 +1,5 @@
 package Controller;
 
-import scala.tools.cmd.gen.AnyVals;
-
 import java.net.Socket;
 import java.io.*;
 import java.util.ArrayList;
@@ -17,6 +15,11 @@ import java.util.Iterator;
  * sending messages at specified times to slave processes
  * that will be running on Mininet hosts.
  */
+// TODO: major items, in rough order of priority:
+// TODO: implement and test timer for calling executeSingleEvent at correct simulation times
+// TODO: figure out list of hosts (slaves) file and simulation file formats and implement parsing
+    // TODO: make sure to sort simulation events by time
+
 public class BasicController {
 
     ArrayList<SlaveDesc> slaves;
@@ -81,6 +84,7 @@ public class BasicController {
     }
 
     // TODO: implement actual functionality, pass in File, or filename. For now hard coded.
+    // TODO: right now this does nothing, format of BasicSimEntry can and probably will be changed
     // takes a simulation file and resturns a list of SimEvents
     // return an error if a host not in its list of slaves is in simulation file
     private void parseSimFile() {
@@ -104,7 +108,6 @@ public class BasicController {
     }
 
     public void executeTestTwoHosts() {
-        // TODO: some more interesting tests with more than two hosts
         System.out.println("Test is starting now\n");
         int numBytes = 100;
         int portNumHost0 = 30;
@@ -118,7 +121,7 @@ public class BasicController {
     }
 
     public void executeTestThreeHosts() {
-        // TODO: some more interesting tests with more than two hosts
+        // TODO: exercise some more interesting tests
         System.out.println("Test is starting now\n");
         int numBytes = 100;
         int portNumHost0 = 30;
@@ -133,6 +136,10 @@ public class BasicController {
 
         // send traffic from host 2 to host 1
         executeSingleEvent(2, 1, portNumHost1, numBytes);
+    }
+
+    public void executeTestWithTimer() {
+        // TODO: implement and test timer for calling executeSingleEvent at correct simulation times
     }
 
     public void terminate() {
