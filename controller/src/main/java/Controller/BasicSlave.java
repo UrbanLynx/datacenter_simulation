@@ -57,6 +57,7 @@ public class BasicSlave {
                 try {
                     // read an object and check its type
                     received = ois.readObject();
+                    /*
                     // debug
                     if ( received.getClass() == Integer.class ) {
                         System.out.println("Received an Integer: " + received);
@@ -72,6 +73,7 @@ public class BasicSlave {
                                 ;
                         }
                     }
+                    */
                     if ( received.getClass() == SimEventDesc.class ) {
                         // we received a simulation instruction, check its type and execute
                         instruction = (SimEventDesc)received;
@@ -83,11 +85,16 @@ public class BasicSlave {
                         switch ( instruction.event ) {
                             case SEND:
                                 send(hostName, portNum, numBytes);
+                                break;
                             case RECEIVE:
                                 receive(portNum, numBytes);
+                                break;
                             case TERMINATE:
                                 continueSimulation = false;
+                                break;
                             default:
+                                System.err.println("invalid instruction!!");
+                                break;
                         }
                     }
                 } catch (IOException e) {

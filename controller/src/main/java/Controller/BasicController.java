@@ -101,13 +101,18 @@ public class BasicController {
             int numBytes = 100;
             // a single simulation event has a pair of commands
             try {
+                /*
+                // debug
                 connections[0].oos.writeObject(new Integer(4));
                 connections[1].oos.writeObject(new Integer(5));
+                 */
                 SimEventDesc instruction;
                 // these have to be done in this order
+                // receiver
                 instruction = new SimEventDesc(SimEventType.RECEIVE, numBytes);
                 System.out.println("created instruction: " + instruction);
                 connections[0].oos.writeObject(instruction);
+                // sender
                 instruction = new SimEventDesc(SimEventType.SEND, numBytes);
                 System.out.println("created instruction: " + instruction);
                 connections[1].oos.writeObject(instruction);
