@@ -119,6 +119,9 @@ public class BasicSlave {
 
 
     public void send(String hostName, int portNum, int numBytes) {
+
+        System.out.println("Attempting to send " + numBytes + " bytes");
+
         // create some fake data according to specified number of bytes
         byte[] data = new byte[numBytes];
         new Random().nextBytes(data);
@@ -135,6 +138,8 @@ public class BasicSlave {
     }
 
     public void receive(int portNumber, int numBytes) {
+
+        System.out.println("Attempting to receive " + numBytes + " bytes");
 
         ServerSocket simServerSocket;
         Socket simClientSocket;
@@ -183,9 +188,9 @@ public class BasicSlave {
         }
         */
 
-        // for now, just have each slave listen on a single port
+        // for now, just have each slave listen for controller on a single port
         if ( args.length == 0 ) {
-            System.out.println("usage: BasicSlave <port number>");
+            System.out.println("usage: BasicSlave <port number that controller connects to>");
             return;
         }
 
