@@ -1,6 +1,7 @@
-package Simulation;
+package Simulation.Data;
 
 
+import Simulation.Simulation;
 import org.joda.time.DateTime;
 
 /**
@@ -8,7 +9,6 @@ import org.joda.time.DateTime;
  */
 public class SimulationConfig {
     public String taskFileName;
-    public DateTime simulationStartTime;
     public Boolean isVarys;
     public String varysMasterUrl;
     public int serverPort = 8080;

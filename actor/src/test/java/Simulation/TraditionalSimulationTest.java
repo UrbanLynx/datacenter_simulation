@@ -1,5 +1,6 @@
 package Simulation;
 
+import Simulation.Data.SimulationConfig;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
