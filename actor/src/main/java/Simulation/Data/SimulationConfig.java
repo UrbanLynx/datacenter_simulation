@@ -12,4 +12,5 @@ public class SimulationConfig {
     public Boolean isVarys;
     public String varysMasterUrl;
     public int serverPort = 8080;
+    public int slavePort;
 }

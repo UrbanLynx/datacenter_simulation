@@ -39,10 +39,10 @@ public class VarysSender {
     }
 
 
-    public void send(byte[] data) {
+    public void send(String data) {
         String OBJ_NAME = "OBJ"; // to the args
-        int NUM_ELEMS = data.length;
-        byte[] toSend = data;
+        int NUM_ELEMS = data.length();
+        String toSend = data;
 
         TestListener listener = new TestListener();
         VarysClient client = new VarysClient("SenderClientObject", url, listener);

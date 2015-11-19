@@ -8,6 +8,7 @@ import org.joda.time.DateTime;
 public class SimTask {
 
     public SimulationType simulationType;
+    public String url;
     public String coflowId;
     public TaskData data;
 
@@ -21,5 +22,6 @@ public class SimTask {
     public String srcAddress;
     public int srcPort;
     public long startTime;
+    public boolean continueSimulation;
 }
 

@@ -1,6 +1,7 @@
 package Simulation.Slave;
 
 import Simulation.Data.SimTask;
+import Simulation.Data.SimulationType;
 import Simulation.Data.TaskData;
 
 import java.net.InetAddress;
@@ -9,7 +10,7 @@ import java.net.UnknownHostException;
 /**
  * Created by stanislavmushits on 19/11/15.
  */
-public class Slave {
+public class Slave implements Runnable{
 
     SimTask task;
     InetAddress myIpAddress;
@@ -44,17 +45,21 @@ public class Slave {
         }
 
         // send the task based on varys or traditional
-        if (this.task.simulationType == SimTask.SimulationType.VARYS) {
+        if (this.task.simulationType == SimulationType.VARYS) {
+            VarysCommunicator varysCommunicator = new VarysCommunicator(task);
             if (this.isReceiver) {
-                // Call receive task of varys
+                varysCommunicator.receive();
             } else {
-                // Call send task of varys
+                varysCommunicator.send(task.data.getData());
             }
         } else {
+            TraditionalCommunicator traditionalCommunicator = new TraditionalCommunicator();
             if (this.isReceiver) {
                 // Call receive task of traditional
+                traditionalCommunicator.receive(task.srcPort, task.size);
             } else {
                 // Call send task of traditional
+                traditionalCommunicator.receive(task.srcPort, task.size);
             }
         }
 
