@@ -1,4 +1,4 @@
-package Simulation.Data;
+package Simulation.Data.Old;
 
 import javax.mail.search.SentDateTerm;
 import java.io.Serializable;
