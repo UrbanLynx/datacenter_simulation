@@ -1,9 +1,10 @@
+import Simulation.Data.ConfigParser;
 import Simulation.Simulation;
 import Simulation.SimTask;
 import Simulation.VarysSimulation;
 import Simulation.TraditionalSimulation;
 
-import Simulation.SimulationConfig;
+import Simulation.Data.SimulationConfig;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;

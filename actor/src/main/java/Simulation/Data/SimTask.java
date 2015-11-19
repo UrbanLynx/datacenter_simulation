@@ -6,7 +6,7 @@ import org.joda.time.DateTime;
  * Created by Stanislav-macbook on 30.10.2015.
  */
 public class SimTask {
-    public enum SimulationType{TRADITIONAL, VARYS}
+
     public SimulationType simulationType;
     public String coflowId;
     public TaskData data;

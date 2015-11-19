@@ -1,6 +1,7 @@
 package Simulation;
 
-import java.io.IOException;
+import Simulation.Data.SimulationConfig;
+
 import java.util.ArrayList;
 import java.util.Random;
 
