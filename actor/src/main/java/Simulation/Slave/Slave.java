@@ -1,4 +1,4 @@
-package Controller;
+package Simulation.Slave;
 
 import varys.framework.client.VarysClient;
 

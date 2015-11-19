@@ -1,4 +1,4 @@
-package Controller;
+package Simulation.Master;
 
 import varys.framework.client.VarysClient;
 

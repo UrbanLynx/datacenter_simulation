@@ -1,4 +1,4 @@
-package Controller;
+package Simulation.Master;
 
 import java.net.Socket;
 import java.io.*;

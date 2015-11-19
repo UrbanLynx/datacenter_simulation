@@ -1,4 +1,4 @@
-package Controller;
+package Simulation.Data;
 
 /**
  * Created by ruby on 11/17/15.

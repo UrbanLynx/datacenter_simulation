@@ -1,4 +1,4 @@
-package Controller;
+package Simulation.Slave;
 
 import java.io.*;
 import java.net.ServerSocket;
