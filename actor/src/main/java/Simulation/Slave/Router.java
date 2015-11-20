@@ -1,5 +1,6 @@
 package Simulation.Slave;
 
+import Simulation.Data.SimMessage;
 import Simulation.Data.SimTask;
 import Simulation.Data.SimulationConfig;
 import Simulation.Data.SimulationType;
@@ -36,12 +37,12 @@ public class Router {
             ctrlOOS = new ObjectOutputStream(ctrlClientSocket.getOutputStream());
             ctrlOIS = new ObjectInputStream(ctrlClientSocket.getInputStream());
 
-            SimTask task = null;
+            SimMessage message = null;
             do {
                 System.out.println("Awaiting simulation instructions...\n");
-                task = (SimTask) ctrlOIS.readObject();
-                startNewTask(task);
-            } while (task.continueSimulation);
+                message = (SimMessage) ctrlOIS.readObject();
+                startNewTask(message);
+            } while (message.eventType != SimMessage.SimEventType.TERMINATE);
 
             ctrlOIS.close();
             ctrlOOS.close();
@@ -53,8 +54,8 @@ public class Router {
         }
     }
 
-    public void startNewTask(SimTask task) throws Exception {
-        Slave slave = new Slave(task);
+    public void startNewTask(SimMessage message) throws Exception {
+        Slave slave = new Slave(message);
         new Thread(slave).start();
     }
 }

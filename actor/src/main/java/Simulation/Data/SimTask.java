@@ -2,6 +2,8 @@ package Simulation.Data;
 
 import org.joda.time.DateTime;
 
+import java.io.Serializable;
+
 /**
  * Created by Stanislav-macbook on 30.10.2015.
  */
@@ -24,6 +26,6 @@ public class SimTask {
     public int srcPort;
     public Double startTime;
 
-    public boolean continueSimulation;
+    //public boolean continueSimulation;
 }
 

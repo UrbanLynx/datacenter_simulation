@@ -1,11 +1,11 @@
 package Simulation.Slave;
 
+import Simulation.Data.SimMessage;
 import Simulation.Data.SimTask;
 import Simulation.Data.SimulationType;
 import Simulation.Data.TaskData;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 /**
  * Created by stanislavmushits on 19/11/15.
@@ -14,22 +14,21 @@ public class Slave implements Runnable{
 
     SimTask task;
     InetAddress myIpAddress;
-    boolean isReceiver;
+    boolean isSender;
 
-    Slave(SimTask t) throws UnknownHostException {
-        this.task = t;
+    /*public Slave(SimTask task) throws UnknownHostException {
+        this.task = task;
         this.myIpAddress = InetAddress.getLocalHost();
-    }
+    }*/
 
-    public boolean AmIReceiver() {
-        return task.dstAddress.equals(myIpAddress.toString());
+    public Slave(SimMessage message) {
+        this.task = message.task;
+        isSender = (message.eventType == SimMessage.SimEventType.SEND);
     }
 
     public void GenerateData() {
-        if (!AmIReceiver()) {
-            // Sender, so create data
-            task.data = new TaskData(task.size);
-        }
+        // Sender, so create data
+        task.data = new TaskData(task.size);
     }
 
     public void run() {
@@ -37,29 +36,29 @@ public class Slave implements Runnable{
         //parse task
 
         // Check if receiver
-        this.isReceiver = AmIReceiver();
+        //this.isSender = AmISender();
 
         // if sender, call generate data
-        if (!this.isReceiver) {
+        if (this.isSender) {
             GenerateData();
         }
 
         // send the task based on varys or traditional
         if (this.task.simulationType == SimulationType.VARYS) {
             VarysCommunicator varysCommunicator = new VarysCommunicator(task);
-            if (this.isReceiver) {
-                varysCommunicator.receive();
-            } else {
+            if (this.isSender) {
                 varysCommunicator.send(task.data.getData());
+            } else {
+                varysCommunicator.receive();
             }
         } else {
             TraditionalCommunicator traditionalCommunicator = new TraditionalCommunicator();
-            if (this.isReceiver) {
+            if (this.isSender) {
                 // Call receive task of traditional
                 traditionalCommunicator.receive(task.srcPort, task.size);
             } else {
                 // Call send task of traditional
-                traditionalCommunicator.receive(task.srcPort, task.size);
+                traditionalCommunicator.send(task.dstAddress, task.srcPort, (int) task.size);
             }
         }
 

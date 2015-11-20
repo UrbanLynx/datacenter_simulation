@@ -7,6 +7,7 @@ import varys.framework.CoflowType;
 import varys.framework.client.VarysClient;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Created by stanislavmushits on 19/11/15.
@@ -18,8 +19,8 @@ public class Master {
 
     public void conductSimulation(SimulationConfig simConfig, ArrayList<SimTask> simTasks){
         config = simConfig;
-        router = new Router(simConfig);
-        registerMaster(simConfig);
+        preprocessTaks(simTasks);
+        preparationForSimulation(simConfig);
 
         for (SimTask task : simTasks){
             waitUntillNextTask(task);
@@ -34,17 +35,37 @@ public class Master {
         }
     }
 
+    private void preparationForSimulation(SimulationConfig simConfig) {
+        router = new Router(simConfig);
+
+        if (simConfig.isVarys){
+            registerMaster(simConfig);
+        }
+    }
+
+    // Sort and extract IPs
+    private void preprocessTaks(ArrayList<SimTask> tasks){
+        HashSet<String> addresses = new HashSet<String>();
+        for (SimTask task: tasks){
+            addresses.add(task.srcAddress);
+            addresses.add(task.dstAddress);
+        }
+
+        config.hosts = new ArrayList<String>();
+        config.hosts.addAll(addresses);
+    }
+
     private void waitUntillNextTask(SimTask task) {
 
     }
 
     public void executeTraditionalTask(SimTask simTask){
-        router.sendTaskTo(simTask.dstAddress, simTask);
+        router.sendTaskTo(simTask.dstAddress, new SimMessage(SimMessage.SimEventType.RECEIVE, simTask));
 
         //TODO:how to wait
         waitForAck();
 
-        router.sendTaskTo(simTask.srcAddress, simTask);
+        router.sendTaskTo(simTask.srcAddress, new SimMessage(SimMessage.SimEventType.SEND, simTask));
     }
 
 
@@ -53,8 +74,8 @@ public class Master {
         simTask.coflowId = registerCoflow(simTask);
         simTask.masterUrl = config.varysMasterUrl;
 
-        router.sendTaskTo(simTask.srcAddress, simTask);
-        router.sendTaskTo(simTask.dstAddress, simTask);
+        router.sendTaskTo(simTask.srcAddress, new SimMessage(SimMessage.SimEventType.SEND, simTask));
+        router.sendTaskTo(simTask.dstAddress, new SimMessage(SimMessage.SimEventType.RECEIVE, simTask));
     }
 
     public String registerCoflow(SimTask task){

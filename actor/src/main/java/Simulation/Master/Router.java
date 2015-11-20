@@ -1,7 +1,7 @@
 package Simulation.Master;
 
 import Simulation.Data.Confirm;
-import Simulation.Data.SimTask;
+import Simulation.Data.SimMessage;
 import Simulation.Data.SimulationConfig;
 import Simulation.Master.Utils.ConnectionDesc;
 import Simulation.Master.Utils.SlaveDesc;
@@ -12,7 +12,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -35,9 +34,10 @@ public class Router {
     // NOTE: in actual simulation setup, each host will listen for controller on a fixed port
     private ArrayList<SlaveDesc> parseSlaveFile() {
         ArrayList<SlaveDesc> slaves = new ArrayList<SlaveDesc>();
-        slaves.add(new SlaveDesc("localhost",1));
-        slaves.add(new SlaveDesc("localhost",2));
-        slaves.add(new SlaveDesc("localhost",3));
+        for(String address: config.hosts){
+            slaves.add(new SlaveDesc(address,config.slavePort));
+        }
+
         return slaves;
     }
 
@@ -62,13 +62,13 @@ public class Router {
         }
     }
 
-    public void sendTaskTo(String address, SimTask simTask) {
+    public void sendTaskTo(String address, SimMessage simMessage) {
         System.out.print("Simulation event: ");
-        System.out.println("Sender: host " + simTask.srcAddress + ", Receiver: host " + simTask.dstAddress +
-                ", " + simTask.size + " bytes");
+        //System.out.println("Sender: host " + simMessage.srcAddress + ", Receiver: host " + simMessage.dstAddress +
+        //        ", " + simMessage.size + " bytes");
 
         try {
-            connections.get(address).oos.writeObject(simTask);
+            connections.get(address).oos.writeObject(simMessage);
         } catch (Exception e) {
             e.printStackTrace();
         }
