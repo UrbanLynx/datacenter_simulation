@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Created by Stanislav-macbook on 30.10.2015.
  */
-public class SimTask {
+public class SimTask implements Serializable{
 
     public SimulationType simulationType;
     //public String url;

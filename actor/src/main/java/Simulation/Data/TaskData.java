@@ -2,12 +2,15 @@ package Simulation.Data;
 
 import com.sun.javafx.tk.Toolkit;
 
+import java.io.Serializable;
+
 /**
  * Created by stanislavmushits on 19/11/15.
  */
-public class TaskData {
+public class TaskData implements Serializable {
     String data;
     long bytes;
+    public String dataId;
 
     public void generateData(long numBytes) {
         // Creates a string with proper size

@@ -45,20 +45,20 @@ public class Slave implements Runnable{
 
         // send the task based on varys or traditional
         if (this.task.simulationType == SimulationType.VARYS) {
-            VarysCommunicator varysCommunicator = new VarysCommunicator(task);
+            VarysCommunicator varysCommunicator = new VarysCommunicator();
             if (this.isSender) {
-                varysCommunicator.send(task.data.getData());
+                varysCommunicator.send(task);
             } else {
-                varysCommunicator.receive();
+                varysCommunicator.receive(task);
             }
         } else {
             TraditionalCommunicator traditionalCommunicator = new TraditionalCommunicator();
             if (this.isSender) {
                 // Call receive task of traditional
-                traditionalCommunicator.receive(task.srcPort, task.size);
+                traditionalCommunicator.receive(task);
             } else {
                 // Call send task of traditional
-                traditionalCommunicator.send(task.dstAddress, task.srcPort, (int) task.size);
+                traditionalCommunicator.send(task);
             }
         }
 

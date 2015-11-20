@@ -12,11 +12,11 @@ import varys.framework.client.VarysClient;
  */
 public class VarysCommunicator {
 
-    SimTask task;
+    //SimTask task;
 
-    VarysCommunicator(SimTask task) {
-        this.task = task;
-    }
+    //VarysCommunicator(SimTask task) {
+    //    this.task = task;
+    //}
 
     public void safePrintln(String s) {
         synchronized (System.out) {
@@ -39,9 +39,13 @@ public class VarysCommunicator {
         }
     }
 
-    public void receive() {
+    public String getDataId(SimTask task){
+        return task.dstAddress + ":" + task.dstPort;
+    }
 
-        safePrintln("[Receiver]: Start receiving on URL: "+task.masterUrl);
+    public void receive(SimTask task) {
+
+        safePrintln("[Receiver]: Start receiving on URL: "+ task.masterUrl);
 
         //coflowId = "COFLOW-000000";
 
@@ -61,7 +65,7 @@ public class VarysCommunicator {
             safePrintln(e.toString());
         }*/
 
-        String DATA_NAME = "DATA";
+        String dataId = getDataId(task);
 
         TestListener listener = new TestListener();
         VarysClient client = new VarysClient("ReceiverClientFake", task.masterUrl, listener);
@@ -69,17 +73,20 @@ public class VarysCommunicator {
 
         try {
             //Thread.sleep(5000);
-            safePrintln("[Receiver]: Trying to retrieve " + DATA_NAME);
-            client.getFake(DATA_NAME, task.coflowId);
-            safePrintln("[Receiver]: Got " + DATA_NAME + " Now waiting to die.");
+            safePrintln("[Receiver]: Trying to retrieve " + dataId);
+
+            // TODO: "DATA" -> dataId
+            client.getFake("DATA", task.coflowId);
+
+            safePrintln("[Receiver]: Got " + dataId + " Now waiting to die.");
             //client.awaitTermination();
         } catch (Exception e) {
             safePrintln(e.toString());
         }
     }
 
-    public void send(String data) {
-        System.out.println("[Sender]: Sending data with url " + task);
+    public void send(SimTask task) {
+        System.out.println("[Sender]: Sending data with coflow " + task.coflowId);
         //coflowId = "COFLOW-000000";
 
         /*String OBJ_NAME = "OBJ"; // to the args
@@ -110,26 +117,16 @@ public class VarysCommunicator {
 
         client.awaitTermination();*/
 
-        String DATA_NAME = "DATA";
-        long LEN_BYTES = 1010101L;
+        String dataId = getDataId(task);
 
         TestListener listener = new TestListener();
         VarysClient client = new VarysClient("[Sender]: SenderClientFake", task.masterUrl, listener);
         client.start();
 
-        CoflowDescription desc = new CoflowDescription("DEFAULT", CoflowType.DEFAULT(), 1, LEN_BYTES, 10000);
-        task.coflowId = client.registerCoflow(desc);
+        // TODO: "DATA" -> dataId
+        client.putFake("DATA", task.coflowId, task.size, 1);
 
-        int SLEEP_MS1 = 5000;
-        System.out.println("[Sender]: Registered coflow " + task.coflowId+ ". Now sleeping for " + SLEEP_MS1 + " milliseconds.");
-        try {
-            Thread.sleep(SLEEP_MS1);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        client.putFake(DATA_NAME, task.coflowId, LEN_BYTES, 1);
-        System.out.println("[Sender]: Put a fake piece of data of " + LEN_BYTES + " bytes. Now waiting to die.");
+        System.out.println("[Sender]: Put a fake piece of data of " + task.size + " bytes. Now waiting to die.");
 
         // client.unregisterCoflow(coflowId)
 

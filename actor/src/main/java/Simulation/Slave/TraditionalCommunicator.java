@@ -1,5 +1,7 @@
 package Simulation.Slave;
 
+import Simulation.Data.SimTask;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -12,18 +14,21 @@ import java.util.Random;
  */
 public class TraditionalCommunicator {
 
-    public void send(String hostName, int portNum, int numBytes) {
+    public void send(SimTask task) {
+        String hostName = task.dstAddress;
+        int portNum = task.dstPort;
+        long numBytes = task.size;
 
         System.out.println("Attempting to send " + numBytes + " bytes\n");
 
         // create some fake data according to specified number of bytes
-        byte[] data = new byte[numBytes];
-        new Random().nextBytes(data);
+        //byte[] data = new byte[numBytes];
+        //new Random().nextBytes(data);
         //  send it!
         try {
             Socket socket = new Socket(hostName, portNum);
             ObjectOutputStream simOOS = new ObjectOutputStream(socket.getOutputStream());
-            simOOS.write(data);
+            simOOS.write(task.data.getData().getBytes());
             simOOS.close();
             socket.close();
         } catch ( IOException e) {
@@ -31,7 +36,9 @@ public class TraditionalCommunicator {
         }
     }
 
-    public void receive(int portNumber, long numBytes) {
+    public void receive(SimTask task) {
+        int portNumber = task.dstPort;
+        long numBytes = task.size;
 
         System.out.println("Attempting to receive " + numBytes + " bytes");
 
