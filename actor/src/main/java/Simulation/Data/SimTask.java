@@ -10,6 +10,7 @@ public class SimTask {
     public SimulationType simulationType;
     public String url;
     public String coflowId;
+    public String masterUrl;
     public TaskData data;
 
     public String dstAddress;

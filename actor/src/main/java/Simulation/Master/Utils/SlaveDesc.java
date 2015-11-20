@@ -1,12 +1,12 @@
-package Simulation.Data.Old;
+package Simulation.Master.Utils;
 
 /**
  * Created by ruby on 11/17/15.
  */
 public class SlaveDesc {
 
-    String hostName;
-    int portNumber;
+    public String hostName;
+    public int portNumber;
 
     public SlaveDesc(String hostName, int portNumber) {
         this.hostName = hostName;
