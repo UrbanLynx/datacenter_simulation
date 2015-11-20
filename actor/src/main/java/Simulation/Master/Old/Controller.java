@@ -1,5 +1,6 @@
 package Simulation.Master.Old;
 
+import junit.framework.TestListener;
 import varys.framework.client.VarysClient;
 
 /**
@@ -15,9 +16,9 @@ public class Controller extends BasicController {
     // constructor starts Varys client
     public Controller(String varysMasterUrl) {
         varysMasterURL = varysMasterUrl;
-        TestListener listener = new TestListener();
-        varysClient = new VarysClient("SimulationController", varysMasterURL, listener);
-        varysClient.start();
+        //TestListener listener = new TestListener();
+        //varysClient = new VarysClient("SimulationController", varysMasterURL, listener);
+        //varysClient.start();
     }
 
 }

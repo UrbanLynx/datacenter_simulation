@@ -1,7 +1,6 @@
 import Simulation.Data.ConfigParser;
+import Simulation.Data.SimTask;
 import Simulation.Simulation;
-import Simulation.SimTask;
-import Simulation.VarysSimulation;
 import Simulation.TraditionalSimulation;
 
 import Simulation.Data.SimulationConfig;
@@ -30,11 +29,11 @@ public class Manager {
     public static Simulation createSimulation(SimulationConfig simConfig) throws IOException, ParseException {
         ConfigParser parser = new ConfigParser();
         ArrayList<SimTask> simTasks = parser.parseTaskFile(simConfig.taskFileName);
-        if (simConfig.isVarys){
-            return new VarysSimulation(simTasks, simConfig);
-        } else{
+        //if (simConfig.isVarys){
+            //return new VarysSimulation(simTasks, simConfig);
+        //} else{
             return new TraditionalSimulation(simTasks, simConfig);
-        }
+        //}
     }
 
     public static void waitForStartOfSimulation(SimulationConfig simConfig){

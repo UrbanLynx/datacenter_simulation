@@ -1,5 +1,6 @@
 package Simulation;
 
+import Simulation.Data.SimTask;
 import Simulation.Data.SimulationConfig;
 import junit.framework.TestCase;
 

@@ -1,5 +1,12 @@
 package Simulation.Master.Old;
 
+import Simulation.Data.Confirm;
+import Simulation.Data.Old.BasicSimEntry;
+import Simulation.Data.Old.SimEventDesc;
+import Simulation.Data.Old.SimEventType;
+import Simulation.Master.Utils.ConnectionDesc;
+import Simulation.Master.Utils.SlaveDesc;
+
 import java.net.Socket;
 import java.io.*;
 import java.util.ArrayList;

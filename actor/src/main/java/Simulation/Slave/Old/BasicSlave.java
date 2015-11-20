@@ -1,5 +1,8 @@
 package Simulation.Slave.Old;
 
+import Simulation.Data.Confirm;
+import Simulation.Data.Old.SimEventDesc;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;

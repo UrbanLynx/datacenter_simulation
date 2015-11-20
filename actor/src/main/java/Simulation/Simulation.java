@@ -1,5 +1,7 @@
 package Simulation;
 
+import Simulation.Data.SimTask;
+
 import java.io.IOException;
 import java.util.ArrayList;
 

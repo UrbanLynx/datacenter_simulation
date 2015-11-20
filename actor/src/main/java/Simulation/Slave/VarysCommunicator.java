@@ -41,7 +41,7 @@ public class VarysCommunicator {
 
     public void receive() {
 
-        safePrintln("[Receiver]: Start receiving on URL: "+task.url);
+        safePrintln("[Receiver]: Start receiving on URL: "+task.masterUrl);
 
         //coflowId = "COFLOW-000000";
 
@@ -64,7 +64,7 @@ public class VarysCommunicator {
         String DATA_NAME = "DATA";
 
         TestListener listener = new TestListener();
-        VarysClient client = new VarysClient("ReceiverClientFake", task.url, listener);
+        VarysClient client = new VarysClient("ReceiverClientFake", task.masterUrl, listener);
         client.start();
 
         try {
@@ -114,7 +114,7 @@ public class VarysCommunicator {
         long LEN_BYTES = 1010101L;
 
         TestListener listener = new TestListener();
-        VarysClient client = new VarysClient("[Sender]: SenderClientFake", task.url, listener);
+        VarysClient client = new VarysClient("[Sender]: SenderClientFake", task.masterUrl, listener);
         client.start();
 
         CoflowDescription desc = new CoflowDescription("DEFAULT", CoflowType.DEFAULT(), 1, LEN_BYTES, 10000);

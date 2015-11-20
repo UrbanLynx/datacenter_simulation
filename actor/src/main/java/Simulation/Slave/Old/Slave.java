@@ -17,9 +17,9 @@ public class Slave extends BasicSlave {
         super(portNumber);
         this.ID = ID;
         this.varysMasterURL = varysMasterURL;
-        TestListener listener = new TestListener();
-        varysClient = new VarysClient("SimulationSlave-"+ID, varysMasterURL, listener);
-        varysClient.start();
+        //TestListener listener = new TestListener();
+        //varysClient = new VarysClient("SimulationSlave-"+ID, varysMasterURL, listener);
+        //varysClient.start();
     }
 
 }

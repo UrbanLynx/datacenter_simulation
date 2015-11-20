@@ -1,15 +1,12 @@
 package Simulation.Master;
 
 import Simulation.Data.*;
-import jdk.nashorn.internal.runtime.regexp.joni.Config;
+import Simulation.Data.ConfigParser;
 import varys.framework.CoflowDescription;
 import varys.framework.CoflowType;
 import varys.framework.client.VarysClient;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.concurrent.ThreadFactory;
 
 /**
  * Created by stanislavmushits on 19/11/15.
@@ -19,27 +16,22 @@ public class Master {
     private VarysClient masterClient;
     private SimulationConfig config;
 
-    public void conductSimulation(SimulationConfig simConfig){
+    public void conductSimulation(SimulationConfig simConfig, ArrayList<SimTask> simTasks){
         config = simConfig;
         router = new Router(simConfig);
         registerMaster(simConfig);
-        try {
-            ArrayList<SimTask> simTasks = ConfigParser.parseTaskFile(simConfig.taskFileName);
-            for (SimTask task : simTasks){
-                waitUntillNextTask(task);
-                switch (task.simulationType){
-                    case TRADITIONAL:
-                        executeTraditionalTask(task);
-                        break;
-                    case VARYS:
-                        executeVarysTask(task);
-                        break;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
+        for (SimTask task : simTasks){
+            waitUntillNextTask(task);
+            switch (task.simulationType){
+                case TRADITIONAL:
+                    executeTraditionalTask(task);
+                    break;
+                case VARYS:
+                    executeVarysTask(task);
+                    break;
+            }
+        }
     }
 
     private void waitUntillNextTask(SimTask task) {

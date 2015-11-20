@@ -43,12 +43,12 @@ public class TraditionalCommunicator {
         try {
             simServerSocket = new ServerSocket(portNumber);
             // send confirmation to controller
-            ctrlOOS.writeObject(new Confirm());
+            //ctrlOOS.writeObject(new Confirm());
             // listen for connection
             simClientSocket = simServerSocket.accept();
             if ( simClientSocket != null ) {
                 ObjectInputStream simOIS = new ObjectInputStream(simClientSocket.getInputStream());
-                numBytesRead = simOIS.read(buf, 0, numBytes);
+                //numBytesRead = simOIS.read(buf, 0, numBytes);
                 simOIS.close();
             }
             simServerSocket.close();

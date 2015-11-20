@@ -1,0 +1,28 @@
+{
+      "simulationType": "TRADITIONAL",
+      "tasks":[
+      {
+            "dstAddress": "172.27.102.14", 
+            "dstPort": 53745, 
+            "duration": 5.427770018, 
+            "finishTime": 1388446798.326, 
+            "mapper": "attempt_201312301808_0016_m_000064_0", 
+            "reducer": "attempt_201312301808_0016_r_000001_0", 
+            "size": 64082030, 
+            "srcAddress": "172.27.102.2", 
+            "srcPort": 50060, 
+            "startTime": 1388446792.89823,
+      }, {
+            "dstAddress": "172.27.102.14", 
+            "dstPort": 53745, 
+            "duration": 5.427770018, 
+            "finishTime": 1388446798.326, 
+            "mapper": "attempt_201312301808_0016_m_000064_0", 
+            "reducer": "attempt_201312301808_0016_r_000001_0", 
+            "size": 64082030, 
+            "srcAddress": "172.27.102.2", 
+            "srcPort": 50060, 
+            "startTime": 1388446792.89823
+      }
+      ]
+}
