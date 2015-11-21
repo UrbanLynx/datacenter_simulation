@@ -43,6 +43,12 @@ public class VarysRegistrator{
                 coflowId = client.registerCoflow(desc);
 
                 safePrintln("Registered coflow " + coflowId);
+
+                // TODO:DELETE
+                //client.putFake("DATA1", coflowId, 1010101L, 1);
+                //System.out.println("[Sender]: Put a fake piece of data of " + 1010101L + " bytes. Now waiting to die.");
+                // TODO:DELETE
+
                 latch.countDown();
                 client.awaitTermination();
             }

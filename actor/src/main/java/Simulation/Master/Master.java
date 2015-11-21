@@ -71,15 +71,16 @@ public class Master {
         simTask.masterUrl = config.varysMasterUrl;
         simTask.coflowId = registerCoflow(simTask);
 
-        router.sendTaskTo(simTask.srcAddress, new SimMessage(SimMessage.SimEventType.SEND, simTask));
+        //router.sendTaskTo(simTask.srcAddress, new SimMessage(SimMessage.SimEventType.SEND, simTask));
 
+
+
+        router.sendTaskTo(simTask.dstAddress, new SimMessage(SimMessage.SimEventType.RECEIVE, simTask));
         try {
             Thread.sleep(200000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        //router.sendTaskTo(simTask.dstAddress, new SimMessage(SimMessage.SimEventType.RECEIVE, simTask));
     }
 
     public String registerCoflow(SimTask task){

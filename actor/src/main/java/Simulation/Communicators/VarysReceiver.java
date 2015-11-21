@@ -12,12 +12,12 @@ import java.net.Socket;
  */
 public class VarysReceiver implements Runnable{
     public VarysReceiver(String url) {
-        this.url = url;
+        //this.url = url;
     }
 
     public void run() {
         safePrintln("[Receiver]: Starting thread with receiver");
-        this.receive();
+        //this.receive();
     }
 
     public void safePrintln(String s) {
@@ -41,24 +41,24 @@ public class VarysReceiver implements Runnable{
         }
     }
 
-    String url;
-    String coflowId;
+    /*String url;
+    String coflowId;*/
 
-    public void receive(){
+    public void receive(String url, String coflowId, int receiverID){
         safePrintln("[Receiver]: Start receiving on URL: "+url);
 
-        String DATA_NAME = "DATA";
+        String DATA_NAME = "DATA"+receiverID;
 
         TestListener listener = new TestListener();
-        VarysClient client = new VarysClient("ReceiverClientFake", url, listener);
+        VarysClient client = new VarysClient("ReceiverClientFake"+receiverID, url, listener);
         client.start();
 
         try {
-            //Thread.sleep(5000);
+            Thread.sleep(5000);
             safePrintln("[Receiver]: Trying to retrieve " + DATA_NAME);
             client.getFake(DATA_NAME, coflowId);
             safePrintln("[Receiver]: Got " + DATA_NAME + " Now waiting to die.");
-            //client.awaitTermination();
+            client.awaitTermination();
         } catch (Exception e) {
             safePrintln(e.toString());
         }

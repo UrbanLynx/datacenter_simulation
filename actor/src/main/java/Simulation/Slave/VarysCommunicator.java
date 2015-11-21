@@ -1,5 +1,6 @@
 package Simulation.Slave;
 
+import Simulation.Communicators.VarysReceiver;
 import Simulation.Communicators.VarysSender;
 import Simulation.Data.SimTask;
 import junit.framework.TestListener;
@@ -106,8 +107,10 @@ public class VarysCommunicator {
     }
 
     public void receive(SimTask task) {
-        Simulation.Communicators.VarysReceiver client = new Simulation.Communicators.VarysReceiver(task.masterUrl);
-        client.run();
+        /*Simulation.Communicators.VarysReceiver client = new Simulation.Communicators.VarysReceiver(task.masterUrl);
+        client.run();*/
+        VarysReceiver receiver = new VarysReceiver(task.masterUrl);
+        receiver.receive(task.masterUrl, task.coflowId, 1);
         try {
             Thread.sleep(100000);
         } catch (InterruptedException e) {
