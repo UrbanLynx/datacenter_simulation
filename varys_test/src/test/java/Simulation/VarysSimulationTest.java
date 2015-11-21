@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class VarysSimulationTest extends TestCase {
 
     String coflowId = "COFLOW-000002";
-    String varysMasterUrl = "varys://ruby-XPS-13-9343:1606";
+    String varysMasterUrl = "varys://stanislavs-air:1606";
 
     public void testSenderRegister() throws Exception {
 

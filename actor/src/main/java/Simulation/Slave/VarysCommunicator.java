@@ -87,13 +87,13 @@ public class VarysCommunicator {
     }
 
     public void send(SimTask task) {
-        Simulation.Communicators.VarysSender client = new Simulation.Communicators.VarysSender(task.masterUrl, task.coflowId);
-        client.registerCoflow();
+        //Simulation.Communicators.VarysSender client = new Simulation.Communicators.VarysSender(task.masterUrl, task.coflowId);
+        //client.registerCoflow();
 
-        Simulation.Communicators.VarysSender client2 = new Simulation.Communicators.VarysSender(task.masterUrl, task.coflowId);
-        client2.coflowId = client.coflowId;
+        //Simulation.Communicators.VarysSender client2 = new Simulation.Communicators.VarysSender(task.masterUrl, task.coflowId);
+        //client2.coflowId = client.coflowId;
         //client2.coflowId = task.coflowId;
-        client2.run();
+        //client2.run();
         try {
             Thread.sleep(100000);
         } catch (InterruptedException e) {

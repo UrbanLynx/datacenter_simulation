@@ -14,27 +14,25 @@ import varys.framework.client.VarysClient;
 /**
  * Created by Stanislav-macbook on 31.10.2015.
  */
-public class VarysSender implements Runnable {
-    String url;
-    public String coflowId;
-
-    public VarysSender(String url, String coflowId) {
-        this.url = url;
-        this.coflowId = coflowId;
-    }
-
-    public void run() {
-        safePrintln("[Sender]: Starting thread with sender.");
-
-        this.sendFakeWorking();
-
-        System.out.println("[Sender]: Sender Stopped.");
-    }
-
+public class VarysSender{
     public void safePrintln(String s) {
         synchronized (System.out) {
             System.out.println(s);
         }
+    }
+
+    public void sendToCoflow(String varysMasterUrl, String coflowId, int senderID) {
+        String DATA_NAME = "DATA"+senderID;
+        long LEN_BYTES = 1010101L;
+
+        TestListener listener = new TestListener();
+        VarysClient client = new VarysClient("Actor2"+senderID, varysMasterUrl, listener);
+        client.start();
+
+        client.putFake(DATA_NAME, coflowId, LEN_BYTES, 1);
+        System.out.println("[Sender]: Put a fake piece of data of " + LEN_BYTES + " bytes. Now waiting to die.");
+
+        client.awaitTermination();
     }
 
     class TestListener implements ClientListener {
@@ -52,66 +50,29 @@ public class VarysSender implements Runnable {
         }
     }
 
-    public void registerCoflow(){
-        long LEN_BYTES = 1010101L;
+/*    public void registerCoflow(String url) {
+
+        // TODO: Change coflow name
+        int numOfSlaves = 5;
+        int deadlineMillis = 10000;
 
         TestListener listener = new TestListener();
-        VarysClient client = new VarysClient("SenderClientFake", url, listener);
+        VarysClient client = new VarysClient("[Sender]: SenderClientFake", url, listener);
         client.start();
 
-        CoflowDescription desc = new CoflowDescription("DEFAULT", CoflowType.DEFAULT(), 5, LEN_BYTES, 10000);
-        coflowId = client.registerCoflow(desc);
-    }
+        CoflowDescription desc = new CoflowDescription("DEFAULT", CoflowType.DEFAULT(), numOfSlaves, task.size, deadlineMillis);
+        String coflowId = masterClient.registerCoflow(desc);
+        return coflowId;
 
-    public void sendToCoflow(){
-        safePrintln("[Sender]: Sending data with url " + url);
-        String DATA_NAME = "DATA";
         long LEN_BYTES = 1010101L;
 
 
-        TestListener listener = new TestListener();
-        VarysClient client = new VarysClient("Lalala", url, listener);
-        client.start();
 
-        int SLEEP_MS1 = 5000;
-        safePrintln("[Sender]: Registered coflow " + coflowId);
-
-        client.putFake(DATA_NAME, coflowId, LEN_BYTES, 1);
-        safePrintln("[Sender]: Put a fake piece of data of " + LEN_BYTES + " bytes. Now waiting to die.");
-
-        // client.unregisterCoflow(coflowId)
-
+        CoflowDescription desc = new CoflowDescription("DEFAULT", CoflowType.DEFAULT(), 3, LEN_BYTES, 10000);
+        String coflowId = client.registerCoflow(desc);
+        System.out.println("Registered coflow " + coflowId);
         client.awaitTermination();
-    }
-
-    public void sendFakeWorking() {
-        sendToCoflow();
-    }
-
-    public void sendFakeWorkingFull() {
-        safePrintln("[Sender]: Sending data with url " + url);
-        String DATA_NAME = "DATA";
-        long LEN_BYTES = 1010101L;
-
-
-        TestListener listener = new TestListener();
-        VarysClient client = new VarysClient("SenderClientFake", url, listener);
-        client.start();
-
-        CoflowDescription desc = new CoflowDescription("DEFAULT", CoflowType.DEFAULT(), 5, LEN_BYTES, 10000);
-        coflowId = client.registerCoflow(desc);
-
-        int SLEEP_MS1 = 5000;
-        safePrintln("[Sender]: Registered coflow " + coflowId);
-
-
-        client.putFake(DATA_NAME, coflowId, LEN_BYTES, 1);
-        safePrintln("[Sender]: Put a fake piece of data of " + LEN_BYTES + " bytes. Now waiting to die.");
-
-        // client.unregisterCoflow(coflowId)
-
-        client.awaitTermination();
-    }
+    }*/
 
 }
 

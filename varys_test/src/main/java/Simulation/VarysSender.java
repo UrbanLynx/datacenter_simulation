@@ -65,6 +65,7 @@ public class VarysSender{
         CoflowDescription desc = new CoflowDescription("DEFAULT", CoflowType.DEFAULT(), 3, LEN_BYTES, 10000);
         String coflowId = client.registerCoflow(desc);
         System.out.println("Registered coflow " + coflowId);
+
         client.awaitTermination();
     }
 

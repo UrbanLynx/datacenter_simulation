@@ -1,5 +1,6 @@
 package Simulation.Master;
 
+import Simulation.Communicators.VarysRegistrator;
 import Simulation.Data.*;
 import Simulation.Data.ConfigParser;
 import varys.framework.CoflowDescription;
@@ -38,9 +39,9 @@ public class Master {
     private void preparationForSimulation(SimulationConfig simConfig) {
         router = new Router(simConfig);
 
-        if (simConfig.isVarys){
+        /*if (simConfig.isVarys){
             //registerMaster(simConfig);
-        }
+        }*/
     }
 
     // Sort and extract IPs
@@ -71,7 +72,7 @@ public class Master {
 
 
     public void executeVarysTask(SimTask simTask){
-        //simTask.coflowId = registerCoflow(simTask);
+        simTask.coflowId = registerCoflow(simTask);
         simTask.masterUrl = config.varysMasterUrl;
 
         // test
@@ -93,6 +94,13 @@ public class Master {
     }
 
     public String registerCoflow(SimTask task){
+        long LEN_BYTES = 1010101L;
+        VarysRegistrator registrator = new VarysRegistrator(config.varysMasterUrl, "ActorMaster", 1, LEN_BYTES);
+
+        return registrator.registerCoflow();
+    }
+
+    /*public String registerCoflow(SimTask task){
         // TODO: Change coflow name
         int numOfSlaves = 5;
         int deadlineMillis = 10000;
@@ -105,7 +113,7 @@ public class Master {
         VarysListener listener = new VarysListener();
         masterClient = new VarysClient("Simulation.Master", config.varysMasterUrl, listener);
         masterClient.start();
-        /*Thread t = new Thread(new Runnable() {
+        Thread t = new Thread(new Runnable() {
             public void run()
             {
                 VarysListener masterListener = new VarysListener();
@@ -122,8 +130,8 @@ public class Master {
                 master.awaitTermination();
             }
         });
-        t.start();*/
-    }
+        t.start();
+    }*/
 
     public static void processResultsOfSimulation(){
         return;
