@@ -26,12 +26,12 @@ public class VarysSender{
         }
     }
 
-    public void sendToCoflow(String varysMasterUrl, String coflowId) {
-        String DATA_NAME = "DATA";
+    public void sendToCoflow(String varysMasterUrl, String coflowId, int senderID) {
+        String DATA_NAME = "DATA"+senderID;
         long LEN_BYTES = 1010101L;
 
         TestListener listener = new TestListener();
-        VarysClient client = new VarysClient("Actor2", varysMasterUrl, listener);
+        VarysClient client = new VarysClient("Actor2"+senderID, varysMasterUrl, listener);
         client.start();
 
         client.putFake(DATA_NAME, coflowId, LEN_BYTES, 1);

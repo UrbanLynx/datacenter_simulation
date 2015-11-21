@@ -32,13 +32,13 @@ public class VarysReceiver{
         }
     }
 
-    public void receive(String url, String coflowId){
+    public void receive(String url, String coflowId, int receiverID){
         safePrintln("[Receiver]: Start receiving on URL: "+url);
 
-        String DATA_NAME = "DATA";
+        String DATA_NAME = "DATA"+receiverID;
 
         TestListener listener = new TestListener();
-        VarysClient client = new VarysClient("ReceiverClientFake", url, listener);
+        VarysClient client = new VarysClient("ReceiverClientFake"+receiverID, url, listener);
         client.start();
 
         try {
