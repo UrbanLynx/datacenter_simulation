@@ -73,7 +73,7 @@ public class Master {
 
         router.sendTaskTo(simTask.srcAddress, new SimMessage(SimMessage.SimEventType.SEND, simTask));
 
-        wait(90000);
+        wait(10000);
 
         router.sendTaskTo(simTask.dstAddress, new SimMessage(SimMessage.SimEventType.RECEIVE, simTask));
 
@@ -90,8 +90,8 @@ public class Master {
 
     public String registerCoflow(SimTask task){
         // TODO: change size, name of registrator, number of slaves(senders), config->task
-        long LEN_BYTES = 1010101L;
-        VarysRegistrator registrator = new VarysRegistrator(config.varysMasterUrl, "ActorMaster", 1, LEN_BYTES);
+        //long LEN_BYTES = 1010101L;
+        VarysRegistrator registrator = new VarysRegistrator(config.varysMasterUrl, "ActorMaster", 1, task.size);
 
         return registrator.registerCoflow();
     }

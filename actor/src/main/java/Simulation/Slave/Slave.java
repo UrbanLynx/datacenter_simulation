@@ -1,5 +1,7 @@
 package Simulation.Slave;
 
+import Simulation.Communicators.TraditionalCommunicator;
+import Simulation.Communicators.VarysCommunicator;
 import Simulation.Data.SimMessage;
 import Simulation.Data.SimTask;
 import Simulation.Data.SimulationType;

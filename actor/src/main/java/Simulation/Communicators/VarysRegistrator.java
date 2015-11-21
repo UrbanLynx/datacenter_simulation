@@ -1,9 +1,7 @@
 package Simulation.Communicators;
 
-import Simulation.Data.VarysListener;
 import varys.framework.CoflowDescription;
 import varys.framework.CoflowType;
-import varys.framework.client.ClientListener;
 import varys.framework.client.VarysClient;
 
 import java.util.concurrent.CountDownLatch;

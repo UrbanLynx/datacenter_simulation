@@ -1,4 +1,4 @@
-package Simulation.Data;
+package Simulation.Communicators;
 
 import varys.framework.client.ClientListener;
 

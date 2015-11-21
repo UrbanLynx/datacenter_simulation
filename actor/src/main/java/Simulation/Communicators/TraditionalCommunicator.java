@@ -1,4 +1,4 @@
-package Simulation.Slave;
+package Simulation.Communicators;
 
 import Simulation.Data.SimTask;
 
