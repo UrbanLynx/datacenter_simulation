@@ -14,14 +14,8 @@ import java.net.InetAddress;
  */
 public class Slave implements Runnable{
 
-    SimTask task;
-    InetAddress myIpAddress;
-    boolean isSender;
-
-    /*public Slave(SimTask task) throws UnknownHostException {
-        this.task = task;
-        this.myIpAddress = InetAddress.getLocalHost();
-    }*/
+    private SimTask task;
+    private boolean isSender;
 
     public Slave(SimMessage message) {
         this.task = message.task;
@@ -29,41 +23,33 @@ public class Slave implements Runnable{
     }
 
     public void GenerateData() {
-        // Sender, so create data
         task.data = new TaskData(task.size);
     }
 
     public void run() {
 
-        //parse task
-
-        // Check if receiver
-        //this.isSender = AmISender();
-
-        // if sender, call generate data
         if (this.isSender) {
             GenerateData();
         }
 
-        // send the task based on varys or traditional
-        if (this.task.simulationType == SimulationType.VARYS) {
-            VarysCommunicator varysCommunicator = new VarysCommunicator();
-            if (this.isSender) {
-                varysCommunicator.send(task);
-            } else {
-                varysCommunicator.receive(task);
-            }
-        } else {
-            TraditionalCommunicator traditionalCommunicator = new TraditionalCommunicator();
-            if (this.isSender) {
-                // Call receive task of traditional
-                traditionalCommunicator.receive(task);
-            } else {
-                // Call send task of traditional
-                traditionalCommunicator.send(task);
-            }
+        switch(this.task.simulationType){
+            case VARYS:
+                VarysCommunicator varysCommunicator = new VarysCommunicator();
+                if (this.isSender) {
+                    varysCommunicator.send(task);
+                } else {
+                    varysCommunicator.receive(task);
+                }
+                break;
+            case TRADITIONAL:
+                TraditionalCommunicator traditionalCommunicator = new TraditionalCommunicator();
+                if (this.isSender) {
+                    traditionalCommunicator.receive(task);
+                } else {
+                    traditionalCommunicator.send(task);
+                }
+                break;
         }
-
     }
 
 }

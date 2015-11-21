@@ -1,7 +1,7 @@
+package Simulation.Old;
+
 import Simulation.Data.ConfigParser;
 import Simulation.Data.SimTask;
-import Simulation.Simulation;
-import Simulation.TraditionalSimulation;
 
 import Simulation.Data.SimulationConfig;
 import org.json.simple.parser.ParseException;

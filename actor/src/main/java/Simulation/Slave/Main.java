@@ -1,7 +1,6 @@
 package Simulation.Slave;
 
 import Simulation.Data.SimulationConfig;
-import Simulation.Simulation;
 
 import java.io.IOException;
 
@@ -18,7 +17,7 @@ public class Main {
 
     public static SimulationConfig getDefaultConfig(){
         SimulationConfig config = new SimulationConfig();
-
+        config.slavePort = 5000;
         return config;
     }
 }

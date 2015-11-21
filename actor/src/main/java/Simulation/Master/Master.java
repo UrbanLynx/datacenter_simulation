@@ -34,13 +34,17 @@ public class Master {
                     break;
             }
         }
+
+        // TODO: somehow wait for end of simulation
+        System.out.println("All tasks accomplished!");
+        wait(200000);
     }
 
     private void preparationForSimulation() {
         router = new Router(config);
     }
 
-    // Sort and extract IPs
+    // TODO: Sort and extract IPs
     private void preprocessTaks(ArrayList<SimTask> tasks){
         HashSet<String> addresses = new HashSet<String>();
         for (SimTask task: tasks){
@@ -73,11 +77,14 @@ public class Master {
 
         router.sendTaskTo(simTask.srcAddress, new SimMessage(SimMessage.SimEventType.SEND, simTask));
 
-        wait(10000);
+        // TODO: After putObj Slave-sender connects to Slave-receiver via TCP socket and tells to receive.
+        // TODO: After receiving a task from master, Slave-receiver waits for message
+        // TODO: from Salve-sender and only after that registers VarysClient and getObd.
+        wait(5000);
 
+        // !!! If you make Debug (not Run) of program you need wait(90000)
+        // because slaves are very slow for some reason in debug mode
         router.sendTaskTo(simTask.dstAddress, new SimMessage(SimMessage.SimEventType.RECEIVE, simTask));
-
-        wait(200000);
     }
 
     public void wait(int millisec){
@@ -90,9 +97,7 @@ public class Master {
 
     public String registerCoflow(SimTask task){
         // TODO: change size, name of registrator, number of slaves(senders), config->task
-        //long LEN_BYTES = 1010101L;
         VarysRegistrator registrator = new VarysRegistrator(config.varysMasterUrl, "ActorMaster", 1, task.size);
-
         return registrator.registerCoflow();
     }
 

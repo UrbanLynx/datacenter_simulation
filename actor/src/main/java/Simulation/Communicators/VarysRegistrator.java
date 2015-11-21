@@ -63,6 +63,10 @@ public class VarysRegistrator{
 
     }
 
+    public void unregisterCoflow(){
+        // TODO: unregister
+    }
+
     public void safePrintln(String s) {
         synchronized (System.out) {
             System.out.println(s);

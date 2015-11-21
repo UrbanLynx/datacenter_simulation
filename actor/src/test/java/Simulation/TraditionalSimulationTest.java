@@ -2,6 +2,7 @@ package Simulation;
 
 import Simulation.Data.SimTask;
 import Simulation.Data.SimulationConfig;
+import Simulation.Old.TraditionalSimulation;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;

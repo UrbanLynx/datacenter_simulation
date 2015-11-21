@@ -3,7 +3,6 @@ package Simulation.Master;
 import Simulation.Data.ConfigParser;
 import Simulation.Data.SimTask;
 import Simulation.Data.SimulationConfig;
-import Simulation.Simulation;
 
 import java.io.IOException;
 import java.text.ParseException;

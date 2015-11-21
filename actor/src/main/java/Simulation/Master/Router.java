@@ -24,15 +24,13 @@ public class Router {
 
     public Router(SimulationConfig simConfig){
         config = simConfig;
-        ArrayList<SlaveDesc> slaves = parseSlaveFile();
+        ArrayList<SlaveDesc> slaves = getSlaves();
 
         System.out.println("Connecting to each simulation slave");
         connectToSlaves(slaves);
     }
 
-    // TODO: implement actual functionality, pass in File, or filename. For now hard coded.
-    // NOTE: in actual simulation setup, each host will listen for controller on a fixed port
-    private ArrayList<SlaveDesc> parseSlaveFile() {
+    private ArrayList<SlaveDesc> getSlaves() {
         ArrayList<SlaveDesc> slaves = new ArrayList<SlaveDesc>();
         for(String address: config.hosts){
             slaves.add(new SlaveDesc(address,config.slavePort));
@@ -64,8 +62,8 @@ public class Router {
 
     public void sendTaskTo(String address, SimMessage simMessage) {
         System.out.print("Simulation event: ");
-        //System.out.println("Sender: host " + simMessage.srcAddress + ", Receiver: host " + simMessage.dstAddress +
-        //        ", " + simMessage.size + " bytes");
+        System.out.println("Sender: host " + simMessage.task.srcAddress + ", Receiver: host " +
+                simMessage.task.dstAddress + ", " + simMessage.task.size + " bytes");
 
         try {
             connections.get(address).oos.writeObject(simMessage);
