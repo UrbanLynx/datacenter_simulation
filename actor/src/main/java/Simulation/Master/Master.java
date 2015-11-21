@@ -21,7 +21,7 @@ public class Master {
     public void conductSimulation(SimulationConfig simConfig, ArrayList<SimTask> simTasks){
         config = simConfig;
         preprocessTaks(simTasks);
-        preparationForSimulation(simConfig);
+        preparationForSimulation();
 
         for (SimTask task : simTasks){
             waitUntillNextTask(task);
@@ -36,12 +36,8 @@ public class Master {
         }
     }
 
-    private void preparationForSimulation(SimulationConfig simConfig) {
-        router = new Router(simConfig);
-
-        /*if (simConfig.isVarys){
-            //registerMaster(simConfig);
-        }*/
+    private void preparationForSimulation() {
+        router = new Router(config);
     }
 
     // Sort and extract IPs
@@ -72,15 +68,8 @@ public class Master {
 
 
     public void executeVarysTask(SimTask simTask){
-        simTask.coflowId = registerCoflow(simTask);
         simTask.masterUrl = config.varysMasterUrl;
-
-        // test
-        //Simulation.Communicators.VarysSender client = new Simulation.Communicators.VarysSender(simTask.masterUrl, simTask.coflowId);
-        //client.registerCoflow();
-        //simTask.coflowId = client.coflowId;
-        // test
-
+        simTask.coflowId = registerCoflow(simTask);
 
         router.sendTaskTo(simTask.srcAddress, new SimMessage(SimMessage.SimEventType.SEND, simTask));
 
@@ -94,44 +83,12 @@ public class Master {
     }
 
     public String registerCoflow(SimTask task){
+        // TODO: change size, name of registrator, number of slaves(senders), config->task
         long LEN_BYTES = 1010101L;
         VarysRegistrator registrator = new VarysRegistrator(config.varysMasterUrl, "ActorMaster", 1, LEN_BYTES);
 
         return registrator.registerCoflow();
     }
-
-    /*public String registerCoflow(SimTask task){
-        // TODO: Change coflow name
-        int numOfSlaves = 5;
-        int deadlineMillis = 10000;
-        CoflowDescription desc = new CoflowDescription("DEFAULT", CoflowType.DEFAULT(), numOfSlaves, task.size, deadlineMillis);
-        String coflowId = masterClient.registerCoflow(desc);
-        return coflowId;
-    }
-
-    public void registerMaster(final SimulationConfig config){
-        VarysListener listener = new VarysListener();
-        masterClient = new VarysClient("Simulation.Master", config.varysMasterUrl, listener);
-        masterClient.start();
-        Thread t = new Thread(new Runnable() {
-            public void run()
-            {
-                VarysListener masterListener = new VarysListener();
-                VarysClient master = new VarysClient("MasterClientFake", config.varysMasterUrl, masterListener);
-
-                master.start();
-
-                try {
-                    Thread.sleep(20000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                master.awaitTermination();
-            }
-        });
-        t.start();
-    }*/
 
     public static void processResultsOfSimulation(){
         return;

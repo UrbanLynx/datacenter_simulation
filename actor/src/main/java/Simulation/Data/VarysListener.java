@@ -13,7 +13,7 @@ public class VarysListener implements ClientListener {
     }
 
     public void  disconnected() {
-        System.out.println("[Sender]: Log: Disconnected from master");
+        System.out.println("Log: Disconnected from master");
         System.exit(0);
     }
 

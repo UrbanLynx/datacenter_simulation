@@ -1,5 +1,6 @@
 package Simulation.Slave;
 
+import Simulation.Communicators.VarysSender;
 import Simulation.Data.SimTask;
 import junit.framework.TestListener;
 import varys.VarysException;
@@ -87,6 +88,9 @@ public class VarysCommunicator {
     }
 
     public void send(SimTask task) {
+        VarysSender sender = new VarysSender();
+        sender.sendToCoflow(task.masterUrl,task.coflowId,1);
+
         //Simulation.Communicators.VarysSender client = new Simulation.Communicators.VarysSender(task.masterUrl, task.coflowId);
         //client.registerCoflow();
 
