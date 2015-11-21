@@ -56,6 +56,7 @@ public class Router {
 
     public void startNewTask(SimMessage message) throws Exception {
         Slave slave = new Slave(message);
-        new Thread(slave).start();
+        slave.run();
+        //new Thread(slave).start();
     }
 }

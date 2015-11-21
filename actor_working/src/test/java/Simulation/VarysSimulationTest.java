@@ -12,7 +12,7 @@ public class VarysSimulationTest extends TestCase {
     public void testSender() throws Exception {
         SimulationConfig config = new SimulationConfig();
         config.serverPort = 8080;
-        config.varysMasterUrl = "varys://stanislavs-air:1606";
+        config.varysMasterUrl = "varys://Stanislavs-MacBook-Air.local:1606";
 
         VarysSender sender = new VarysSender(config);
         sender.sendFake();
@@ -28,7 +28,7 @@ public class VarysSimulationTest extends TestCase {
 
         SimulationConfig config = new SimulationConfig();
         config.serverPort = 8080;
-        config.varysMasterUrl = "varys://stanislavs-air:1606";
+        config.varysMasterUrl = "varys://Stanislavs-MacBook-Air.local:1606";
 
         VarysSimulation simulation = new VarysSimulation(tasks, config);
         //simulation.receiveAll();

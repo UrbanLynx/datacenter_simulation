@@ -1,5 +1,6 @@
 package Simulation;
 
+import akka.actor.ActorRef;
 import scala.Enumeration.Value;
 import junit.framework.AssertionFailedError;
 import junit.framework.Test;
@@ -8,6 +9,7 @@ import varys.VarysException;
 import varys.framework.CoflowDescription;
 import varys.framework.CoflowType;
 import varys.framework.client.ClientListener;
+import varys.ui.VarysUI;
 import varys.util.AkkaUtils;
 import varys.Logging;
 import varys.Utils;
@@ -31,7 +33,7 @@ public class VarysSender implements Runnable {
         }*/
 
         //openServerSocket();
-        this.sendFake();
+        this.sendFakeWorking();
         /*while(! isStopped()){
             Socket clientSocket = null;
             try {
@@ -56,11 +58,11 @@ public class VarysSender implements Runnable {
 
     class TestListener implements ClientListener {
         public void connected(String id) {
-            System.out.println("Log: Connected to master, got client ID " + id);
+            safePrintln("Log: Connected to master, got client ID " + id);
         }
 
         public void  disconnected() {
-            System.out.println("[Sender]: Log: Disconnected from master");
+            safePrintln("[Sender]: Log: Disconnected from master");
             System.exit(0);
         }
 
@@ -128,10 +130,32 @@ public class VarysSender implements Runnable {
         //client.awaitTermination();
     }
 
-    public void sendFake() {
+    public void sendFakeWorking() {
         System.out.println("[Sender]: Sending data with url " + url);
         String DATA_NAME = "DATA";
         long LEN_BYTES = 1010101L;
+
+        /*Thread t = new Thread(new Runnable() {
+            public void run()
+            {
+                TestListener masterListener = new TestListener();
+                VarysClient master = new VarysClient("MasterClientFake", url, masterListener);
+                master.start();
+                *//*try {
+                    Thread.sleep(20000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }*//*
+                master.awaitTermination();
+            }
+        });
+        t.start();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+
 
         TestListener listener = new TestListener();
         VarysClient client = new VarysClient("SenderClientFake", url, listener);
@@ -150,5 +174,218 @@ public class VarysSender implements Runnable {
         // client.unregisterCoflow(coflowId)
 
         client.awaitTermination();
+    }
+
+    public void sendFake4() {
+        System.out.println("[Sender]: Sending data with url " + url);
+        String DATA_NAME = "DATA";
+        long LEN_BYTES = 1010101L;
+
+
+        TestListener listener = new TestListener();
+        VarysClient client = new VarysClient("SenderClientFake", url, listener);
+        client.start();
+
+
+
+        CoflowDescription desc = new CoflowDescription("DEFAULT", CoflowType.DEFAULT(),10, LEN_BYTES, 70000);
+        coflowId = client.registerCoflow(desc);
+
+        int SLEEP_MS1 = 5000;
+        System.out.println("[Sender]: Registered coflow " + coflowId);
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+        Thread t = new Thread(new Runnable() {
+            public void run()
+            {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                long LEN_BYTES = 1010101L;
+                TestListener masterListener = new TestListener();
+                VarysClient master = new VarysClient("MasterClientFake", url, masterListener);
+
+                master.start();
+
+                master.putFake("DATA1", coflowId, LEN_BYTES, 1);
+
+                /*try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }*/
+
+                master.awaitTermination();
+                int a  =1;
+                a += 1;
+            }
+        });
+        t.start();
+
+        //client.putFake(DATA_NAME, coflowId, LEN_BYTES, 1);
+        System.out.println("[Sender]: Put a fake piece of data of " + LEN_BYTES + " bytes. Now waiting to die.");
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Thread t2 = new Thread(new Runnable() {
+            public void run()
+            {
+                TestListener receiverListener = new TestListener();
+                VarysClient rec = new VarysClient("ReceiverClientFake", url, receiverListener);
+                rec.start();
+
+                try {
+                    rec.getFake("DATA1", coflowId);
+                    safePrintln("Get DATA1 on t2");
+                } catch (VarysException e) {
+                    e.printStackTrace();
+                }
+
+                rec.awaitTermination();
+            }
+        });
+        t2.start();
+
+        // client.unregisterCoflow(coflowId)
+
+        /*try {
+            Thread.sleep(100000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+        client.awaitTermination();
+    }
+
+    public void sendFake3() {
+        System.out.println("[Sender]: Sending data with url " + url);
+        final String DATA_NAME = "DATA";
+
+        final long LEN_BYTES = 1010101L;
+        TestListener masterListener = new TestListener();
+        final VarysClient master = new VarysClient("MasterClientFake", url, masterListener);
+        master.start();
+
+        CoflowDescription desc = new CoflowDescription("DEFAULT", CoflowType.DEFAULT(), 1, LEN_BYTES, 10000);
+        coflowId = master.registerCoflow(desc);
+
+        Thread t = new Thread(new Runnable() {
+            public void run()
+            {
+                String DATA_NAME = "DATA";
+
+                long LEN_BYTES = 1010101L;
+                master.putFake(DATA_NAME, coflowId, LEN_BYTES, 1);
+                try {
+                    Thread.sleep(60000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        t.start();
+        try {
+            Thread.sleep(7000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        master.putFake(DATA_NAME, coflowId, LEN_BYTES, 1);
+
+        System.out.println("[Sender]: Put a fake piece of data of " + LEN_BYTES + " bytes. Now waiting to die.");
+
+        // client.unregisterCoflow(coflowId)
+
+        master.awaitTermination();
+    }
+
+    public void sendFake() {
+        Thread t = new Thread(new Runnable() {
+            public void run()
+            {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                long LEN_BYTES = 1010101L;
+                TestListener masterListener = new TestListener();
+                VarysClient master = new VarysClient("MasterClientFake", url, masterListener);
+
+                master.start();
+
+                CoflowDescription desc = new CoflowDescription("DEFAULT", CoflowType.DEFAULT(),10, LEN_BYTES, 70000);
+                coflowId = master.registerCoflow(desc);
+
+                master.putFake("DATA1", coflowId, LEN_BYTES, 1);
+
+                /*try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }*/
+
+                master.awaitTermination();
+            }
+        });
+        t.start();
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Thread t2 = new Thread(new Runnable() {
+            public void run()
+            {
+                TestListener receiverListener = new TestListener();
+                VarysClient rec = new VarysClient("ReceiverClientFake", url, receiverListener);
+                rec.start();
+
+                try {
+                    rec.getFake("DATA1", coflowId);
+                    safePrintln("Get DATA1 on t2");
+                } catch (VarysException e) {
+                    e.printStackTrace();
+                }
+
+                rec.awaitTermination();
+            }
+        });
+        //t2.start();
+
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        TestListener receiverListener = new TestListener();
+        VarysClient rec = new VarysClient("ReceiverClientFake", url, receiverListener);
+        rec.start();
+
+        try {
+            rec.getFake("DATA1", coflowId);
+            safePrintln("Get DATA1 on t2");
+        } catch (VarysException e) {
+            e.printStackTrace();
+        }
+
+        rec.awaitTermination();
     }
 }

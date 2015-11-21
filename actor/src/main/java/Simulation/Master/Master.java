@@ -39,7 +39,7 @@ public class Master {
         router = new Router(simConfig);
 
         if (simConfig.isVarys){
-            registerMaster(simConfig);
+            //registerMaster(simConfig);
         }
     }
 
@@ -71,31 +71,58 @@ public class Master {
 
 
     public void executeVarysTask(SimTask simTask){
-        simTask.coflowId = registerCoflow(simTask);
+        //simTask.coflowId = registerCoflow(simTask);
         simTask.masterUrl = config.varysMasterUrl;
+
+        // test
+        //Simulation.Communicators.VarysSender client = new Simulation.Communicators.VarysSender(simTask.masterUrl, simTask.coflowId);
+        //client.registerCoflow();
+        //simTask.coflowId = client.coflowId;
+        // test
+
 
         router.sendTaskTo(simTask.srcAddress, new SimMessage(SimMessage.SimEventType.SEND, simTask));
 
         try {
-            Thread.sleep(60000);
+            Thread.sleep(200000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        router.sendTaskTo(simTask.dstAddress, new SimMessage(SimMessage.SimEventType.RECEIVE, simTask));
+        //router.sendTaskTo(simTask.dstAddress, new SimMessage(SimMessage.SimEventType.RECEIVE, simTask));
     }
 
     public String registerCoflow(SimTask task){
         // TODO: Change coflow name
-        CoflowDescription desc = new CoflowDescription("DEFAULT", CoflowType.DEFAULT(), 1, task.size, 10000);
+        int numOfSlaves = 5;
+        int deadlineMillis = 10000;
+        CoflowDescription desc = new CoflowDescription("DEFAULT", CoflowType.DEFAULT(), numOfSlaves, task.size, deadlineMillis);
         String coflowId = masterClient.registerCoflow(desc);
         return coflowId;
     }
 
-    public void registerMaster(SimulationConfig config){
+    public void registerMaster(final SimulationConfig config){
         VarysListener listener = new VarysListener();
         masterClient = new VarysClient("Simulation.Master", config.varysMasterUrl, listener);
         masterClient.start();
+        /*Thread t = new Thread(new Runnable() {
+            public void run()
+            {
+                VarysListener masterListener = new VarysListener();
+                VarysClient master = new VarysClient("MasterClientFake", config.varysMasterUrl, masterListener);
+
+                master.start();
+
+                try {
+                    Thread.sleep(20000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                master.awaitTermination();
+            }
+        });
+        t.start();*/
     }
 
     public static void processResultsOfSimulation(){
