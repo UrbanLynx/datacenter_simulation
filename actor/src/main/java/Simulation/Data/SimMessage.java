@@ -1,11 +1,14 @@
 package Simulation.Data;
 
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
  * Created by stanislavmushits on 19/11/15.
  */
 public class SimMessage implements Serializable {
+
+
     public enum SimEventType {
         SEND,
         RECEIVE,
@@ -21,4 +24,5 @@ public class SimMessage implements Serializable {
 
     public SimEventType eventType;
     public SimTask task;
+    public ObjectOutputStream outputToMaster;
 }

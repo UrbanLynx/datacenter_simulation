@@ -41,6 +41,7 @@ public class Router {
             do {
                 System.out.println("Awaiting simulation instructions...\n");
                 message = (SimMessage) ctrlOIS.readObject();
+                message.outputToMaster = ctrlOOS;
                 startNewTask(message);
             } while (message.eventType != SimMessage.SimEventType.TERMINATE);
 
@@ -56,6 +57,7 @@ public class Router {
 
     public void startNewTask(SimMessage message) throws Exception {
         Slave slave = new Slave(message);
+        //slave.run();
         new Thread(slave).start();
     }
 }

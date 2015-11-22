@@ -37,7 +37,8 @@ public class VarysSender{
         client.putFake(DATA_NAME, coflowId, LEN_BYTES, 1);
         System.out.println("[Sender]: Put a fake piece of data of " + LEN_BYTES + " bytes. Now waiting to die.");
 
-        client.awaitTermination();
+        client.stop();
+        //client.awaitTermination();
     }
 
     class TestListener implements ClientListener {

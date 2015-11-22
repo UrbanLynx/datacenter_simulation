@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class VarysSimulationTest extends TestCase {
 
-    String coflowId = "COFLOW-000002";
+    String coflowId = "COFLOW-000000";
     String varysMasterUrl = "varys://stanislavs-air:1606";
 
     public void testSenderRegister() throws Exception {

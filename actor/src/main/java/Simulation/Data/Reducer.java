@@ -8,6 +8,6 @@ import java.io.Serializable;
 public class Reducer implements Serializable {
 
     public int reducerId;
-    public double size;
+    public long size;
 
 }

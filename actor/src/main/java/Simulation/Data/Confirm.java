@@ -8,4 +8,11 @@ import java.io.Serializable;
 
 // this is just for slaves to confirm ready state to controller
 public class Confirm implements Serializable {
+    public enum Code{EXECUTED, SENT, RECEIVED}
+
+    public Confirm(Code code){
+        this.code = code;
+    }
+
+    public Code code;
 }

@@ -25,10 +25,13 @@ public class SimTask implements Serializable{
     public int srcPort;
     public long size;
     public double startTime;
+
     public int mapperCount;
     public ArrayList<Integer> mappers;
     public int reducerCount;
     public ArrayList<Reducer> reducers;
+
+    public int currentSlaveId;
 
     //public boolean continueSimulation;
 }
