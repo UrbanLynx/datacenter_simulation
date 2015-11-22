@@ -10,6 +10,7 @@ import java.util.Map;
  */
 public class SimulationConfig {
     public String taskFileName;
+    public String hostFile;
     public Boolean isVarys; // TODO: replace by SimulationType
     public String varysMasterUrl;
     public int serverPort = 8080; // TODO: delete, we have slavePort for this

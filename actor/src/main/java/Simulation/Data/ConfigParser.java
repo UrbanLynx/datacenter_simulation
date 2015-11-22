@@ -75,7 +75,7 @@ public class ConfigParser {
                 for (int i = 0; i < task.reducerCount; i++) {
                     String reducer = chunks[lIndex++];
                     reducerItr.reducerId = Integer.parseInt(reducer.split(":")[0]) + 1;
-                    reducerItr.size = Double.parseDouble(reducer.split(":")[1]) * 1048576.0;
+                    reducerItr.size = (long) (Double.parseDouble(reducer.split(":")[1]) * 1048576.0);
                     task.reducers.add(reducerItr);
                 }
 
@@ -88,7 +88,7 @@ public class ConfigParser {
     }
 
     public static void parseHostsFile(SimulationConfig config) throws IOException {
-        String filename = config.hostsFile;
+        String filename = config.hostFile;
         FileInputStream fis = null;
         int count = 0;
         try {
@@ -122,7 +122,7 @@ public class ConfigParser {
 
             SimulationConfig config = new SimulationConfig();
             config.taskFileName = (String) jsonObject.get("taskFile");
-            config.hostsFile = (String) jsonObject.get("hostsFile");
+            config.hostFile = (String) jsonObject.get("hostsFile");
             //config.simulationStartTime = new DateTime((String) jsonObject.get("StartTime"), DateTimeZone.UTC);
             config.isVarys = (Boolean) jsonObject.get("isVarys");
             config.slavePort = ((Long) jsonObject.get("slavePort")).intValue();
