@@ -18,7 +18,8 @@ import java.util.Map;
  * Created by stanislavmushits on 19/11/15.
  */
 public class Router {
-    Map<String, ConnectionDesc> connections;   // this is an array for quick indexing of connected slave/ports
+    Map<Integer, ConnectionDesc> connections;   // this is an array for quick indexing of connected slave/ports
+//    ArrayList<ConnectionDesc> connectionslist;
     SimulationConfig config;
 
 
@@ -40,7 +41,7 @@ public class Router {
     }
 
     private void connectToSlaves(ArrayList<SlaveDesc> slaves) {
-        connections = new HashMap<String, ConnectionDesc>();
+        connections = new HashMap<Integer, ConnectionDesc>();
 
         for(SlaveDesc slaveDesc: slaves){
             try {
@@ -48,14 +49,15 @@ public class Router {
                 ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                 ConnectionDesc connectionDesc = new ConnectionDesc(slaveDesc, socket, oos, ois);
-                connections.put(slaveDesc.hostName, connectionDesc);
+                connections.put(config.hostIndex.get(slaveDesc.hostName), connectionDesc);
+//                connectionslist.add(connectionDesc);
             } catch ( IOException e) {
                 e.printStackTrace();
             }
         }
 
         // print connections made
-        for (Map.Entry<String, ConnectionDesc> conn: connections.entrySet()) {
+        for (Map.Entry<Integer, ConnectionDesc> conn: connections.entrySet()) {
             System.out.println("Connection " + conn.getValue().description);
         }
     }
