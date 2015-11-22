@@ -1,12 +1,12 @@
 package Simulation.Data;
 
-import org.joda.time.DateTime;
-
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by Stanislav-macbook on 30.10.2015.
  */
+
 public class SimTask implements Serializable{
 
     public SimulationType simulationType;
@@ -17,15 +17,20 @@ public class SimTask implements Serializable{
 
     public String dstAddress;
     public int dstPort;
-    public double duration;
-    public Double finishTime;
-    public String mapper;
-    public String reducer;
-    public long size;
+    //public double duration;
+    //public Double finishTime;
+    //public String mapper;
+    //public String reducer;
     public String srcAddress;
     public int srcPort;
-    public Double startTime;
+    public long size;
+    public double startTime;
+    public int mapperCount;
+    public ArrayList<Integer> mappers;
+    public int reducerCount;
+    public ArrayList<Reducer> reducers;
 
     //public boolean continueSimulation;
 }
+
 

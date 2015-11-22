@@ -1,6 +1,5 @@
 package Simulation.Data;
 
-import com.sun.javafx.tk.Toolkit;
 
 import java.io.Serializable;
 

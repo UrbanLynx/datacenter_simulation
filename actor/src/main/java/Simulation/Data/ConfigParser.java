@@ -1,19 +1,19 @@
 package Simulation.Data;
 
-import Simulation.Data.SimTask;
-import Simulation.Data.SimulationConfig;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.json.simple.JSONArray;
+// import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
+// import java.util.Iterator;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * Created by Stanislav-macbook on 30.10.2015.
@@ -21,36 +21,58 @@ import java.util.Iterator;
 public class ConfigParser {
 
     public static ArrayList<SimTask> parseTaskFile(String filename) throws IOException, ParseException {
+        FileInputStream fis = null;
         ArrayList<SimTask> tasks = new ArrayList<SimTask>();
+        int count = 0;
         try {
-            FileReader reader = new FileReader(filename);
+            fis = new FileInputStream(filename);
+        } catch (FileNotFoundException e) {
+            System.err.println("Couldn't open " + filename);
+            System.exit(1);
+        }
 
-            JSONParser parser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) parser.parse(reader);
+        BufferedReader br = new BufferedReader(new InputStreamReader(fis));
 
-            JSONArray tasksContent = (JSONArray) jsonObject.get("tasks");
-            Iterator i = tasksContent.iterator();
+        // Read number of racks and number of jobs in the trace
+        try {
+            String line = br.readLine();
+            String[] chunks = line.split("\\s+");
 
-            while (i.hasNext()) {
-                JSONObject jTask = (JSONObject) i.next();
+            count = Integer.parseInt(chunks[0]);
+        } catch (IOException e) {
+            System.err.println("Unknown Format " + filename);
+            System.exit(1);
+        }
+
+        for (int j = 0; j < count; j++) {
+            try {
+                String line = br.readLine();
+                String[] chunks = line.split("\\s+");
+                int lIndex = 0;
+
                 SimTask task = new SimTask();
+                Reducer reducerItr = new Reducer();
 
-                task.dstAddress = (String) jTask.get("dstAddress");
-                task.dstPort = ((Long) jTask.get("dstPort")).intValue();
-                task.duration = (Double) jTask.get("duration");
-                task.finishTime = (Double) jTask.get("finishTime");
-                task.mapper = (String) jTask.get("mapper");
-                task.reducer = (String) jTask.get("reducer");
-                task.size = (Long) jTask.get("size");
-                task.srcAddress = (String) jTask.get("srcAddress");
-                task.srcPort = ((Long) jTask.get("srcPort")).intValue();
-                task.startTime = (Double) jTask.get("startTime");
-                task.simulationType = SimulationType.valueOf((String) jsonObject.get("simulationType"));
+                task.coflowId = chunks[lIndex++];
+                task.startTime = Integer.parseInt(chunks[lIndex++]);
+
+                task.mapperCount = Integer.parseInt(chunks[lIndex++]);
+                for (int i = 0; i < task.mapperCount; i++) {
+                    task.mappers.add(Integer.parseInt(chunks[lIndex++]));
+                }
+
+                task.reducerCount = Integer.parseInt(chunks[lIndex++]);
+                for (int i = 0; i < task.reducerCount; i++) {
+                    String reducer = chunks[lIndex++];
+                    reducerItr.reducerId = Integer.parseInt(reducer.split(":")[0]) + 1;
+                    reducerItr.size = Double.parseDouble(reducer.split(":")[1]) * 1048576.0;
+                    task.reducers.add(reducerItr);
+                }
 
                 tasks.add(task);
+            } catch (IOException e) {
+                System.err.println("Unknown format in " + filename);
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
         return tasks;
     }
