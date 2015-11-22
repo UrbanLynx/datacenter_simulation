@@ -137,7 +137,7 @@ public class BasicSlave {
         try {
             simServerSocket = new ServerSocket(portNumber);
             // send confirmation to controller
-            ctrlOOS.writeObject(new Confirm());
+            ctrlOOS.writeObject(new Confirm(Confirm.Code.RECEIVED));
             // listen for connection
             simClientSocket = simServerSocket.accept();
             if ( simClientSocket != null ) {
