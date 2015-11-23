@@ -9,6 +9,8 @@ public class Reducer implements Serializable {
 
     public int reducerId;
     public long size;
+
+    public String address;
     public int port;
 
 }

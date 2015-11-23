@@ -18,21 +18,8 @@ import java.util.Map;
  */
 public class ConfigParser {
 
-    public boolean tradOrVarys(String filename){
-        SimulationConfig config = new SimulationConfig();
-        try {
-            FileReader reader = new FileReader(filename);
 
-            JSONParser parser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) parser.parse(reader);
-
-            config.isVarys = (Boolean) jsonObject.get("isVarys");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return config.isVarys;
-    }
-    public static ArrayList<SimTask> parseTaskFile(String filename) throws IOException, ParseException {
+    public static ArrayList<SimTask> parseTaskFile(SimulationConfig config) throws IOException, ParseException {
         FileInputStream fis = null;
         ArrayList<SimTask> tasks = new ArrayList<SimTask>();
         //int count = 1;
@@ -61,22 +48,23 @@ public class ConfigParser {
      //   if()
         // TODO: Temporary hardcoded, remove later
         SimTask task = new SimTask();
-        Reducer reducerItr = new Reducer();
-        task.simulationType = SimulationType.valueOf("TRADITIONAL");
-        task.srcAddress = "localhost";
-        task.dstAddress = "localhost";
-        task.srcPort = 6000;
-        task.dstPort = 7000;
+        task.simulationType = config.simulationType;
+
         task.coflowId = "1";
         task.startTime = 0;
-        task.mapperCount = 1;
-        task.mappers = new ArrayList<Integer>(task.mapperCount);
+
+        task.mappers = new ArrayList<Integer>();
         task.mappers.add(1);
-        task.reducerCount = 1;
-        task.reducers = new ArrayList<Reducer>(task.reducerCount);
+
+        task.reducers = new HashMap<Integer, Reducer>();
+
+        Reducer reducerItr = new Reducer();
+        reducerItr.address = "localhost";
+        reducerItr.port = 7000;
         reducerItr.reducerId = 1;
         reducerItr.size = (long) (10 * 1048576.0);
-        task.reducers.add(reducerItr);
+
+        task.reducers.put(1, reducerItr);
         tasks.add(task);
 
         /*
@@ -165,11 +153,10 @@ public class ConfigParser {
             config.taskFileName = (String) jsonObject.get("taskFile");
             config.hostFile = (String) jsonObject.get("hostsFile");
             //config.simulationStartTime = new DateTime((String) jsonObject.get("StartTime"), DateTimeZone.UTC);
-            config.isVarys = (Boolean) jsonObject.get("isVarys");
+            config.simulationType = SimulationType.valueOf((String) jsonObject.get("simulationType"));
             config.slavePort = ((Long) jsonObject.get("slavePort")).intValue();
-            if (config.isVarys) {
-                config.varysMasterUrl = (String) jsonObject.get("masterUrl");
-            }
+            config.varysMasterUrl = (String) jsonObject.get("masterUrl");
+
 
             parseHostsFile(config);
             return config;

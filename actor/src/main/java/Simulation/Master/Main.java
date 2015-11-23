@@ -16,7 +16,7 @@ public class Main {
     public static void main(String[] args) throws IOException, ParseException, org.json.simple.parser.ParseException {
         SimulationConfig simConfig = ConfigParser.parseSimConfigFile("configs/simulation.json");
         ConfigParser.parseHostsFile(simConfig);
-        ArrayList<SimTask> simTasks = ConfigParser.parseTaskFile(simConfig.taskFileName);
+        ArrayList<SimTask> simTasks = ConfigParser.parseTaskFile(simConfig);
         Master master = new Master();
         master.conductSimulation(simConfig, simTasks);
     }

@@ -48,7 +48,7 @@ public class VarysSender{
 
         public void  disconnected() {
             safePrintln("[Sender]: Log: Disconnected from master");
-            System.exit(0);
+            //System.exit(0);
         }
 
         public void coflowRejected(String s, String s1) {

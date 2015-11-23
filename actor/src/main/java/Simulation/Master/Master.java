@@ -53,7 +53,7 @@ public class Master {
         //TODO:how to wait
 //        waitForAck();
 
-        for (Reducer reducer: simTask.reducers){
+        for (Reducer reducer: simTask.reducers.values()){
             simTask.currentSlaveId = reducer.reducerId;
             router.sendTaskTo(reducer.reducerId, new SimMessage(SimMessage.SimEventType.RECEIVE, simTask));
         }
@@ -88,11 +88,11 @@ public class Master {
         // TODO: After putObj Slave-sender connects to Slave-receiver via TCP socket and tells to receive.
         // TODO: After receiving a task from master, Slave-receiver waits for message
         // TODO: from Salve-sender and only after that registers VarysClient and getObd.
-        wait(15000);
+        //wait(10000);
 
         // !!! If you make Debug (not Run) of program you need wait(90000)
         // because slaves are very slow for some reason in debug mode
-        for (Reducer reducer: simTask.reducers){
+        for (Reducer reducer: simTask.reducers.values()){
             simTask.currentSlaveId = reducer.reducerId;
             router.sendTaskTo(reducer.reducerId, new SimMessage(SimMessage.SimEventType.RECEIVE, simTask));
         }
@@ -109,7 +109,7 @@ public class Master {
 
     public String registerCoflow(SimTask task){
         // TODO: change size, name of registrator, number of slaves(senders), config->task
-        VarysRegistrator registrator = new VarysRegistrator(config.varysMasterUrl, "ActorMaster", 1, task.size);
+        VarysRegistrator registrator = new VarysRegistrator(config.varysMasterUrl, "ActorMaster", 1, -1);
         return registrator.registerCoflow();
     }
 
@@ -135,8 +135,8 @@ public class Master {
     private void preprocessTaks(ArrayList<SimTask> tasks){
         HashSet<String> addresses = new HashSet<String>();
         for (SimTask task: tasks){
-            addresses.add(task.srcAddress);
-            addresses.add(task.dstAddress);
+            //addresses.add(task.srcAddress);
+            //addresses.add(task.dstAddress);
         }
 
         //config.hosts = new ArrayList<String>();

@@ -24,12 +24,13 @@ public class Slave implements Runnable{
     }
 
     public void GenerateData() {
-        task.data = new TaskData(task.size);
+        task.data = new TaskData(100);
     }
 
     public void run() {
 
         if (this.isSender) {
+            // TODO: GENERATE DATA FOR EACH REDUCER
             GenerateData();
         }
 

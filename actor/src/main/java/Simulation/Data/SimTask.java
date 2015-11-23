@@ -2,6 +2,7 @@ package Simulation.Data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Stanislav-macbook on 30.10.2015.
@@ -15,21 +16,21 @@ public class SimTask implements Serializable{
     public String masterUrl;
     public TaskData data;
 
-    public String dstAddress;
-    public int dstPort;
+    //public String dstAddress;
+    //public int dstPort;
     //public double duration;
     //public Double finishTime;
     //public String mapper;
     //public String reducer;
-    public String srcAddress;
-    public int srcPort;
-    public long size;
+    //public String srcAddress;
+    //public int srcPort;
+    //public long size;
     public double startTime;
 
     public int mapperCount;
     public ArrayList<Integer> mappers;
     public int reducerCount;
-    public ArrayList<Reducer> reducers;
+    public HashMap<Integer, Reducer> reducers;
 
     public int currentSlaveId;
 

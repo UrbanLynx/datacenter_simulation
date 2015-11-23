@@ -6,10 +6,13 @@ import Simulation.Data.SimulationConfig;
 import Simulation.Data.SimulationType;
 import Simulation.Master.Utils.ConnectionDesc;
 import Simulation.Master.Utils.SlaveDesc;
+import com.sun.mail.iap.ConnectionException;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,7 +49,11 @@ public class Router {
 
         for(SlaveDesc slaveDesc: config.hosts){
             try {
-                Socket socket = new Socket(slaveDesc.hostName, slaveDesc.portNumber);
+                Socket socket = connectTo(slaveDesc.hostName, slaveDesc.portNumber);
+
+
+
+                //Socket socket = new Socket(slaveDesc.hostName, slaveDesc.portNumber);
                 ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                 ConnectionDesc connectionDesc = new ConnectionDesc(slaveDesc, socket, oos, ois);
@@ -63,10 +70,33 @@ public class Router {
         }
     }
 
+    public Socket connectTo(String host, int port) throws IOException {
+        Socket socket = null;
+        boolean scanning=true;
+        while(scanning)
+        {
+            try
+            {
+                socket = new Socket();
+                socket.connect(new InetSocketAddress(host, port), 0);
+                scanning=false;
+            }
+            catch(ConnectException e) {
+                System.out.println("Connect to "+host+" failed, waiting and trying again");
+                try {
+                    Thread.sleep(2000);//2 seconds
+                } catch (InterruptedException ie) {
+                    ie.printStackTrace();
+                }
+            }
+        }
+        return socket;
+    }
+
     public void sendTaskTo(int hostIndex, SimMessage simMessage) {
         System.out.print("Simulation event: ");
-        System.out.println("Sender: host " + simMessage.task.srcAddress + ", Receiver: host " +
-                simMessage.task.dstAddress + ", " + simMessage.task.size + " bytes");
+        /*System.out.println("Sender: host " + simMessage.task.srcAddress + ", Receiver: host " +
+                simMessage.task.dstAddress + ", " + simMessage.task.size + " bytes");*/
 
         try {
             if (simMessage.task.simulationType == SimulationType.VARYS) {

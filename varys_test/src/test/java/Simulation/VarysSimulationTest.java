@@ -29,6 +29,7 @@ public class VarysSimulationTest extends TestCase {
 
         VarysSender sender = new VarysSender();
         sender.sendToCoflow(varysMasterUrl, coflowId, senderID);
+        Thread.sleep(5000);
     }
 
     public void testSender2() throws Exception {
@@ -36,6 +37,7 @@ public class VarysSimulationTest extends TestCase {
 
         VarysSender sender = new VarysSender();
         sender.sendToCoflow(varysMasterUrl, coflowId, senderID);
+        Thread.sleep(5000);
     }
 
     public void testSender3() throws Exception {

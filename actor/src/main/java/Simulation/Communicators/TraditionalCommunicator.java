@@ -15,9 +15,9 @@ import java.util.Random;
 public class TraditionalCommunicator {
 
     public void send(SimTask task) {
-        String hostName = task.dstAddress;
-        int portNum = task.dstPort;
-        long numBytes = task.size;
+        String hostName = task.reducers.get(0).address;
+        int portNum = task.reducers.get(0).port;
+        long numBytes = task.reducers.get(0).size;
 
         System.out.println("Attempting to send " + numBytes + " bytes\n");
 
@@ -37,8 +37,8 @@ public class TraditionalCommunicator {
     }
 
     public void receive(SimTask task) {
-        int portNumber = task.dstPort;
-        long numBytes = task.size;
+        int portNumber = task.reducers.get(0).port;
+        long numBytes = task.reducers.get(0).size;
 
         System.out.println("Attempting to receive " + numBytes + " bytes");
 
@@ -52,6 +52,7 @@ public class TraditionalCommunicator {
             // send confirmation to controller
             //ctrlOOS.writeObject(new Confirm());
             // listen for connection
+
             simClientSocket = simServerSocket.accept();
             if ( simClientSocket != null ) {
                 ObjectInputStream simOIS = new ObjectInputStream(simClientSocket.getInputStream());

@@ -13,7 +13,8 @@ import java.util.Map;
 public class SimulationConfig {
     public String taskFileName;
     public String hostFile;
-    public Boolean isVarys; // TODO: replace by SimulationType
+    //public Boolean isVarys; // TODO: replace by SimulationType
+    public SimulationType simulationType;
     public String varysMasterUrl;
     public int serverPort = 8080; // TODO: delete, we have slavePort for this
     public int slavePort = 5000;
