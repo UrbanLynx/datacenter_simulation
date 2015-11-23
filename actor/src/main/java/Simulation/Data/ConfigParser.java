@@ -6,9 +6,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -116,11 +114,9 @@ public class ConfigParser {
 
         // TODO: Temporary hardcoded, remove later
         config.hosts = new ArrayList<SlaveDesc>();
-        config.hosts.add(new SlaveDesc(1, "localhost", config.slavePort));
-
-        /*
+        FileInputStream fis = null;
         try {
-            FileInputStream fis = new FileInputStream(filename);
+            fis = new FileInputStream(filename);
         } catch (FileNotFoundException e) {
             System.err.println("Couldn't open " + filename);
             System.exit(1);
@@ -133,13 +129,12 @@ public class ConfigParser {
         String[] chunks = line.split("\\s+");
         count = Integer.parseInt(chunks[0]);
 
-        config.hosts = new ArrayList<String>(count);
-        for (int i = 0; i < count; i++) {
+        config.hosts = new ArrayList<SlaveDesc>();
+        for (int i = 1; i <= count; i++) {
             line = br.readLine();
             chunks = line.split("\\s+");
-            config.hosts.add(chunks[0]);
+            config.hosts.add(new SlaveDesc(i,chunks[0],config.slavePort));
         }
-        */
     }
 
     public static SimulationConfig parseSimConfigFile(String filename){
