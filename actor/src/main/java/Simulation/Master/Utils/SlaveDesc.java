@@ -7,8 +7,10 @@ public class SlaveDesc {
 
     public String hostName;
     public int portNumber;
+    public int index;
 
-    public SlaveDesc(String hostName, int portNumber) {
+    public SlaveDesc(int index, String hostName, int portNumber) {
+        this.index = index;
         this.hostName = hostName;
         this.portNumber = portNumber;
     }

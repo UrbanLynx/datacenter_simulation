@@ -1,6 +1,7 @@
 package Simulation.Data;
 
 // import org.json.simple.JSONArray;
+import Simulation.Master.Utils.SlaveDesc;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -9,6 +10,8 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 // import java.util.Iterator;
 
@@ -46,12 +49,12 @@ public class ConfigParser {
         SimTask task = new SimTask();
         Reducer reducerItr = new Reducer();
         task.simulationType = SimulationType.valueOf("VARYS");
-        task.srcAddress = "127.0.0.1";
-        task.dstAddress = "127.0.0.1";
+        task.srcAddress = "localhost";
+        task.dstAddress = "localhost";
         task.srcPort = 6000;
         task.dstPort = 7000;
         task.coflowId = "1";
-        task.startTime = 10;
+        task.startTime = 0;
         task.mapperCount = 1;
         task.mappers = new ArrayList<Integer>(task.mapperCount);
         task.mappers.add(1);
@@ -109,16 +112,15 @@ public class ConfigParser {
 
     public static void parseHostsFile(SimulationConfig config) throws IOException {
         String filename = config.hostFile;
-        FileInputStream fis = null;
         int count = 0;
 
         // TODO: Temporary hardcoded, remove later
-        config.hosts = new ArrayList<String>(count);
-        config.hosts.add("127.0.0.1");
+        config.hosts = new ArrayList<SlaveDesc>();
+        config.hosts.add(new SlaveDesc(1, "localhost", config.slavePort));
 
         /*
         try {
-            fis = new FileInputStream(filename);
+            FileInputStream fis = new FileInputStream(filename);
         } catch (FileNotFoundException e) {
             System.err.println("Couldn't open " + filename);
             System.exit(1);

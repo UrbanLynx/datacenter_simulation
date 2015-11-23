@@ -38,10 +38,10 @@ public class Slave implements Runnable{
                 VarysCommunicator varysCommunicator = new VarysCommunicator();
                 if (this.isSender) {
                     varysCommunicator.send(task);
-                    ackToMaster(Confirm.Code.SENT);
+                    //ackToMaster(Confirm.Code.SENT);
                 } else {
                     varysCommunicator.receive(task);
-                    ackToMaster(Confirm.Code.RECEIVED);
+                    //ackToMaster(Confirm.Code.RECEIVED);
                 }
                 break;
             case TRADITIONAL:

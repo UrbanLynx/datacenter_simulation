@@ -3,6 +3,6 @@
   "hostsFile": "configs/hosts",
   "startTime": "2015-10-30T23:01:47+00:00",
   "isVarys": true,
-  "masterUrl": "varys://ubuntu:1606",
+  "masterUrl": "varys://stanislavs-air:1606",
   "slavePort": 5000
 }

@@ -17,8 +17,8 @@ public class VarysCommunicator {
         }
     }
 
-    public String getDataId(SimTask task, int reducerId){
-        return "DATA_" + task.coflowId+ "_" + task.currentSlaveId + "_" + reducerId;
+    public String getDataId(String coflowId, int mapperId, int reducerId){
+        return "DATA_" + coflowId+ "_" + mapperId + "_" + reducerId;
     }
 
     public String getSenderId(SimTask task){
@@ -37,17 +37,17 @@ public class VarysCommunicator {
         client.start();
 
         for (Reducer reducer: task.reducers){
-            client.putFake(getDataId(task, reducer.reducerId), task.coflowId, reducer.size, 1);
+            client.putFake(getDataId(task.coflowId, task.currentSlaveId, reducer.reducerId), task.coflowId, reducer.size, 1);
             safePrintln("Put fake data for " + reducer.reducerId);
         }
 
-        client.stop();
+        client.awaitTermination();
     }
 
     public void receive(SimTask task) {
         safePrintln("[Receiver]: Start receiving on URL: "+task.masterUrl);
 
-        String DATA_NAME = getDataId(task, task.currentSlaveId);
+
 
         VarysListener listener = new VarysListener();
         VarysClient client = new VarysClient(getReceiverId(task), task.masterUrl, listener);
@@ -55,10 +55,15 @@ public class VarysCommunicator {
 
         try {
             //Thread.sleep(5000);
-            safePrintln("[Receiver]: Trying to retrieve " + DATA_NAME);
-            client.getFake(DATA_NAME, task.coflowId);
-            safePrintln("[Receiver]: Got " + DATA_NAME + " Now waiting to die.");
-            client.stop();
+            for (int mapper: task.mappers){
+                String DATA_NAME = getDataId(task.coflowId, mapper, task.currentSlaveId);
+                safePrintln("[Receiver]: Trying to retrieve " + DATA_NAME);
+                client.getFake(DATA_NAME, task.coflowId);
+                safePrintln("[Receiver]: Got " + DATA_NAME + " Now waiting to die.");
+            }
+
+
+            client.awaitTermination();
         } catch (Exception e) {
             safePrintln(e.toString());
         }

@@ -53,9 +53,9 @@ public class BasicController {
     // TODO: implement actual functionality, pass in File, or filename. For now hard coded.
     // NOTE: in actual simulation setup, each host will listen for controller on a fixed port
     private void parseSlaveFile() {
-        slaves.add(new SlaveDesc("localhost",1));
+        /*slaves.add(new SlaveDesc("localhost",1));
         slaves.add(new SlaveDesc("localhost",2));
-        slaves.add(new SlaveDesc("localhost",3));
+        slaves.add(new SlaveDesc("localhost",3));*/
     }
 
     private void connectToSlaves() {

@@ -25,31 +25,31 @@ public class Router {
 
     public Router(SimulationConfig simConfig){
         config = simConfig;
-        ArrayList<SlaveDesc> slaves = getSlaves();
+        //ArrayList<SlaveDesc> slaves = getSlaves();
 
         System.out.println("Connecting to each simulation slave");
-        connectToSlaves(slaves);
+        connectToSlaves();
     }
 
     private ArrayList<SlaveDesc> getSlaves() {
-        ArrayList<SlaveDesc> slaves = new ArrayList<SlaveDesc>();
+        /*ArrayList<SlaveDesc> slaves = new ArrayList<SlaveDesc>();
         for(String address: config.hosts){
             slaves.add(new SlaveDesc(address,config.slavePort));
         }
-
-        return slaves;
+        return slaves;*/
+        return null;
     }
 
-    private void connectToSlaves(ArrayList<SlaveDesc> slaves) {
+    private void connectToSlaves() {
         connections = new HashMap<Integer, ConnectionDesc>();
 
-        for(SlaveDesc slaveDesc: slaves){
+        for(SlaveDesc slaveDesc: config.hosts){
             try {
                 Socket socket = new Socket(slaveDesc.hostName, slaveDesc.portNumber);
                 ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                 ConnectionDesc connectionDesc = new ConnectionDesc(slaveDesc, socket, oos, ois);
-                connections.put(config.hostIndex.get(slaveDesc.hostName), connectionDesc);
+                connections.put(slaveDesc.index, connectionDesc);
 //                connectionslist.add(connectionDesc);
             } catch ( IOException e) {
                 e.printStackTrace();
@@ -62,13 +62,13 @@ public class Router {
         }
     }
 
-    public void sendTaskTo(String address, SimMessage simMessage) {
+    public void sendTaskTo(int hostIndex, SimMessage simMessage) {
         System.out.print("Simulation event: ");
         System.out.println("Sender: host " + simMessage.task.srcAddress + ", Receiver: host " +
                 simMessage.task.dstAddress + ", " + simMessage.task.size + " bytes");
 
         try {
-            connections.get(address).oos.writeObject(simMessage);
+            connections.get(hostIndex).oos.writeObject(simMessage);
         } catch (Exception e) {
             e.printStackTrace();
         }
