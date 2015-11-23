@@ -18,6 +18,20 @@ import java.util.Map;
  */
 public class ConfigParser {
 
+    public boolean tradOrVarys(String filename){
+        SimulationConfig config = new SimulationConfig();
+        try {
+            FileReader reader = new FileReader(filename);
+
+            JSONParser parser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) parser.parse(reader);
+
+            config.isVarys = (Boolean) jsonObject.get("isVarys");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return config.isVarys;
+    }
     public static ArrayList<SimTask> parseTaskFile(String filename) throws IOException, ParseException {
         FileInputStream fis = null;
         ArrayList<SimTask> tasks = new ArrayList<SimTask>();
@@ -43,10 +57,12 @@ public class ConfigParser {
             System.exit(1);
         }
         */
+
+     //   if()
         // TODO: Temporary hardcoded, remove later
         SimTask task = new SimTask();
         Reducer reducerItr = new Reducer();
-        task.simulationType = SimulationType.valueOf("VARYS");
+        task.simulationType = SimulationType.valueOf("TRADITIONAL");
         task.srcAddress = "localhost";
         task.dstAddress = "localhost";
         task.srcPort = 6000;
@@ -94,8 +110,9 @@ public class ConfigParser {
                 task.reducers = new ArrayList<Reducer>(task.reducerCount);
                 for (int i = 0; i < task.reducerCount; i++) {
                     String reducer = chunks[lIndex++];
-                    reducerItr.reducerId = Integer.parseInt(reducer.split(":")[0]) + 1;
+                    reducerItr.reducerId = Integer.parseInt(reducer.split(":")[0]) + 2;
                     reducerItr.size = (long) (Double.parseDouble(reducer.split(":")[1]) * 1048576.0);
+                    reducerItr.port = (long) (Double.parseDouble(reducer.split(":")[2]);
                     task.reducers.add(reducerItr);
                 }
 

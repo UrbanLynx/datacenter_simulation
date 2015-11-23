@@ -3,6 +3,7 @@ package Simulation.Master;
 import Simulation.Data.Confirm;
 import Simulation.Data.SimMessage;
 import Simulation.Data.SimulationConfig;
+import Simulation.Data.SimulationType;
 import Simulation.Master.Utils.ConnectionDesc;
 import Simulation.Master.Utils.SlaveDesc;
 
@@ -68,7 +69,12 @@ public class Router {
                 simMessage.task.dstAddress + ", " + simMessage.task.size + " bytes");
 
         try {
-            connections.get(hostIndex).oos.writeObject(simMessage);
+            if (simMessage.task.simulationType == SimulationType.VARYS) {
+                connections.get(hostIndex).oos.writeObject(simMessage);
+            } else {
+                // TODO : Add port for traditional
+                connections.get(hostIndex).oos.writeObject(simMessage);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

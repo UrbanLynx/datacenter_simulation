@@ -48,12 +48,29 @@ public class Master {
     }
 
     public void executeTraditionalTask(SimTask simTask){
-        //router.sendTaskTo(simTask, new SimMessage(SimMessage.SimEventType.RECEIVE, simTask));
+//        router.sendTaskTo(simTask.dstAddress, new SimMessage(SimMessage.SimEventType.RECEIVE, simTask));
 
         //TODO:how to wait
-        waitForAck();
+//        waitForAck();
 
-        //router.sendTaskTo(simTask.srcAddress, new SimMessage(SimMessage.SimEventType.SEND, simTask));
+        for (Reducer reducer: simTask.reducers){
+            simTask.currentSlaveId = reducer.reducerId;
+            router.sendTaskTo(reducer.reducerId, new SimMessage(SimMessage.SimEventType.RECEIVE, simTask));
+        }
+
+        // TODO: After putObj Slave-sender connects to Slave-receiver via TCP socket and tells to receive.
+        // TODO: After receiving a task from master, Slave-receiver waits for message
+        // TODO: from Salve-sender and only after that registers VarysClient and getObd.
+        wait(15000);
+
+        for (int hostIndex: simTask.mappers){
+            simTask.currentSlaveId = hostIndex;
+            router.sendTaskTo(hostIndex, new SimMessage(SimMessage.SimEventType.SEND, simTask));
+        }
+
+        wait(100000);
+
+//        router.sendTaskTo(simTask.srcAddress, new SimMessage(SimMessage.SimEventType.SEND, simTask));
     }
 
 
