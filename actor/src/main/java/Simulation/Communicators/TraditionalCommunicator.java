@@ -1,5 +1,6 @@
 package Simulation.Communicators;
 
+import Simulation.Data.Reducer;
 import Simulation.Data.SimTask;
 
 import java.io.IOException;
@@ -15,64 +16,47 @@ import java.util.Random;
 public class TraditionalCommunicator {
 
     public void send(SimTask task) {
-        String hostName = task.reducers.get(0).address;
-        int portNum = task.reducers.get(0).port;
-        long numBytes = task.reducers.get(0).size;
-
-        System.out.println("Attempting to send " + numBytes + " bytes\n");
-
-        // create some fake data according to specified number of bytes
-        //byte[] data = new byte[numBytes];
-        //new Random().nextBytes(data);
-        //  send it!
         try {
-            Socket socket = new Socket(hostName, portNum);
-            ObjectOutputStream simOOS = new ObjectOutputStream(socket.getOutputStream());
-            simOOS.write(task.data.getData().getBytes());
-            simOOS.close();
-            socket.close();
+            for (Reducer reducer: task.reducers.values()){
+                Socket socket = Utils.connectTo(reducer.address, reducer.port, 2000);
+                ObjectOutputStream simOOS = new ObjectOutputStream(socket.getOutputStream());
+
+                Utils.safePrintln("Attempting to send " + reducer.size + " bytes to "+ reducer.address +":"+ reducer.port);
+                simOOS.writeObject(Utils.getData(reducer.size));
+
+                simOOS.close();
+                socket.close();
+            }
+
         } catch ( IOException e) {
             e.printStackTrace();
         }
     }
 
     public void receive(SimTask task) {
-        int portNumber = task.reducers.get(0).port;
-        long numBytes = task.reducers.get(0).size;
-
-        System.out.println("Attempting to receive " + numBytes + " bytes");
-
-        ServerSocket simServerSocket;
-        Socket simClientSocket;
-        StringBuffer buf = new StringBuffer();
-        int numBytesRead = 0;
-        // attempt to receive data
         try {
-            simServerSocket = new ServerSocket(portNumber);
-            // send confirmation to controller
-            //ctrlOOS.writeObject(new Confirm());
-            // listen for connection
+            ServerSocket serverSocket = new ServerSocket(task.reducers.get(task.currentSlaveId).port);
+            Utils.safePrintln("Accepting on port "+task.reducers.get(task.currentSlaveId).port);
 
-            simClientSocket = simServerSocket.accept();
-            if ( simClientSocket != null ) {
-                ObjectInputStream simOIS = new ObjectInputStream(simClientSocket.getInputStream());
-                //numBytesRead = simOIS.read(buf, 0, numBytes);
-                simOIS.close();
+            int receivedNumberTimes = 0;
+            while (receivedNumberTimes != task.reducers.size()){
+                Socket socket = serverSocket.accept();
+
+                ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+                String data = (String) inputStream.readObject();
+
+                inputStream.close();
+                socket.close();
+
+                Utils.safePrintln("[Reducer]: Got " + data.length() + " bytes.");
+
+                receivedNumberTimes++;
             }
-            simServerSocket.close();
-            simClientSocket.close();
-        } catch (IOException e) {
+
+            serverSocket.close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-        // print how many bytes received
-        if ( numBytesRead == numBytes ) {
-            System.out.println("Read " + numBytesRead + " bytes, as expected");
-        } else {
-            System.out.println("Read " + numBytesRead + " bytes, was expecting " + numBytes + "bytes");
-        }
-        System.out.print("\n");
-
     }
 
 

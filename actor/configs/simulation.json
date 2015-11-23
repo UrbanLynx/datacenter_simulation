@@ -3,6 +3,6 @@
   "hostsFile": "configs/hosts",
   "startTime": "2015-10-30T23:01:47+00:00",
   "simulationType": "VARYS",
-  "masterUrl": "varys://stanislavs-air:1606",
+  "masterUrl": "varys://Stanislavs-MacBook-Air.local:1606",
   "slavePort": 5000
 }

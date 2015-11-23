@@ -30,7 +30,7 @@ public class Slave implements Runnable{
     public void run() {
 
         if (this.isSender) {
-            // TODO: GENERATE DATA FOR EACH REDUCER
+            // TODO: generate data FOR EACH reducer (currently it's wrong)
             GenerateData();
         }
 

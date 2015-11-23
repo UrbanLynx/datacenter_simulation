@@ -48,29 +48,15 @@ public class Master {
     }
 
     public void executeTraditionalTask(SimTask simTask){
-//        router.sendTaskTo(simTask.dstAddress, new SimMessage(SimMessage.SimEventType.RECEIVE, simTask));
-
-        //TODO:how to wait
-//        waitForAck();
-
         for (Reducer reducer: simTask.reducers.values()){
             simTask.currentSlaveId = reducer.reducerId;
             router.sendTaskTo(reducer.reducerId, new SimMessage(SimMessage.SimEventType.RECEIVE, simTask));
         }
 
-        // TODO: After putObj Slave-sender connects to Slave-receiver via TCP socket and tells to receive.
-        // TODO: After receiving a task from master, Slave-receiver waits for message
-        // TODO: from Salve-sender and only after that registers VarysClient and getObd.
-        wait(15000);
-
         for (int hostIndex: simTask.mappers){
             simTask.currentSlaveId = hostIndex;
             router.sendTaskTo(hostIndex, new SimMessage(SimMessage.SimEventType.SEND, simTask));
         }
-
-        wait(100000);
-
-//        router.sendTaskTo(simTask.srcAddress, new SimMessage(SimMessage.SimEventType.SEND, simTask));
     }
 
 
@@ -79,24 +65,17 @@ public class Master {
         simTask.masterUrl = config.varysMasterUrl;
         simTask.coflowId = registerCoflow(simTask);
 
-        for (int hostIndex: simTask.mappers){
+        executeTraditionalTask(simTask);
+
+        /*for (int hostIndex: simTask.mappers){
             simTask.currentSlaveId = hostIndex;
             router.sendTaskTo(hostIndex, new SimMessage(SimMessage.SimEventType.SEND, simTask));
         }
 
-
-        // TODO: After putObj Slave-sender connects to Slave-receiver via TCP socket and tells to receive.
-        // TODO: After receiving a task from master, Slave-receiver waits for message
-        // TODO: from Salve-sender and only after that registers VarysClient and getObd.
-        //wait(10000);
-
-        // !!! If you make Debug (not Run) of program you need wait(90000)
-        // because slaves are very slow for some reason in debug mode
         for (Reducer reducer: simTask.reducers.values()){
             simTask.currentSlaveId = reducer.reducerId;
             router.sendTaskTo(reducer.reducerId, new SimMessage(SimMessage.SimEventType.RECEIVE, simTask));
-        }
-        wait(100000);
+        }*/
     }
 
     public void wait(int millisec){
@@ -115,31 +94,5 @@ public class Master {
 
     public static void processResultsOfSimulation(){
         return;
-    }
-
-
-    public void waitForAck(){
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    private void preparationForSimulation() {
-        router = new Router(config);
-    }
-
-    // TODO: Sort and extract IPs
-    private void preprocessTaks(ArrayList<SimTask> tasks){
-        HashSet<String> addresses = new HashSet<String>();
-        for (SimTask task: tasks){
-            //addresses.add(task.srcAddress);
-            //addresses.add(task.dstAddress);
-        }
-
-        //config.hosts = new ArrayList<String>();
-        //config.hosts.addAll(addresses);
     }
 }

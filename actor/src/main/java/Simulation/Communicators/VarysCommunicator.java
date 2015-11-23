@@ -19,12 +19,6 @@ import java.util.concurrent.CountDownLatch;
  */
 public class VarysCommunicator {
 
-    public void safePrintln(String s) {
-        synchronized (System.out) {
-            System.out.println(s);
-        }
-    }
-
     public String getDataId(String coflowId, int mapperId, int reducerId){
         return "DATA_" + coflowId+ "_" + mapperId + "_" + reducerId;
     }
@@ -47,10 +41,10 @@ public class VarysCommunicator {
         for (Reducer reducer: task.reducers.values()){
             String dataId = getDataId(task.coflowId, task.currentSlaveId, reducer.reducerId);
             client.putFake(dataId, task.coflowId, reducer.size, 1);
-            safePrintln("Put fake data for " + reducer.reducerId);
+            Utils.safePrintln("Put fake data for " + reducer.reducerId);
 
             try {
-                Socket socket = connectTo(reducer.address, reducer.port);
+                Socket socket = Utils.connectTo(reducer.address, reducer.port, 2000);
                 ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
                 outputStream.writeObject(dataId);
 
@@ -65,7 +59,7 @@ public class VarysCommunicator {
     }
 
     public void receive(SimTask task) {
-        safePrintln("[Receiver]: Start receiving on URL: "+task.masterUrl);
+        Utils.safePrintln("[Receiver]: Start receiving on URL: "+task.masterUrl);
 
         VarysListener listener = new VarysListener();
         VarysClient client = new VarysClient(getReceiverId(task), task.masterUrl, listener);
@@ -75,16 +69,18 @@ public class VarysCommunicator {
             ServerSocket serverSocket = new ServerSocket(task.reducers.get(task.currentSlaveId).port);
             int receivedNumberTimes = 0;
             while (receivedNumberTimes != task.reducers.size()){
-                safePrintln("Accepting on port"+task.reducers.get(task.currentSlaveId).port);
+                Utils.safePrintln("Accepting on port"+task.reducers.get(task.currentSlaveId).port);
                 Socket socket = serverSocket.accept();
                 ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
                 String DATA_NAME = (String) inputStream.readObject();
                 inputStream.close();
                 socket.close();
 
-                safePrintln("[Receiver]: Trying to retrieve " + DATA_NAME);
+                Utils.safePrintln("[Receiver]: Trying to retrieve " + DATA_NAME);
                 client.getFake(DATA_NAME, task.coflowId);
-                safePrintln("[Receiver]: Got " + DATA_NAME + " Now waiting to die.");
+                Utils.safePrintln("[Receiver]: Got " + DATA_NAME + " Now waiting to die.");
+
+                receivedNumberTimes++;
             }
 
             /*for (int mapper: task.mappers){
@@ -94,34 +90,13 @@ public class VarysCommunicator {
                 safePrintln("[Receiver]: Got " + DATA_NAME + " Now waiting to die.");
             }*/
 
-
             client.stop();
+            serverSocket.close();
         } catch (Exception e) {
-            safePrintln(e.toString());
+            Utils.safePrintln(e.toString());
         }
     }
 
 
-    public Socket connectTo(String host, int port) throws IOException {
-        Socket socket = null;
-        boolean scanning=true;
-        while(scanning)
-        {
-            try
-            {
-                socket = new Socket();
-                socket.connect(new InetSocketAddress(host, port), 0);
-                scanning=false;
-            }
-            catch(ConnectException e) {
-                System.out.println("Connect to "+host+":"+port+" failed, waiting and trying again");
-                try {
-                    Thread.sleep(2000);//2 seconds
-                } catch (InterruptedException ie) {
-                    ie.printStackTrace();
-                }
-            }
-        }
-        return socket;
-    }
+
 }
