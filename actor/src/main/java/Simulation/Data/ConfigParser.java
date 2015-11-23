@@ -50,7 +50,7 @@ public class ConfigParser {
         SimTask task = new SimTask();
         task.simulationType = config.simulationType;
 
-        task.coflowId = "1";
+        task.id = 1;
         task.startTime = 0;
 
         task.mappers = new ArrayList<Integer>();

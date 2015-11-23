@@ -1,8 +1,14 @@
 package Simulation.Communicators;
 
+import Simulation.Data.Reducer;
+import Simulation.Data.SimTask;
+
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 
 /**

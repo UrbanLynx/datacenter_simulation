@@ -59,7 +59,7 @@ public class Router {
     }
 
     public void sendTaskTo(int hostIndex, SimMessage simMessage) {
-        System.out.print("Sending task to host " + hostIndex);
+        System.out.println("Sending task to host " + hostIndex);
 
         try {
             connections.get(hostIndex).oos.writeObject(simMessage);

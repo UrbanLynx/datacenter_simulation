@@ -83,20 +83,10 @@ public class VarysCommunicator {
                 receivedNumberTimes++;
             }
 
-            /*for (int mapper: task.mappers){
-                String DATA_NAME = getDataId(task.coflowId, mapper, task.currentSlaveId);
-                safePrintln("[Receiver]: Trying to retrieve " + DATA_NAME);
-                client.getFake(DATA_NAME, task.coflowId);
-                safePrintln("[Receiver]: Got " + DATA_NAME + " Now waiting to die.");
-            }*/
-
             client.stop();
             serverSocket.close();
         } catch (Exception e) {
             Utils.safePrintln(e.toString());
         }
     }
-
-
-
 }

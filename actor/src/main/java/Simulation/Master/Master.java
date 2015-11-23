@@ -2,20 +2,15 @@ package Simulation.Master;
 
 import Simulation.Communicators.VarysRegistrator;
 import Simulation.Data.*;
-import Simulation.Data.ConfigParser;
-import varys.framework.CoflowDescription;
-import varys.framework.CoflowType;
-import varys.framework.client.VarysClient;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  * Created by stanislavmushits on 19/11/15.
  */
 public class Master {
     private Router router;
-    private VarysClient masterClient;
+    private ArrayList<VarysRegistrator> masterClients = new ArrayList<VarysRegistrator>();
     private SimulationConfig config;
 
     public void conductSimulation(SimulationConfig simConfig, ArrayList<SimTask> simTasks){
@@ -66,16 +61,6 @@ public class Master {
         simTask.coflowId = registerCoflow(simTask);
 
         executeTraditionalTask(simTask);
-
-        /*for (int hostIndex: simTask.mappers){
-            simTask.currentSlaveId = hostIndex;
-            router.sendTaskTo(hostIndex, new SimMessage(SimMessage.SimEventType.SEND, simTask));
-        }
-
-        for (Reducer reducer: simTask.reducers.values()){
-            simTask.currentSlaveId = reducer.reducerId;
-            router.sendTaskTo(reducer.reducerId, new SimMessage(SimMessage.SimEventType.RECEIVE, simTask));
-        }*/
     }
 
     public void wait(int millisec){
@@ -88,7 +73,8 @@ public class Master {
 
     public String registerCoflow(SimTask task){
         // TODO: change size, name of registrator, number of slaves(senders), config->task
-        VarysRegistrator registrator = new VarysRegistrator(config.varysMasterUrl, "ActorMaster", 1, -1);
+        VarysRegistrator registrator = new VarysRegistrator(config.varysMasterUrl, "ActorMaster"+task.id, 1, -1);
+        masterClients.add(registrator);
         return registrator.registerCoflow();
     }
 
