@@ -5,15 +5,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.util.ArrayList;
-// import java.util.Iterator;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+// import java.util.Iterator;
 
 /**
  * Created by Stanislav-macbook on 30.10.2015.
@@ -23,7 +20,8 @@ public class ConfigParser {
     public static ArrayList<SimTask> parseTaskFile(String filename) throws IOException, ParseException {
         FileInputStream fis = null;
         ArrayList<SimTask> tasks = new ArrayList<SimTask>();
-        int count = 0;
+        //int count = 1;
+        /*
         try {
             fis = new FileInputStream(filename);
         } catch (FileNotFoundException e) {
@@ -43,7 +41,28 @@ public class ConfigParser {
             System.err.println("Unknown Format " + filename);
             System.exit(1);
         }
+        */
+        // TODO: Temporary hardcoded, remove later
+        SimTask task = new SimTask();
+        Reducer reducerItr = new Reducer();
+        task.simulationType = SimulationType.valueOf("VARYS");
+        task.srcAddress = "127.0.0.1";
+        task.dstAddress = "127.0.0.1";
+        task.srcPort = 6000;
+        task.dstPort = 7000;
+        task.coflowId = "1";
+        task.startTime = 10;
+        task.mapperCount = 1;
+        task.mappers = new ArrayList<Integer>(task.mapperCount);
+        task.mappers.add(1);
+        task.reducerCount = 1;
+        task.reducers = new ArrayList<Reducer>(task.reducerCount);
+        reducerItr.reducerId = 1;
+        reducerItr.size = (long) (10 * 1048576.0);
+        task.reducers.add(reducerItr);
+        tasks.add(task);
 
+        /*
         for (int j = 0; j < count; j++) {
             try {
                 String line = br.readLine();
@@ -55,7 +74,7 @@ public class ConfigParser {
 
                 task.simulationType = SimulationType.valueOf("VARYS");
 
-                // TODO: belwo src and dst info needs to be moved out of SimTask
+                // TODO: below src and dst info needs to be moved out of SimTask
                 task.srcAddress = "127.0.0.1";
                 task.dstAddress = "127.0.0.1";
                 task.srcPort = 6000;
@@ -83,7 +102,8 @@ public class ConfigParser {
             } catch (IOException e) {
                 System.err.println("Unknown format in " + filename);
             }
-        }
+
+        }*/
         return tasks;
     }
 
@@ -91,6 +111,12 @@ public class ConfigParser {
         String filename = config.hostFile;
         FileInputStream fis = null;
         int count = 0;
+
+        // TODO: Temporary hardcoded, remove later
+        config.hosts = new ArrayList<String>(count);
+        config.hosts.add("127.0.0.1");
+
+        /*
         try {
             fis = new FileInputStream(filename);
         } catch (FileNotFoundException e) {
@@ -111,6 +137,7 @@ public class ConfigParser {
             chunks = line.split("\\s+");
             config.hosts.add(chunks[0]);
         }
+        */
     }
 
     public static SimulationConfig parseSimConfigFile(String filename){
