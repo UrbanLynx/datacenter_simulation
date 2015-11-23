@@ -46,7 +46,7 @@ public class Slave implements Runnable{
                 break;
             case TRADITIONAL:
                 TraditionalCommunicator traditionalCommunicator = new TraditionalCommunicator();
-                if (this.isSender) {
+                if (!this.isSender) {
                     traditionalCommunicator.receive(task);
                 } else {
                     traditionalCommunicator.send(task);
