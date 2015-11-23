@@ -1,5 +1,5 @@
 {
-  "taskFile": "configs/tasks.json",
+  "taskFile": "configs/tasks",
   "hostsFile": "configs/hosts",
   "startTime": "2015-10-30T23:01:47+00:00",
   "simulationType": "VARYS",

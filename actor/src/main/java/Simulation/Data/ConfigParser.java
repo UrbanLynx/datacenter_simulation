@@ -22,8 +22,9 @@ public class ConfigParser {
     public static ArrayList<SimTask> parseTaskFile(SimulationConfig config) throws IOException, ParseException {
         FileInputStream fis = null;
         ArrayList<SimTask> tasks = new ArrayList<SimTask>();
-        //int count = 1;
-        /*
+        int count = 1;
+        String filename = config.taskFileName;
+
         try {
             fis = new FileInputStream(filename);
         } catch (FileNotFoundException e) {
@@ -43,31 +44,8 @@ public class ConfigParser {
             System.err.println("Unknown Format " + filename);
             System.exit(1);
         }
-        */
 
-     //   if()
-        // TODO: Temporary hardcoded, remove later
-        SimTask task = new SimTask();
-        task.simulationType = config.simulationType;
-
-        task.id = 1;
-        task.startTime = 0;
-
-        task.mappers = new ArrayList<Integer>();
-        task.mappers.add(1);
-
-        task.reducers = new HashMap<Integer, Reducer>();
-
-        Reducer reducerItr = new Reducer();
-        reducerItr.address = "localhost";
-        reducerItr.port = 7000;
-        reducerItr.reducerId = 1;
-        reducerItr.size = (long) (10 * 1048576.0);
-
-        task.reducers.put(1, reducerItr);
-        tasks.add(task);
-
-        /*
+        int numberOfBytesInMegabyte = 1048576;
         for (int j = 0; j < count; j++) {
             try {
                 String line = br.readLine();
@@ -75,33 +53,32 @@ public class ConfigParser {
                 int lIndex = 0;
 
                 SimTask task = new SimTask();
+                task.simulationType = config.simulationType;
+
+                task.reducers = new HashMap<Integer, Reducer>();
                 Reducer reducerItr = new Reducer();
-
-                task.simulationType = SimulationType.valueOf("VARYS");
-
                 // TODO: below src and dst info needs to be moved out of SimTask
-                task.srcAddress = "127.0.0.1";
-                task.dstAddress = "127.0.0.1";
-                task.srcPort = 6000;
-                task.dstPort = 7000;
 
-                task.coflowId = chunks[lIndex++];
+
+                task.id = chunks[lIndex++];
                 task.startTime = Integer.parseInt(chunks[lIndex++]);
 
                 task.mapperCount = Integer.parseInt(chunks[lIndex++]);
-                task.mappers = new ArrayList<Integer>(task.mapperCount);
+                task.mappers = new ArrayList<Integer>();
                 for (int i = 0; i < task.mapperCount; i++) {
                     task.mappers.add(Integer.parseInt(chunks[lIndex++]));
                 }
 
                 task.reducerCount = Integer.parseInt(chunks[lIndex++]);
-                task.reducers = new ArrayList<Reducer>(task.reducerCount);
+                task.reducers = new HashMap<Integer, Reducer>();
                 for (int i = 0; i < task.reducerCount; i++) {
                     String reducer = chunks[lIndex++];
-                    reducerItr.reducerId = Integer.parseInt(reducer.split(":")[0]) + 2;
-                    reducerItr.size = (long) (Double.parseDouble(reducer.split(":")[1]) * 1048576.0);
-                    reducerItr.port = (long) (Double.parseDouble(reducer.split(":")[2]);
-                    task.reducers.add(reducerItr);
+                    reducerItr.reducerId = Integer.parseInt(reducer.split(":")[0]);
+
+                    reducerItr.size = (long) (Double.parseDouble(reducer.split(":")[1]) * numberOfBytesInMegabyte);
+                    reducerItr.address = "localhost";
+                    reducerItr.port = (int) (Double.parseDouble(reducer.split(":")[2]));
+                    task.reducers.put(reducerItr.reducerId, reducerItr);
                 }
 
                 tasks.add(task);
@@ -109,7 +86,7 @@ public class ConfigParser {
                 System.err.println("Unknown format in " + filename);
             }
 
-        }*/
+        }
         return tasks;
     }
 

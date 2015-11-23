@@ -23,7 +23,7 @@ public class SimTask implements Serializable{
     public HashMap<Integer, Reducer> reducers;
 
     public int currentSlaveId;
-    public int id;
+    public String id;
 }
 
 
