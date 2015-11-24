@@ -19,5 +19,5 @@ public class SimulationConfig {
     public int serverPort = 8080; // TODO: delete, we have slavePort for this
     public int slavePort = 5000;
 
-    public ArrayList<SlaveDesc> hosts;
+    public HashMap<Integer, SlaveDesc> hosts;
 }

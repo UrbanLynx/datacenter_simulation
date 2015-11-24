@@ -12,6 +12,7 @@ public class Master {
     private Router router;
     private ArrayList<VarysRegistrator> masterClients = new ArrayList<VarysRegistrator>();
     private SimulationConfig config;
+    private int timeFromStartSimulation = 0;
 
     public void conductSimulation(SimulationConfig simConfig, ArrayList<SimTask> simTasks){
         config = simConfig;
@@ -39,7 +40,9 @@ public class Master {
 
 
     private void waitUntillNextTask(SimTask task) {
-
+        // TODO: change startTime from double to int
+        wait((int)task.startTime - timeFromStartSimulation);
+        timeFromStartSimulation = (int)task.startTime;
     }
 
     public void executeTraditionalTask(SimTask simTask){

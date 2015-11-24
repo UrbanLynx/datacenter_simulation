@@ -36,7 +36,7 @@ public class Router {
     private void connectToSlaves() {
         connections = new HashMap<Integer, ConnectionDesc>();
 
-        for(SlaveDesc slaveDesc: config.hosts){
+        for(SlaveDesc slaveDesc: config.hosts.values()){
             try {
                 Socket socket = Utils.connectTo(slaveDesc.hostName, slaveDesc.portNumber, 1000);
                 ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());

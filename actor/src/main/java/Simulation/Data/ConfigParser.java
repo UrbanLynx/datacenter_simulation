@@ -76,7 +76,9 @@ public class ConfigParser {
                     reducerItr.reducerId = Integer.parseInt(reducer.split(":")[0]);
 
                     reducerItr.size = (long) (Double.parseDouble(reducer.split(":")[1]) * numberOfBytesInMegabyte);
-                    reducerItr.address = "localhost";
+
+                    // TODO: change hosts to Map
+                    reducerItr.address = config.hosts.get(reducerItr.reducerId).hostName;
                     reducerItr.port = (int) (Double.parseDouble(reducer.split(":")[2]));
                     task.reducers.put(reducerItr.reducerId, reducerItr);
                 }
@@ -95,7 +97,6 @@ public class ConfigParser {
         int count = 0;
 
         // TODO: Temporary hardcoded, remove later
-        config.hosts = new ArrayList<SlaveDesc>();
         FileInputStream fis = null;
         try {
             fis = new FileInputStream(filename);
@@ -111,11 +112,11 @@ public class ConfigParser {
         String[] chunks = line.split("\\s+");
         count = Integer.parseInt(chunks[0]);
 
-        config.hosts = new ArrayList<SlaveDesc>();
+        config.hosts = new HashMap<Integer, SlaveDesc>();
         for (int i = 1; i <= count; i++) {
             line = br.readLine();
             chunks = line.split("\\s+");
-            config.hosts.add(new SlaveDesc(i,chunks[0],config.slavePort));
+            config.hosts.put(i, new SlaveDesc(i,chunks[0],config.slavePort));
         }
     }
 
