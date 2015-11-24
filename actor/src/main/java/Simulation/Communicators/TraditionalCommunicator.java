@@ -9,11 +9,51 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Random;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by stanislavmushits on 19/11/15.
  */
 public class TraditionalCommunicator {
+
+    public final static Logger traditionalCommunicatorLogger = Logger.getLogger(TraditionalCommunicator.class.getName());
+
+    public TraditionalCommunicator() throws IOException {
+        configureTraditionalLogger();
+    }
+
+    private void configureTraditionalLogger() throws IOException {
+        traditionalCommunicatorLogger.addHandler(new FileHandler("varysCommunicatorLog.xml"));
+        traditionalCommunicatorLogger.setLevel(Level.ALL);
+    }
+
+    public String getSendLogContent(SimTask task, Reducer reducer) {
+
+        StringBuilder buf = new StringBuilder();
+        buf.append("send,");
+        buf.append("SystemTime:"+System.currentTimeMillis());
+        buf.append(",CoflowID:"+task.coflowId);
+        buf.append(",ReducerID:"+reducer.reducerId);
+        buf.append(",ReducerSize:"+reducer.size);
+        buf.append(",ReducerAddress:"+reducer.address);
+        buf.append(",ReducerPort:"+reducer.port);
+
+        return buf.toString();
+
+    }
+
+    public String getReceiveLogContent(SimTask task) {
+
+        StringBuilder buf = new StringBuilder();
+        buf.append("recieve,");
+        buf.append("SystemTime:"+System.currentTimeMillis());
+        buf.append(",CoflowID:"+task.coflowId);
+
+        return buf.toString();
+
+    }
 
     public void send(SimTask task) {
         try {
@@ -23,7 +63,7 @@ public class TraditionalCommunicator {
 
                 Utils.safePrintln("Attempting to send " + reducer.size + " bytes to "+ reducer.address +":"+ reducer.port);
                 simOOS.writeObject(Utils.getData(reducer.size));
-
+                traditionalCommunicatorLogger.log(Level.INFO, getSendLogContent(task, reducer));
                 simOOS.close();
                 socket.close();
             }
@@ -44,7 +84,7 @@ public class TraditionalCommunicator {
 
                 ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
                 String data = (String) inputStream.readObject();
-
+                traditionalCommunicatorLogger.log(Level.INFO, getReceiveLogContent(task));
                 inputStream.close();
                 socket.close();
 

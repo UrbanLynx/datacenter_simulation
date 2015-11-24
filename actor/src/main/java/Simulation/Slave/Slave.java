@@ -36,7 +36,12 @@ public class Slave implements Runnable{
 
         switch(this.task.simulationType){
             case VARYS:
-                VarysCommunicator varysCommunicator = new VarysCommunicator();
+                VarysCommunicator varysCommunicator = null;
+                try {
+                    varysCommunicator = new VarysCommunicator();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 if (this.isSender) {
                     varysCommunicator.send(task);
                     //ackToMaster(Confirm.Code.SENT);
@@ -46,7 +51,12 @@ public class Slave implements Runnable{
                 }
                 break;
             case TRADITIONAL:
-                TraditionalCommunicator traditionalCommunicator = new TraditionalCommunicator();
+                TraditionalCommunicator traditionalCommunicator = null;
+                try {
+                    traditionalCommunicator = new TraditionalCommunicator();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 if (!this.isSender) {
                     traditionalCommunicator.receive(task);
                 } else {
