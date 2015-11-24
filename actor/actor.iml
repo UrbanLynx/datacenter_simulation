@@ -124,5 +124,6 @@
     <orderEntry type="library" name="Maven: org.ow2.asm:asm:4.0" level="project" />
     <orderEntry type="library" name="Maven: org.objenesis:objenesis:1.2" level="project" />
     <orderEntry type="library" name="Maven: junit:junit:4.8.2" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:mongo-java-driver:3.0.4" level="project" />
   </component>
 </module>

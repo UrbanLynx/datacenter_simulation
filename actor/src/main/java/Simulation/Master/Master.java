@@ -3,6 +3,7 @@ package Simulation.Master;
 import Simulation.Communicators.VarysRegistrator;
 import Simulation.Data.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -14,7 +15,7 @@ public class Master {
     private SimulationConfig config;
     private int timeFromStartSimulation = 0;
 
-    public void conductSimulation(SimulationConfig simConfig, ArrayList<SimTask> simTasks){
+    public void conductSimulation(SimulationConfig simConfig, ArrayList<SimTask> simTasks) throws IOException {
         config = simConfig;
         router = new Router(config);
         //preprocessTaks(simTasks);

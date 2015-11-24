@@ -18,6 +18,9 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by stanislavmushits on 19/11/15.
@@ -25,12 +28,23 @@ import java.util.Map;
 public class Router {
     Map<Integer, ConnectionDesc> connections;
     SimulationConfig config;
+    Logger masterLogger = Logger.getLogger(Router.class.getName());
 
-    public Router(SimulationConfig simConfig){
+    public Router(SimulationConfig simConfig) throws IOException {
         config = simConfig;
 
         System.out.println("Connecting to each simulation slave");
         connectToSlaves();
+
+        System.out.println("Configuring logger for Master");
+        configureMasterLogger();
+    }
+
+    private void configureMasterLogger() throws IOException {
+
+        masterLogger.addHandler(new FileHandler("masterLog.xml"));
+        masterLogger.setLevel(Level.ALL);
+
     }
 
     private void connectToSlaves() {
@@ -58,8 +72,28 @@ public class Router {
         }
     }
 
+    public String getLogContent(SimMessage simMessage) {
+
+        StringBuilder buf = new StringBuilder();
+        buf.append("sendTaskTo:Master:");
+        buf.append(":SystemTime:"+System.currentTimeMillis());
+        buf.append(":EventType");
+        if (simMessage.eventType == SimMessage.SimEventType.RECEIVE)
+            buf.append(":RECEIVE");
+        else if (simMessage.eventType == SimMessage.SimEventType.SEND)
+            buf.append(":SEND");
+        else
+            buf.append(":TERMINATE");
+
+        buf.append(":CoflowID"+simMessage.task.coflowId);
+
+        return buf.toString();
+
+    }
+
     public void sendTaskTo(int hostIndex, SimMessage simMessage) {
         System.out.println("Sending task to host " + hostIndex);
+        masterLogger.log(Level.INFO,getLogContent(simMessage));
 
         try {
             connections.get(hostIndex).oos.writeObject(simMessage);
