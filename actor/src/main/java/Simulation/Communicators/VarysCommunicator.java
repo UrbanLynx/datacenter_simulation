@@ -13,11 +13,51 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.CountDownLatch;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by stanislavmushits on 19/11/15.
  */
 public class VarysCommunicator {
+
+    public final static Logger varysCommunicatorLogger = Logger.getLogger(VarysCommunicator.class.getName());
+
+    public VarysCommunicator() throws IOException {
+        configureVarysLogger();
+    }
+
+    private void configureVarysLogger() throws IOException {
+        varysCommunicatorLogger.addHandler(new FileHandler("varysCommunicatorLog.xml"));
+        varysCommunicatorLogger.setLevel(Level.ALL);
+    }
+
+    public String getSendLogContent(SimTask task, Reducer reducer) {
+
+        StringBuilder buf = new StringBuilder();
+        buf.append("send,");
+        buf.append("SystemTime:"+System.currentTimeMillis());
+        buf.append(",CoflowID:"+task.coflowId);
+        buf.append(",ReducerID:"+reducer.reducerId);
+        buf.append(",ReducerSize:"+reducer.size);
+        buf.append(",ReducerAddress:"+reducer.address);
+        buf.append(",ReducerPort:"+reducer.port);
+
+        return buf.toString();
+
+    }
+
+    public String getReceiveLogContent(SimTask task) {
+
+        StringBuilder buf = new StringBuilder();
+        buf.append("recieve,");
+        buf.append("SystemTime:"+System.currentTimeMillis());
+        buf.append(",CoflowID:"+task.coflowId);
+
+        return buf.toString();
+
+    }
 
     public String getDataId(String coflowId, int mapperId, int reducerId){
         return "DATA_" + coflowId+ "_" + mapperId + "_" + reducerId;
@@ -47,7 +87,7 @@ public class VarysCommunicator {
                 Socket socket = Utils.connectTo(reducer.address, reducer.port, 2000);
                 ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
                 outputStream.writeObject(dataId);
-
+                varysCommunicatorLogger.log(Level.INFO,getSendLogContent(task,reducer));
                 outputStream.close();
                 socket.close();
             } catch (IOException e) {
@@ -78,6 +118,7 @@ public class VarysCommunicator {
 
                 Utils.safePrintln("[Receiver]: Trying to retrieve " + DATA_NAME);
                 client.getFake(DATA_NAME, task.coflowId);
+                varysCommunicatorLogger.log(Level.INFO,getReceiveLogContent(task));
                 Utils.safePrintln("[Receiver]: Got " + DATA_NAME + " Now waiting to die.");
 
                 receivedNumberTimes++;
