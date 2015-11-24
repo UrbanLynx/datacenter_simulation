@@ -3,8 +3,6 @@
 bin=`dirname "$0"`
 bin=`cd "$bin"; pwd`
 
-#. "$bin/varys-config.sh"
-
 if [ -f "${VARYS_CONF_DIR}/varys-env.sh" ]; then
   . "${VARYS_CONF_DIR}/varys-env.sh"
 fi

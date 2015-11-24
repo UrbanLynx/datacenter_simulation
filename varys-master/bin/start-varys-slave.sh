@@ -13,11 +13,14 @@ bin=`cd "$bin"; pwd`
 #export VARYS_MASTER_IP=$(hostname -I | cut -d' ' -f1)
 
 #if [ "$VARYS_MASTER_IP" = "" ]; then
-#  VARYS_MASTER_IP=$1
+  VARYS_MASTER_IP=$1
+echo $VARYS_MASTER_IP
+
 export VARYS_LOCAL_IP=$(hostname -I | cut -d' ' -f1)
 echo $VARYS_LOCAL_IP
 # Start Master
-"$bin"/start-master.sh
+#if [ $1 = "true" ]; then
+#  "$bin"/start-master.sh
 
 # Start Slaves
 "$bin"/start-slaves.sh

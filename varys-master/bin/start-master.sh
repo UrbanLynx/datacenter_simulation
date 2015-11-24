@@ -15,9 +15,11 @@ if [ "$VARYS_MASTER_PORT" = "" ]; then
   VARYS_MASTER_PORT=1606
 fi
 
-if [ "$VARYS_MASTER_IP" = "" ]; then
-  VARYS_MASTER_IP=`hostname`
-fi
+#if [ "$VARYS_MASTER_IP" = "" ]; then
+#  VARYS_MASTER_IP=$1
+#fi
+
+echo "Master IP: $VARYS_MASTER_IP"
 
 if [ "$VARYS_MASTER_WEBUI_PORT" = "" ]; then
   VARYS_MASTER_WEBUI_PORT=16016
