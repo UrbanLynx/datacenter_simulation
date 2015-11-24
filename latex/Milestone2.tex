@@ -33,7 +33,7 @@ As part of this milestone, we have completed the following tasks.
 \begin{itemize}
 	\item Implemented the actor program to create connections between mappers and reducers and start the simulation
 	\item Deploying the master and slave programs on individual mininet hosts, and writing a script to automate this task
-	\item Running varys simulation and traditional (without running varys code) simulation on a single Mininet host
+	\item Running varys simulation on a single Mininet\cite{mininet} host and traditional (without running varys code) simulation on multiple mininet hosts
 \end{itemize}
 The current state of the project is as follows-
 \begin{itemize}
@@ -45,7 +45,7 @@ The current state of the project is as follows-
 \end{itemize}
 \subsection{Varys simulation}
 \begin{itemize}
-	\item A single mininet host runs the Master and Slaves along with the varys scheduler running on the controller (Master).
+	\item A single mininet host runs the Master and Slaves along with the varys\cite{varys} scheduler running on the controller (Master).
 	\item The Master parses the file \textit{simulation.json} to get the location of the \textit{taskFile} (which contains information about all the tasks that need to be performed in the simulation, i.e, all the mapper and reducer indices, and how much data is to be sent from a particular mapper to a particular reducer), and the \textit{hostsFile} (which lists the number of hosts on the first line followed by the IP address of each host).
 	\item \textit{simulation.json} also specifies if the simulation uses varys scheduler or not.
 	\item The Master then sends the tasks to all mappers and all reducers, which then perform the simulation.
@@ -53,12 +53,12 @@ The current state of the project is as follows-
 \end{itemize}
 \subsection{Traditional simulation}
 \begin{itemize}
-	\item As in the previous case, the Master and Slaves run on a single mininet host.
+	\item As opposed to the previous case, the Master and Slaves run on different mininet hosts.
 	\item Since this is a traditional simulation, there is no varys scheduler running, which means the coflows are not registered.
 	\item The Master simply forwards the task file to all the mappers and reducers which proceed with the simulation.
 \end{itemize}
 \subsection{Challenges Faced}
-Currently the program runs only on a single mininet host. This is because, running the controller on a separate host to the mappers and reducers results in the coflow not getting registered. Thus Varys simulation is not being able to be run on multiple mininet hosts.\\Another challenge has been finding reliable and usable datacenter traces. Traces found on the internet, even if authentic, need to be massaged before they can be used in our project.
+Currently the program runs only on a single mininet host when using the varys scheduler. This is because, running the controller on a separate host to the mappers and reducers results in the coflows not getting registered. Thus Varys simulation is not being able to be run on multiple mininet hosts.\\Another challenge has been finding reliable and usable datacenter traces. Traces found on the internet, even if authentic, need to be massaged before they can be used in our project.
 
 \section{Class Diagrams}
 \subsection{Master}
@@ -69,7 +69,22 @@ Currently the program runs only on a single mininet host. This is because, runni
 \section{Next Steps}
 Below are the set of pending tasks for the project:
 \begin{itemize}
-	\item To get the program running on multiple mininet hosts, with the controller, mappers and reducers all running on different hosts.
+	\item To get varys scheduling running on multiple mininet hosts, with the controller, mappers and reducers all running on different hosts.
 	\item To run simulations using a realistic datacenter trace.
 \end{itemize}
+
+\bibliographystyle{plain}
+\begin{thebibliography}{10}
+
+\bibitem{mininet}
+Mininet: An Instant Virtual Network \textit{mininet.org}
+
+\bibitem{varys}
+Efficient Coflow Scheduling with Varys, Mosharaf Chowdhury, Yuan Zhong, Ion Stoica, ACM SIGCOMM, 2014.
+
+\bibitem{repo}
+Team 06 Github Repo \textit{https://github.com/ucsdcse222a/group6}
+
+\end{thebibliography}
+
 \end{document}
