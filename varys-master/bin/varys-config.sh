@@ -17,5 +17,5 @@ this="$config_bin/$script"
 export VARYS_PREFIX=`dirname "$this"`/..
 export VARYS_HOME=${VARYS_PREFIX}
 export VARYS_CONF_DIR="$VARYS_HOME/conf"
-export VARYS_MASTER_IP=$(hostname -I | cut -d' ' -f1)
-export VARYS_LOCAL_IP=$(hostname -I | cut -d' ' -f1)
+export VARYS_MASTER_IP=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1')
+export VARYS_LOCAL_IP=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1')

@@ -16,7 +16,7 @@ bin=`cd "$bin"; pwd`
   VARYS_MASTER_IP=$1
 echo $VARYS_MASTER_IP
 
-export VARYS_LOCAL_IP=$(hostname -I | cut -d' ' -f1)
+export VARYS_LOCAL_IP=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1')
 echo $VARYS_LOCAL_IP
 # Start Master
 #if [ $1 = "true" ]; then
