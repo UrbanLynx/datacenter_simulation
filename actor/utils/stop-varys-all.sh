@@ -14,4 +14,4 @@ cd ~/group6/varys-master
 #./sbt/sbt publish-local
 export SCALA_HOME=/usr/bin/scala
 
-./bin/start-varys-slave.sh $1
+./bin/stop-all.sh

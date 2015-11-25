@@ -18,7 +18,8 @@ fi
 #  VARYS_MASTER_IP="10.0.0.1"
 #fi
 
-#echo "Master IP: $VARYS_MASTER_IP"
+echo "Master IP: $VARYS_MASTER_IP"
+
 
 # Launch the slaves
 exec "$bin/slaves.sh" cd "$VARYS_HOME" \; "$bin/start-slave.sh" varys://$VARYS_MASTER_IP:$VARYS_MASTER_PORT

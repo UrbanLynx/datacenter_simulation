@@ -15,7 +15,9 @@ bin=`cd "$bin"; pwd`
 #if [ "$VARYS_MASTER_IP" = "" ]; then
 #  VARYS_MASTER_IP=$1
 export VARYS_LOCAL_IP=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1')
+
 echo $VARYS_LOCAL_IP
+
 # Start Master
 "$bin"/start-master.sh
 

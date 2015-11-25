@@ -14,5 +14,4 @@ cd ~/group6/varys-master
 #./sbt/sbt publish-local
 export SCALA_HOME=/usr/bin/scala
 
-echo $1
-./bin/start-all.sh "$1"
+./bin/start-all.sh
