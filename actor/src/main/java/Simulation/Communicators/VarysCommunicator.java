@@ -1,18 +1,16 @@
 package Simulation.Communicators;
 
+import Simulation.Data.DataGenerator;
 import Simulation.Data.Reducer;
-import Simulation.Data.SimMessage;
 import Simulation.Data.SimTask;
+import Simulation.Data.SimulationConfig;
 import varys.framework.client.VarysClient;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ConnectException;
-import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.CountDownLatch;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,13 +22,18 @@ public class VarysCommunicator {
 
     public final static Logger varysCommunicatorLogger = Logger.getLogger(VarysCommunicator.class.getName());
 
-    public VarysCommunicator() throws IOException {
-        configureVarysLogger();
+    public VarysCommunicator(SimTask task){
+        configureVarysLogger(task);
     }
 
-    private void configureVarysLogger() throws IOException {
-        varysCommunicatorLogger.addHandler(new FileHandler("varysCommunicatorLog.xml"));
-        varysCommunicatorLogger.setLevel(Level.ALL);
+    private void configureVarysLogger(SimTask task){
+        try {
+            //String logFilename = "varysCommunicatorLog" + task.currentSlaveId + ".xml";
+            varysCommunicatorLogger.addHandler(new FileHandler());
+            varysCommunicatorLogger.setLevel(Level.ALL);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getSendLogContent(SimTask task, Reducer reducer) {
@@ -40,7 +43,7 @@ public class VarysCommunicator {
         buf.append("SystemTime:"+System.currentTimeMillis());
         buf.append(",CoflowID:"+task.coflowId);
         buf.append(",ReducerID:"+reducer.reducerId);
-        buf.append(",ReducerSize:"+reducer.size);
+        buf.append(",ReducerSize:"+reducer.sizeKB);
         buf.append(",ReducerAddress:"+reducer.address);
         buf.append(",ReducerPort:"+reducer.port);
 
@@ -73,6 +76,8 @@ public class VarysCommunicator {
 
     public void send(SimTask task) {
         //task.data.dataId = getDataId(task);
+        DataGenerator generator = new DataGenerator();
+        generator.generateUnitObject(1024);
 
         VarysListener listener = new VarysListener();
         VarysClient client = new VarysClient(getSenderId(task), task.masterUrl, listener);
@@ -80,7 +85,8 @@ public class VarysCommunicator {
 
         for (Reducer reducer: task.reducers.values()){
             String dataId = getDataId(task.coflowId, task.currentSlaveId, reducer.reducerId);
-            client.putFake(dataId, task.coflowId, reducer.size, 1);
+            String object = generator.generateObject(reducer.sizeKB);
+            client.putObject(dataId, object, task.coflowId, reducer.sizeBytes(), 1, null);
             Utils.safePrintln("Put fake data for " + reducer.reducerId);
 
             try {
@@ -117,9 +123,9 @@ public class VarysCommunicator {
                 socket.close();
 
                 Utils.safePrintln("[Receiver]: Trying to retrieve " + DATA_NAME);
-                client.getFake(DATA_NAME, task.coflowId);
+                String object = client.getObject(DATA_NAME, task.coflowId);
                 varysCommunicatorLogger.log(Level.INFO,getReceiveLogContent(task));
-                Utils.safePrintln("[Receiver]: Got " + DATA_NAME + " Now waiting to die.");
+                Utils.safePrintln("[Receiver]: Got " + DATA_NAME + " of size "+object.length());
 
                 receivedNumberTimes++;
             }

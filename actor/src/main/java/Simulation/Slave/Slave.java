@@ -36,18 +36,13 @@ public class Slave implements Runnable{
 
         switch(this.task.simulationType){
             case VARYS:
-                VarysCommunicator varysCommunicator = null;
-                try {
-                    varysCommunicator = new VarysCommunicator();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
+                VarysCommunicator varysCommunicator = new VarysCommunicator(task);
+
                 if (this.isSender) {
                     varysCommunicator.send(task);
-                    //ackToMaster(Confirm.Code.SENT);
                 } else {
                     varysCommunicator.receive(task);
-                    //ackToMaster(Confirm.Code.RECEIVED);
                 }
                 break;
             case TRADITIONAL:

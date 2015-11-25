@@ -8,9 +8,14 @@ import java.io.Serializable;
 public class Reducer implements Serializable {
 
     public int reducerId;
-    public long size;
+    public int sizeKB;
 
     public String address;
     public int port;
+
+    public long sizeBytes(){
+        int BytesInKBytes = 1024;
+        return sizeKB * BytesInKBytes;
+    }
 
 }

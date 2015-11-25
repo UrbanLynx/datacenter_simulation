@@ -12,7 +12,7 @@ public class TaskData implements Serializable {
     public String dataId;
 
     public void generateData(long numBytes) {
-        // Creates a string with proper size
+        // Creates a string with proper sizeKB
         // One char is 1 Byte. Using StringBuffer to improve memory performance
         StringBuffer outputBuffer = new StringBuffer();
         for (int i = 0; i<this.bytes; ++i) {

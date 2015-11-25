@@ -1,5 +1,6 @@
 package Simulation.Communicators;
 
+import Simulation.Data.DataGenerator;
 import Simulation.Data.Reducer;
 import Simulation.Data.SimTask;
 
@@ -8,7 +9,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Random;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +25,7 @@ public class TraditionalCommunicator {
     }
 
     private void configureTraditionalLogger() throws IOException {
-        traditionalCommunicatorLogger.addHandler(new FileHandler("varysCommunicatorLog.xml"));
+        traditionalCommunicatorLogger.addHandler(new FileHandler());
         traditionalCommunicatorLogger.setLevel(Level.ALL);
     }
 
@@ -36,7 +36,7 @@ public class TraditionalCommunicator {
         buf.append("SystemTime:"+System.currentTimeMillis());
         buf.append(",CoflowID:"+task.coflowId);
         buf.append(",ReducerID:"+reducer.reducerId);
-        buf.append(",ReducerSize:"+reducer.size);
+        buf.append(",ReducerSize:"+reducer.sizeKB);
         buf.append(",ReducerAddress:"+reducer.address);
         buf.append(",ReducerPort:"+reducer.port);
 
@@ -57,12 +57,15 @@ public class TraditionalCommunicator {
 
     public void send(SimTask task) {
         try {
+            DataGenerator generator = new DataGenerator();
+            generator.generateUnitObject(1024);
+
             for (Reducer reducer: task.reducers.values()){
                 Socket socket = Utils.connectTo(reducer.address, reducer.port, 2000);
                 ObjectOutputStream simOOS = new ObjectOutputStream(socket.getOutputStream());
 
-                Utils.safePrintln("Attempting to send " + reducer.size + " bytes to "+ reducer.address +":"+ reducer.port);
-                simOOS.writeObject(Utils.getData(reducer.size));
+                Utils.safePrintln("Attempting to send " + reducer.sizeBytes() + " bytes to "+ reducer.address +":"+ reducer.port);
+                simOOS.writeObject(generator.generateObject(reducer.sizeKB));
                 traditionalCommunicatorLogger.log(Level.INFO, getSendLogContent(task, reducer));
                 simOOS.close();
                 socket.close();

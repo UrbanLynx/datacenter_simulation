@@ -19,5 +19,11 @@ public class SimulationConfig {
     public int serverPort = 8080; // TODO: delete, we have slavePort for this
     public int slavePort = 5000;
 
+    public Boolean doGenerateFiles;
+    public String fileDirectory;
+    public int fileSizeKBMin;
+    public int fileSizeKBMax;
+    public int fileSizeKBStep;
+
     public HashMap<Integer, SlaveDesc> hosts;
 }

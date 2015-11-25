@@ -9,7 +9,6 @@ import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 // import java.util.Iterator;
 
@@ -45,7 +44,7 @@ public class ConfigParser {
             System.exit(1);
         }
 
-        int numberOfBytesInMegabyte = 1048576;
+        //int numberOfBytesInMegabyte = 1048576;
         for (int j = 0; j < count; j++) {
             try {
                 String line = br.readLine();
@@ -75,7 +74,7 @@ public class ConfigParser {
                     String reducer = chunks[lIndex++];
                     reducerItr.reducerId = Integer.parseInt(reducer.split(":")[0]);
 
-                    reducerItr.size = (long) (Double.parseDouble(reducer.split(":")[1]) * numberOfBytesInMegabyte);
+                    reducerItr.sizeKB = (int) (long) (Double.parseDouble(reducer.split(":")[1]));
 
                     // TODO: change hosts to Map
                     reducerItr.address = config.hosts.get(reducerItr.reducerId).hostName;
@@ -135,11 +134,17 @@ public class ConfigParser {
             config.slavePort = ((Long) jsonObject.get("slavePort")).intValue();
             config.varysMasterUrl = (String) jsonObject.get("masterUrl");
 
-
+            /* TODO: use in case of big objects > 1 MB
+            config.doGenerateFiles = (Boolean) jsonObject.get("doGenerateFiles");
+            config.fileDirectory = (String) jsonObject.get("fileDirectory");
+            config.fileSizeKBMax = (int) (long) (Long) jsonObject.get("fileSizeKBMax");
+            config.fileSizeKBMin = (int) (long) (Long)  jsonObject.get("fileSizeKBMin");
+            config.fileSizeKBStep = (int) (long) (Long)  jsonObject.get("fileSizeKBStep");*/
             parseHostsFile(config);
             return config;
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return null;
     }
