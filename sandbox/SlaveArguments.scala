@@ -75,6 +75,7 @@ private[varys] class SlaveArguments(
         master = value
       } else {
         ip = value
+        Hostname.hostname = ip
       }
       parse(tail)
 
