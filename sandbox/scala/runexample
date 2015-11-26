@@ -1,0 +1,2 @@
+scalac SimpleSlave.scala Hostname.scala
+scala SimpleSlave myhostname
