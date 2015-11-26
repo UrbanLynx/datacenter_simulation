@@ -14,7 +14,7 @@ private[varys] class SlaveArguments(
   // for mininet simulation, localHostName will return machine host name, not mininet host name
   // instead simulation master will pass hostname to each simulation slave
   //var ip = Utils.localHostName()
-  var ip = null;
+  var ip : String = null
 
       // Attempt to use IPs instead of hostname did not work 
       // (simulation master could not connect to Varys master)
