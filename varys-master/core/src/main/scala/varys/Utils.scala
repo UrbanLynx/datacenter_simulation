@@ -129,18 +129,8 @@ private object Utils extends Logging {
   /**
    * Get the local machine's hostname.
    */
-  def localHostName(host : String = null): String = {
-    //var hostname : String = null
-    if ( host != null ) {
-      val LocalHostname = MininetHost(host)
-    }
-    LocalHostname.hostname
-  }
-  // RP: added this in attempt to make Varys use IP addresses instead of hostnames
-  // (replace localHostName)
-  // did not work (see commented out calls), currently unused
-  def localHostIP(): String = {
-    customHostname.getOrElse(InetAddress.getLocalHost.getHostAddress)
+  def localHostName(): String = {
+    customHostname.getOrElse(InetAddress.getLocalHost.getHostName)
   }
 
   private[varys] val daemonThreadFactory: ThreadFactory =

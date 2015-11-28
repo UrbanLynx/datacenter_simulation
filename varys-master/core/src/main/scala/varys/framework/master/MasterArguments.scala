@@ -2,7 +2,6 @@ package varys.framework.master
 
 import varys.Utils
 import varys.util.IntParam
-import varys.Hostname
 
 /**
  * Command-line parser for the master.
@@ -10,8 +9,7 @@ import varys.Hostname
 private[varys] class MasterArguments(
   args: Array[String]) {
   
-  //var ip = Utils.localHostName()
-  var ip : String = null
+  var ip = Utils.localHostName()
   var port = 1606
   var webUiPort = 16016
   
@@ -30,8 +28,7 @@ private[varys] class MasterArguments(
 
   def parse(args: List[String]): Unit = args match {
     case ("--ip" | "-i") :: value :: tail =>
-      ip = Utils.localHostName(value)
-      //Hostname.hostname = value
+      ip = value
       parse(tail)
 
     case ("--port" | "-p") :: IntParam(value) :: tail =>

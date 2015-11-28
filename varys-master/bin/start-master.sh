@@ -38,4 +38,4 @@ fi
 
 # Start a slave agent at the Master
 sleep 1
-"$bin"/varys-daemon.sh start varys.framework.slave.Slave varys://$VARYS_MASTER_IP:$VARYS_MASTER_PORT $VARYS_MASTER_IP
+"$bin"/varys-daemon.sh start varys.framework.slave.Slave varys://$VARYS_MASTER_IP:$VARYS_MASTER_PORT

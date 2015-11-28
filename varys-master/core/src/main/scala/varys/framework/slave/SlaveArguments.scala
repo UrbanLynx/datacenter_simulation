@@ -4,7 +4,6 @@ import java.lang.management.ManagementFactory
 
 import varys.util.IntParam
 import varys.Utils
-import varys.Hostname
 
 /**
  * Command-line parser for the slave.
@@ -12,8 +11,7 @@ import varys.Hostname
 private[varys] class SlaveArguments(
     args: Array[String]) {
   
-  // var ip = Utils.localHostName()
-  var ip: String = null
+  var ip = Utils.localHostName()
   var port = 0
   var webUiPort = 16017
   var commPort = 1607
@@ -39,7 +37,6 @@ private[varys] class SlaveArguments(
   def parse(args: List[String]): Unit = args match {
     case ("--ip" | "-i") :: value :: tail =>
       ip = value
-      Hostname.hostname = value
       parse(tail)
 
     case ("--port" | "-p") :: IntParam(value) :: tail =>
@@ -62,15 +59,10 @@ private[varys] class SlaveArguments(
       printUsageAndExit(0)
 
     case value :: tail =>
-      if (master != null) {  // Three positional arguments were given
+      if (master != null) {  // Two positional arguments were given
         printUsageAndExit(1)
       }
-      if (master == null) {
-        master = value
-      //} else {
-        //ip = value
-        //Hostname.hostname = value
-      }
+      master = value
       parse(tail)
 
     case Nil =>
