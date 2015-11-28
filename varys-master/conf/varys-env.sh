@@ -21,4 +21,3 @@
 # KNOWN ISSUE(S)
 # - VARYS_MASTER_IP must be set manually for now
 export SCALA_HOME="/usr/bin/scala"
-export VARYS_MASTER_IP="192.168.0.18"
