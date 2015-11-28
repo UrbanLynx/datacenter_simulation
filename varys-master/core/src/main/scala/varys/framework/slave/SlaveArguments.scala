@@ -11,7 +11,16 @@ import varys.Utils
 private[varys] class SlaveArguments(
     args: Array[String]) {
   
-  var ip = Utils.localHostName()
+  // for mininet simulation, localHostName will return machine host name, not mininet host name
+  // instead simulation master will pass hostname to each simulation slave
+  //var ip = Utils.localHostName()
+  var ip : String = null
+
+      // Attempt to use IPs instead of hostname did not work 
+      // (simulation master could not connect to Varys master)
+      // and anyway, mininet hosts would all have the same localHostIP using this method
+      //var ip = Utils.localHostIP()
+
   var port = 0
   var webUiPort = 16017
   var commPort = 1607
@@ -59,10 +68,14 @@ private[varys] class SlaveArguments(
       printUsageAndExit(0)
 
     case value :: tail =>
-      if (master != null) {  // Two positional arguments were given
+      if (ip != null) {  // Edited from master != null for mininet simulation 
         printUsageAndExit(1)
       }
-      master = value
+      if ( master == null ) {
+        master = value
+      } else {
+        ip = value
+      }
       parse(tail)
 
     case Nil =>

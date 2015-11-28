@@ -20,6 +20,8 @@ import java.util.logging.Logger;
  */
 public class VarysCommunicator {
 
+    public static String hostname;
+
     public final static Logger varysCommunicatorLogger = Logger.getLogger(VarysCommunicator.class.getName());
 
     public VarysCommunicator(SimTask task){
@@ -80,7 +82,7 @@ public class VarysCommunicator {
         generator.generateUnitObject(1024);
 
         VarysListener listener = new VarysListener();
-        VarysClient client = new VarysClient(getSenderId(task), task.masterUrl, listener);
+        VarysClient client = new VarysClient(getSenderId(task), task.masterUrl, listener, hostname);
         client.start();
 
         for (Reducer reducer: task.reducers.values()){
@@ -108,7 +110,7 @@ public class VarysCommunicator {
         Utils.safePrintln("[Receiver]: Start receiving on URL: "+task.masterUrl);
 
         VarysListener listener = new VarysListener();
-        VarysClient client = new VarysClient(getReceiverId(task), task.masterUrl, listener);
+        VarysClient client = new VarysClient(getReceiverId(task), task.masterUrl, listener, hostname);
         client.start();
 
         try {

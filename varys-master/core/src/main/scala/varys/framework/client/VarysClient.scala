@@ -24,7 +24,8 @@ import varys.util._
 class VarysClient(
     clientName: String,
     masterUrl: String,
-    listener: ClientListener = null)
+    listener: ClientListener = null,
+    hostname: String = Utils.localHostName())
   extends Logging {
 
   val INTERNAL_ASK_TIMEOUT_MS: Int = 
@@ -56,11 +57,15 @@ class VarysClient(
   val flowToBitPerSec = new ConcurrentHashMap[DataIdentifier, Double]()
   val flowToObject = new HashMap[DataIdentifier, Array[Byte]]
 
-  val serverThreadName = "ServerThread for Client@" + Utils.localHostName()
+  //val serverThreadName = "ServerThread for Client@" + Utils.localHostName()
+  val serverThreadName = "ServerThread for Client@" + hostname
   var dataServer = new DataServer(0, serverThreadName, flowToObject)
   dataServer.start()
 
-  var clientHost = Utils.localHostName()
+  //var clientHost = Utils.localHostName()
+  //var clientHost = Utils.localHostIP()
+  var clientHost = hostname
+
   var clientCommPort = dataServer.getCommPort
 
   class ClientActor extends Actor with Logging {

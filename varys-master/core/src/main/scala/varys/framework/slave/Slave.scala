@@ -33,7 +33,8 @@ private[varys] class SlaveActor(
   
   val HEARTBEAT_SEC = System.getProperty("varys.framework.heartbeat", "1").toInt
 
-  val serverThreadName = "ServerThread for Slave@" + Utils.localHostName()
+  //val serverThreadName = "ServerThread for Slave@" + Utils.localHostName()
+  val serverThreadName = "ServerThread for Slave@" + ip
   var dataServer: DataServer = null
 
   // TODO: Keep track of local data
