@@ -109,12 +109,12 @@ case $startStop in
     
     mkdir -p "$VARYS_PID_DIR"
 
-    if [ -f $pid ]; then
-      if kill -0 `cat $pid` > /dev/null 2>&1; then
-        echo $command running as process `cat $pid`.  Stop it first.
-        exit 1
-      fi
-    fi
+    #if [ -f $pid ]; then
+    #  if kill -0 `cat $pid` > /dev/null 2>&1; then
+    #    echo $command running as process `cat $pid`.  Stop it first.
+    #    exit 1
+    #  fi
+    #fi
 
     if [ "$VARYS_MASTER" != "" ]; then
       echo rsync from $VARYS_MASTER

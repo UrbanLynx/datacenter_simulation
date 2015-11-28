@@ -1,13 +1,17 @@
 #!/bin/bash
 
-HOSTLIST=slaves
+HOSTLIST=./sandbox/slaves
 
-for entry in `cat "$HOSTLIST"|sed  "s/#.*$//;/^$/d"`; do
- parsedentry=$(echo $entry | tr ";" " ")
- slave=${parsedentry[0]}
- host=${parsedentry[1]}
- echo $slave
- echo $host
+#for entry in `cat "$HOSTLIST"|sed  "s/#.*$//;/^$/d"`; do
+for entry in `cat "$HOSTLIST"`; do
+ IFS=';' read slave host <<<$entry
+ #parsedentry=$(echo $entry | tr ";" " ")
+ #echo $parsedentry
+ #slave=${parsedentry[0]}
+ #host=${parsedentry[1]}
+ echo "$slave"
+ echo "$host"
+ #ssh $slave $"echo "This is ${host}""
  ssh $VARYS_SSH_OPTS $slave $"${@// /\\ $host}" \
    2>&1 | sed "s/^/$slave: /" &
  if [ "$VARYS_SLAVE_SLEEP" != "" ]; then

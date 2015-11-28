@@ -66,8 +66,14 @@ if [ "$VARYS_SSH_OPTS" = "" ]; then
   VARYS_SSH_OPTS="-o StrictHostKeyChecking=no"
 fi
 
-for slave in `cat "$HOSTLIST"|sed  "s/#.*$//;/^$/d"`; do
- ssh $VARYS_SSH_OPTS $slave $"${@// /\\ }" \
+#for slave in `cat "$HOSTLIST"|sed  "s/#.*$//;/^$/d"`; do
+for entry in `cat "$HOSTLIST"`; do
+ IFS=';' read slave host <<<$entry
+ echo "Starting varys slave on ${host}"
+ #echo "$1 $2 $3 $4 --ip ${host} $5"
+ echo "${@// /\\ } ${host}"
+ ssh $VARYS_SSH_OPTS $slave $"${@// /\\ } ${slave}" \
+ #ssh $VARYS_SSH_OPTS $slave $"$1 $2 $3 $4 --ip ${slave} $5" \
    2>&1 | sed "s/^/$slave: /" &
  if [ "$VARYS_SLAVE_SLEEP" != "" ]; then
    sleep $VARYS_SLAVE_SLEEP
