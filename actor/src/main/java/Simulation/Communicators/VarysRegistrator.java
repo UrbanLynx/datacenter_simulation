@@ -10,6 +10,7 @@ import java.util.concurrent.CountDownLatch;
  * Created by stanislavmushits on 21/11/15.
  */
 public class VarysRegistrator{
+    public static String hostname;
 
     private final long size;
     private VarysClient client;
@@ -34,7 +35,7 @@ public class VarysRegistrator{
                 int deadlineMillis = 10000;
 
                 VarysListener listener = new VarysListener();
-                client = new VarysClient(clientName, masterUrl, listener);
+                client = new VarysClient(clientName, masterUrl, listener, hostname);
                 client.start();
 
                 CoflowDescription desc = new CoflowDescription("DEFAULT", CoflowType.DEFAULT(), numOfSlaves, size, deadlineMillis);

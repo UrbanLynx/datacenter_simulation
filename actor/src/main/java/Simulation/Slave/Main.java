@@ -1,6 +1,7 @@
 package Simulation.Slave;
 
 import Simulation.Communicators.VarysCommunicator;
+import Simulation.Communicators.VarysRegistrator;
 import Simulation.Data.SimulationConfig;
 
 import java.io.IOException;
@@ -18,6 +19,7 @@ public class Main {
         }
         String hostname = args[0];
         VarysCommunicator.hostname = hostname;
+        VarysRegistrator.hostname = hostname;
 
         SimulationConfig config = getDefaultConfig();
         Router router = new Router(config);
