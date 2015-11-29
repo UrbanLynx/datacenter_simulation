@@ -3,6 +3,7 @@ package Simulation.Communicators;
 import Simulation.Data.DataGenerator;
 import Simulation.Data.Reducer;
 import Simulation.Data.SimTask;
+import Simulation.Logger.SimLogger;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -19,21 +20,21 @@ import java.util.logging.Logger;
 public class TraditionalCommunicator {
 
     public final static Logger traditionalCommunicatorLogger = Logger.getLogger(TraditionalCommunicator.class.getName());
+    public SimLogger loggers;
 
     public TraditionalCommunicator() throws IOException {
         configureTraditionalLogger();
     }
 
     private void configureTraditionalLogger() throws IOException {
-        traditionalCommunicatorLogger.addHandler(new FileHandler());
-        traditionalCommunicatorLogger.setLevel(Level.ALL);
+        loggers = new SimLogger("configs/hosts");
     }
 
     public String getSendLogContent(SimTask task, Reducer reducer) {
 
         StringBuilder buf = new StringBuilder();
         buf.append("send,");
-        buf.append("SystemTime:"+System.currentTimeMillis());
+        //buf.append("SystemTime:"+System.currentTimeMillis());
         buf.append(",CoflowID:"+task.coflowId);
         buf.append(",ReducerID:"+reducer.reducerId);
         buf.append(",ReducerSize:"+reducer.sizeKB);
@@ -48,7 +49,7 @@ public class TraditionalCommunicator {
 
         StringBuilder buf = new StringBuilder();
         buf.append("recieve,");
-        buf.append("SystemTime:"+System.currentTimeMillis());
+        //buf.append("SystemTime:"+System.currentTimeMillis());
         buf.append(",CoflowID:"+task.coflowId);
 
         return buf.toString();
@@ -65,8 +66,10 @@ public class TraditionalCommunicator {
                 ObjectOutputStream simOOS = new ObjectOutputStream(socket.getOutputStream());
 
                 Utils.safePrintln("Attempting to send " + reducer.sizeBytes() + " bytes to "+ reducer.address +":"+ reducer.port);
+                long timeStamp = System.currentTimeMillis();
                 simOOS.writeObject(generator.generateObject(reducer.sizeKB));
-                traditionalCommunicatorLogger.log(Level.INFO, getSendLogContent(task, reducer));
+                //traditionalCommunicatorLogger.log(Level.INFO, getSendLogContent(task, reducer));
+                //loggers.log(Level.INFO, reducer.address, String.valueOf(timeStamp) + getSendLogContent(task, reducer));
                 simOOS.close();
                 socket.close();
             }
@@ -87,7 +90,10 @@ public class TraditionalCommunicator {
 
                 ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
                 String data = (String) inputStream.readObject();
-                traditionalCommunicatorLogger.log(Level.INFO, getReceiveLogContent(task));
+                //traditionalCommunicatorLogger.log(Level.INFO, getReceiveLogContent(task));
+                long timeStamp = System.currentTimeMillis();
+                //loggers.log(Level.INFO, task.reducers.get(task.currentSlaveId).address,
+                //      String.valueOf(timeStamp) + getSendLogContent(task, task.reducers.get(task.currentSlaveId)));
                 inputStream.close();
                 socket.close();
 
