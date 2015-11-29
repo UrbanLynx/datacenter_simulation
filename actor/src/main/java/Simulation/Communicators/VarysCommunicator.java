@@ -25,7 +25,7 @@ public class VarysCommunicator {
     public SimLogger loggers;
 
     public VarysCommunicator(SimTask task){
-        configureVarysLogger(task);
+        //configureVarysLogger(task);
     }
 
     private void configureVarysLogger(SimTask task){

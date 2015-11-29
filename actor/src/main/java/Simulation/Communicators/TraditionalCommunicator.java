@@ -23,7 +23,7 @@ public class TraditionalCommunicator {
     public SimLogger loggers;
 
     public TraditionalCommunicator() throws IOException {
-        configureTraditionalLogger();
+        //configureTraditionalLogger();
     }
 
     private void configureTraditionalLogger() throws IOException {
