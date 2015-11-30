@@ -145,10 +145,10 @@ def config_host(net):
 
 def start_varys(net):
     # start varys master on ctrlhost
-    print("**** Starting varys-master daemon on control host ****\n") 
+    print("**** Starting varys-master daemon on control host h000 ****\n") 
     h000 = net.get('h000')
     #hctrl.cmd('cd; cd group6/varys-master; ./bin/varys-daemon.sh start varys.framework.master.Master --ip 10.0.0.2 --port 1606 --webui-port 16016')
-    result = h000.cmd('cd; cd group6/actor; ./utils/start-varys-all.sh')
+    result = h000.cmd('cd; cd group6/varys-master; ./bin/start-all.sh')
     print(result)
     # start varys slave on each host
     print("**** Starting varys-slave daemon on all the  hosts ****\n")
@@ -157,6 +157,24 @@ def start_varys(net):
         print("starting varys-slave on host %s" % name[:12])
         result = h.cmd('cd; cd group6/varys-master; ./bin/varys-daemon.sh start varys.framework.slave.Slave varys://10.0.0.2:1606')
         print(result)
+
+def start_simulation(net):
+    # start simulation master on ctrlhost
+    print("**** Starting simulation-master daemon on control host h000 ****\n") 
+    h000 = net.get('h000')
+    ip = h000.cmd('ifconfig | awk \'/inet addr/{print substr($2,6)}\' | grep -v \'127.0.0.1\'')
+    result = h000.cmd('cd; cd group6/actor; ./utils/start-master.sh %s' % ip[:8])
+    print(result)
+    # start simulation slave on each host
+    print("**** Starting simulation-slave daemon on all the  hosts ****\n")
+    for h in net.hosts:
+        if h000 != h:
+            name = h.cmd('hostname')
+            ip = h.cmd('ifconfig | awk \'/inet addr/{print substr($2,6)}\' | grep -v \'127.0.0.1\'')
+            print("starting simulation-slave on host %s" % name[:12])
+            result = h.cmd('cd; cd group6/actor; ./utils/start-slave.sh %s' % ip[:8])
+            print(result)
+
 
 def setup_fattree_topo(kval):
     # setup fat-tree topology
@@ -186,8 +204,11 @@ def setup_fattree_topo(kval):
     # start varys daemons
     start_varys(net)
 
+    # start simulation
+    #start_simulation(net)
+
     #dumpNodeConnections(net.hosts)
-    #net.pingAll()
+    net.pingAll()
 
     # grab mininet CLI
     CLI(net)
