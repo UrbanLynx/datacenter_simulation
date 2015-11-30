@@ -55,7 +55,7 @@ public class ConfigParser {
                 task.simulationType = config.simulationType;
 
                 task.reducers = new HashMap<Integer, Reducer>();
-                Reducer reducerItr = new Reducer();
+
                 // TODO: below src and dst info needs to be moved out of SimTask
 
 
@@ -70,7 +70,9 @@ public class ConfigParser {
 
                 task.reducerCount = Integer.parseInt(chunks[lIndex++]);
                 task.reducers = new HashMap<Integer, Reducer>();
+                task.reducersArr = new ArrayList<Reducer>();
                 for (int i = 0; i < task.reducerCount; i++) {
+                    Reducer reducerItr = new Reducer();
                     String reducer = chunks[lIndex++];
                     reducerItr.reducerId = Integer.parseInt(reducer.split(":")[0]);
 
@@ -80,6 +82,7 @@ public class ConfigParser {
                     reducerItr.address = config.hosts.get(reducerItr.reducerId).hostName;
                     reducerItr.port = (int) (Double.parseDouble(reducer.split(":")[2]));
                     task.reducers.put(reducerItr.reducerId, reducerItr);
+                    task.reducersArr.add(reducerItr);
                 }
 
                 tasks.add(task);

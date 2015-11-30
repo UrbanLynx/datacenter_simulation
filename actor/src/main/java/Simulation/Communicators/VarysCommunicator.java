@@ -66,8 +66,13 @@ public class VarysCommunicator {
 
     }
 
-    public String getDataId(String coflowId, int mapperId, int reducerId){
-        return "DATA_" + coflowId+ "_" + mapperId + "_" + reducerId;
+    /*public String getDataId(String coflowId, int mapperId, int reducerId, int port){
+        return "DATA_" + coflowId+ "_" + mapperId + "_" + reducerId + "_" + port;
+    }*/
+
+    public String getDataId(SimTask task, Reducer reducer){
+        return "DATA_" + task.coflowId+ "_" + task.currentSlaveId + "_" + task.currentSlaveTaskIndex + "_" +
+                reducer.reducerId + "_" + reducer.port;
     }
 
     public String getSenderId(SimTask task){
@@ -87,27 +92,31 @@ public class VarysCommunicator {
         VarysClient client = new VarysClient(getSenderId(task), task.masterUrl, listener);
         client.start();
 
-        for (Reducer reducer: task.reducers.values()){
-            String dataId = getDataId(task.coflowId, task.currentSlaveId, reducer.reducerId);
+        int i = 0;
+        for (Reducer reducer: task.reducersArr){
+            //String dataId = getDataId(task.coflowId, task.currentSlaveId, reducer.reducerId, reducer.port);
+            String dataId = getDataId(task,reducer);
             String object = generator.generateObject(reducer.sizeKB);
-            client.putObject(dataId, object, task.coflowId, reducer.sizeBytes(), 1, null);
+            client.putObject(dataId, object, task.coflowId, reducer.sizeBytes(), 5, null);
             Utils.safePrintln("Put fake data for " + reducer.reducerId);
 
             try {
                 Socket socket = Utils.connectTo(reducer.address, reducer.port, 2000);
                 ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+                Utils.safePrintln("[Mapper] Connected to " + reducer.address + reducer.port);
                 long timeStamp = System.currentTimeMillis();
                 outputStream.writeObject(dataId);
                 Utils.logger.log(Level.INFO, String.valueOf(timeStamp)+getSendLogContent(task,reducer));
                 //varysCommunicatorLogger.log(Level.INFO,getSendLogContent(task,reducer));
                 //loggers.log(Level.INFO, reducer.address, String.valueOf(timeStamp) + getSendLogContent(task, reducer));
+                //Utils.wait(5000);
                 outputStream.close();
                 socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
+        //Utils.wait(5000);
         client.stop();
     }
 
@@ -117,15 +126,17 @@ public class VarysCommunicator {
         VarysListener listener = new VarysListener();
         VarysClient client = new VarysClient(getReceiverId(task), task.masterUrl, listener);
         client.start();
+        Utils.safePrintln("Accepting on port "+task.currentSlavePort + ". Number of mappers "+task.mappers.size());
 
         try {
-            ServerSocket serverSocket = new ServerSocket(task.reducers.get(task.currentSlaveId).port);
+            ServerSocket serverSocket = new ServerSocket(task.currentSlavePort);
             int receivedNumberTimes = 0;
-            while (receivedNumberTimes != task.reducers.size()){
-                Utils.safePrintln("Accepting on port"+task.reducers.get(task.currentSlaveId).port);
+            while (receivedNumberTimes != task.mappers.size()){
+                Utils.safePrintln("Receive number " + receivedNumberTimes);
                 Socket socket = serverSocket.accept();
                 ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
                 String DATA_NAME = (String) inputStream.readObject();
+
                 inputStream.close();
                 socket.close();
 
@@ -140,10 +151,11 @@ public class VarysCommunicator {
                 receivedNumberTimes++;
             }
 
+            Utils.safePrintln("[Reducer] Received from all mappers");
             client.stop();
             serverSocket.close();
         } catch (Exception e) {
-            Utils.safePrintln(e.toString());
+            Utils.safePrintln("[Reducer] error: " + e.toString());
         }
     }
 }

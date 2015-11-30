@@ -1,5 +1,6 @@
 package Simulation.Master;
 
+import Simulation.Communicators.Utils;
 import Simulation.Communicators.VarysRegistrator;
 import Simulation.Data.*;
 
@@ -35,26 +36,36 @@ public class Master {
 
         // TODO: somehow wait for end of simulation
         System.out.println("All tasks accomplished!");
-        wait(200000);
+        Utils.wait(200000);
     }
 
 
 
     private void waitUntillNextTask(SimTask task) {
         // TODO: change startTime from double to int
-        wait((int)task.startTime - timeFromStartSimulation);
+        Utils.wait((int)task.startTime - timeFromStartSimulation);
         timeFromStartSimulation = (int)task.startTime;
     }
 
     public void executeTraditionalTask(SimTask simTask){
-        for (Reducer reducer: simTask.reducers.values()){
-            simTask.currentSlaveId = reducer.reducerId;
-            router.sendTaskTo(reducer.reducerId, new SimMessage(SimMessage.SimEventType.RECEIVE, simTask));
+        for (Reducer reducer: simTask.reducersArr){
+            Utils.safePrintln(String.valueOf(reducer.reducerId) +" "+ String.valueOf(reducer.port));
+            SimTask sendTask = new SimTask(simTask);
+            sendTask.currentSlaveId = reducer.reducerId;
+            sendTask.currentSlavePort = reducer.port;
+//            simTask.currentSlaveId = reducer.reducerId;
+//            simTask.currentSlavePort = reducer.port;
+            router.sendTaskTo(reducer.reducerId, new SimMessage(SimMessage.SimEventType.RECEIVE, sendTask));
         }
 
-        for (int hostIndex: simTask.mappers){
-            simTask.currentSlaveId = hostIndex;
-            router.sendTaskTo(hostIndex, new SimMessage(SimMessage.SimEventType.SEND, simTask));
+        for (int i=0; i<simTask.mappers.size(); i++){
+            int hostIndex = simTask.mappers.get(i);
+            simTask.currentSlaveTaskIndex = i;
+        /*}
+        for (int hostIndex: simTask.mappers){*/
+            SimTask sendTask = new SimTask(simTask);
+            sendTask.currentSlaveId = hostIndex;
+            router.sendTaskTo(hostIndex, new SimMessage(SimMessage.SimEventType.SEND, sendTask));
         }
     }
 
@@ -67,13 +78,7 @@ public class Master {
         executeTraditionalTask(simTask);
     }
 
-    public void wait(int millisec){
-        try {
-            Thread.sleep(millisec);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+
 
     public String registerCoflow(SimTask task){
         // TODO: change sizeKB, name of registrator, number of slaves(senders), config->task

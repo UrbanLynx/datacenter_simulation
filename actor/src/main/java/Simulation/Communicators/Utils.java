@@ -48,6 +48,14 @@ public class Utils {
         return socket;
     }
 
+    public static void wait(int millisec){
+        try {
+            Thread.sleep(millisec);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static String getData(long size){
         return new String("a");
     }
