@@ -39,24 +39,28 @@ public class VarysCommunicator {
     public String getSendLogContent(SimTask task, Reducer reducer) {
 
         StringBuilder buf = new StringBuilder();
-        buf.append("send,");
-        //buf.append("SystemTime:"+System.currentTimeMillis());
+        buf.append(",SEND");
         buf.append(",CoflowID:"+task.coflowId);
         buf.append(",ReducerID:"+reducer.reducerId);
         buf.append(",ReducerSize:"+reducer.sizeKB);
         buf.append(",ReducerAddress:"+reducer.address);
         buf.append(",ReducerPort:"+reducer.port);
+        buf.append("\n");
 
         return buf.toString();
 
     }
 
-    public String getReceiveLogContent(SimTask task) {
+    public String getReceiveLogContent(SimTask task, Reducer reducer) {
 
         StringBuilder buf = new StringBuilder();
-        buf.append("recieve,");
-        //buf.append("SystemTime:"+System.currentTimeMillis());
+        buf.append(",RECIEVE");
         buf.append(",CoflowID:"+task.coflowId);
+        buf.append(",ReducerID:"+reducer.reducerId);
+        buf.append(",ReducerSize:"+reducer.sizeKB);
+        buf.append(",ReducerAddress:"+reducer.address);
+        buf.append(",ReducerPort:"+reducer.port);
+        buf.append("\n");
 
         return buf.toString();
 
@@ -94,6 +98,7 @@ public class VarysCommunicator {
                 ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
                 long timeStamp = System.currentTimeMillis();
                 outputStream.writeObject(dataId);
+                Utils.logger.log(Level.INFO, String.valueOf(timeStamp)+getSendLogContent(task,reducer));
                 //varysCommunicatorLogger.log(Level.INFO,getSendLogContent(task,reducer));
                 //loggers.log(Level.INFO, reducer.address, String.valueOf(timeStamp) + getSendLogContent(task, reducer));
                 outputStream.close();
@@ -127,6 +132,7 @@ public class VarysCommunicator {
                 Utils.safePrintln("[Receiver]: Trying to retrieve " + DATA_NAME);
                 String object = client.getObject(DATA_NAME, task.coflowId);
                 long timeStamp = System.currentTimeMillis();
+                Utils.logger.log(Level.INFO, String.valueOf(timeStamp)+getReceiveLogContent(task, task.reducers.get(task.currentSlaveId)));
                 //varysCommunicatorLogger.log(Level.INFO,getReceiveLogContent(task));
                 //loggers.log(Level.INFO, task.reducers.get(task.currentSlaveId).address, String.valueOf(timeStamp) + getSendLogContent(task, task.reducers.get(task.currentSlaveId)));
                 Utils.safePrintln("[Receiver]: Got " + DATA_NAME + " of size "+object.length());

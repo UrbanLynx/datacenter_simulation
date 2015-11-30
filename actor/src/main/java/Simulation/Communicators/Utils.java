@@ -2,6 +2,7 @@ package Simulation.Communicators;
 
 import Simulation.Data.Reducer;
 import Simulation.Data.SimTask;
+import Simulation.Logger.SimLogger;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -15,6 +16,9 @@ import java.net.Socket;
  * Created by stanislavmushits on 23/11/15.
  */
 public class Utils {
+
+    public static SimLogger logger;
+
     public static void safePrintln(String s) {
         synchronized (System.out) {
             System.out.println(s);

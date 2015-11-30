@@ -33,24 +33,28 @@ public class TraditionalCommunicator {
     public String getSendLogContent(SimTask task, Reducer reducer) {
 
         StringBuilder buf = new StringBuilder();
-        buf.append("send,");
-        //buf.append("SystemTime:"+System.currentTimeMillis());
+        buf.append(",SEND");
         buf.append(",CoflowID:"+task.coflowId);
         buf.append(",ReducerID:"+reducer.reducerId);
         buf.append(",ReducerSize:"+reducer.sizeKB);
         buf.append(",ReducerAddress:"+reducer.address);
         buf.append(",ReducerPort:"+reducer.port);
+        buf.append("\n");
 
         return buf.toString();
 
     }
 
-    public String getReceiveLogContent(SimTask task) {
+    public String getReceiveLogContent(SimTask task, Reducer reducer) {
 
         StringBuilder buf = new StringBuilder();
-        buf.append("recieve,");
-        //buf.append("SystemTime:"+System.currentTimeMillis());
+        buf.append(",RECIEVE");
         buf.append(",CoflowID:"+task.coflowId);
+        buf.append(",ReducerID:"+reducer.reducerId);
+        buf.append(",ReducerSize:"+reducer.sizeKB);
+        buf.append(",ReducerAddress:"+reducer.address);
+        buf.append(",ReducerPort:"+reducer.port);
+        buf.append("\n");
 
         return buf.toString();
 
@@ -68,6 +72,7 @@ public class TraditionalCommunicator {
                 Utils.safePrintln("Attempting to send " + reducer.sizeBytes() + " bytes to "+ reducer.address +":"+ reducer.port);
                 long timeStamp = System.currentTimeMillis();
                 simOOS.writeObject(generator.generateObject(reducer.sizeKB));
+                Utils.logger.log(Level.INFO, String.valueOf(timeStamp)+getSendLogContent(task,reducer));
                 //traditionalCommunicatorLogger.log(Level.INFO, getSendLogContent(task, reducer));
                 //loggers.log(Level.INFO, reducer.address, String.valueOf(timeStamp) + getSendLogContent(task, reducer));
                 simOOS.close();
@@ -92,6 +97,7 @@ public class TraditionalCommunicator {
                 String data = (String) inputStream.readObject();
                 //traditionalCommunicatorLogger.log(Level.INFO, getReceiveLogContent(task));
                 long timeStamp = System.currentTimeMillis();
+                Utils.logger.log(Level.INFO, String.valueOf(timeStamp)+getReceiveLogContent(task,task.reducers.get(task.currentSlaveId)));
                 //loggers.log(Level.INFO, task.reducers.get(task.currentSlaveId).address,
                 //      String.valueOf(timeStamp) + getSendLogContent(task, task.reducers.get(task.currentSlaveId)));
                 inputStream.close();
