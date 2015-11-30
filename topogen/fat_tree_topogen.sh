@@ -14,5 +14,7 @@ sudo java -jar target/floodlight.jar >~/floodlight/floodlight.log 2>&1 &
 
 echo "Deploying fat-tree topology"
 sudo mn -c
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
 cd ~/group6/topogen
-sudo python ./fat_tree_topology.py $KVAL
+sudo python ./simdocker-fat.py $KVAL
