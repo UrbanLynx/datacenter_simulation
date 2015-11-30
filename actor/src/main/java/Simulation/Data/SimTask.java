@@ -10,6 +10,24 @@ import java.util.HashMap;
 
 public class SimTask implements Serializable{
 
+    public SimTask(){}
+    public SimTask(SimTask task){
+        this.simulationType = task.simulationType;
+        this.coflowId = task.coflowId;
+        this.masterUrl = task.masterUrl;
+        this.data = task.data;
+        this.startTime = task.startTime;
+        this.mapperCount = task.mapperCount;
+        this.mappers = task.mappers;
+        this.reducerCount = task.reducerCount;
+        this.reducers = task.reducers;
+        this.reducersArr = task.reducersArr;
+        this.currentSlaveId = task.currentSlaveId;
+        this.currentSlavePort = task.currentSlavePort;
+        this.id = task.id;
+        this.currentSlaveTaskIndex = task.currentSlaveTaskIndex;
+    }
+
     public SimulationType simulationType;
     public String coflowId;
     public String masterUrl;
@@ -21,8 +39,12 @@ public class SimTask implements Serializable{
     public ArrayList<Integer> mappers;
     public int reducerCount;
     public HashMap<Integer, Reducer> reducers;
+    public ArrayList<Reducer> reducersArr;
 
     public int currentSlaveId;
+    public int currentSlavePort;
+    public int currentSlaveTaskIndex;
+
     public String id;
 }
 

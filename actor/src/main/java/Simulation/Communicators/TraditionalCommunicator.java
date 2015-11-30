@@ -65,7 +65,7 @@ public class TraditionalCommunicator {
             DataGenerator generator = new DataGenerator();
             generator.generateUnitObject(1024);
 
-            for (Reducer reducer: task.reducers.values()){
+            for (Reducer reducer: task.reducersArr){
                 Socket socket = Utils.connectTo(reducer.address, reducer.port, 2000);
                 ObjectOutputStream simOOS = new ObjectOutputStream(socket.getOutputStream());
 
@@ -86,11 +86,11 @@ public class TraditionalCommunicator {
 
     public void receive(SimTask task) {
         try {
-            ServerSocket serverSocket = new ServerSocket(task.reducers.get(task.currentSlaveId).port);
-            Utils.safePrintln("Accepting on port "+task.reducers.get(task.currentSlaveId).port);
+            ServerSocket serverSocket = new ServerSocket(task.currentSlavePort);
+            Utils.safePrintln("Accepting on port "+task.currentSlavePort);
 
             int receivedNumberTimes = 0;
-            while (receivedNumberTimes != task.reducers.size()){
+            while (receivedNumberTimes != task.mappers.size()){
                 Socket socket = serverSocket.accept();
 
                 ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
