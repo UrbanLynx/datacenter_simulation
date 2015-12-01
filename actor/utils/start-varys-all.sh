@@ -9,7 +9,7 @@ fi
 
 # Building And Starting varys
 echo "BUILDING AND STARTING VARYS"
-cd ~/group6/varys-master
+cd ~/group6/aalo
 #./sbt/sbt package
 #./sbt/sbt publish-local
 export SCALA_HOME=/usr/bin/scala

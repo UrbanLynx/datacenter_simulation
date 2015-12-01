@@ -14,6 +14,9 @@ script=`basename "$this"`
 config_bin=`cd "$config_bin"; pwd`
 this="$config_bin/$script"
 
+export SCALA_HOME=/usr/bin/scala
 export VARYS_PREFIX=`dirname "$this"`/..
 export VARYS_HOME=${VARYS_PREFIX}
 export VARYS_CONF_DIR="$VARYS_HOME/conf"
+export VARYS_MASTER_IP=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1')
+export VARYS_LOCAL_IP=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1')
