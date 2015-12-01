@@ -153,7 +153,7 @@ def start_varys(net):
     print("\n**** Starting varys-master daemon on control host h000 ****\n") 
     h000 = net.get('h000')
     #hctrl.cmd('cd; cd group6/varys-master; ./bin/varys-daemon.sh start varys.framework.master.Master --ip 10.0.0.2 --port 1606 --webui-port 16016')
-    result = h000.cmd('cd; cd group6/varys-master; ./bin/start-all.sh')
+    result = h000.cmd('cd; cd group6/aalo; ./bin/start-all.sh')
     print(result)
     # start varys slave on each host
     print("\n**** Starting varys-slave daemon on all the  hosts ****\n")
@@ -162,7 +162,7 @@ def start_varys(net):
         if h000 != h:
             name = h.cmd('hostname')
             print("starting varys-slave on host %s" % name[:12])
-            result = h.cmd('cd; cd group6/varys-master; ./bin/varys-daemon.sh start varys.framework.slave.Slave varys://10.0.0.2:1606')
+            result = h.cmd('cd; cd group6/aalo; ./bin/varys-daemon.sh start varys.framework.slave.Slave varys://10.0.0.2:1606')
             print(result)
 
 def start_simulation(net):
