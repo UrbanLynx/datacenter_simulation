@@ -48,7 +48,7 @@ public class SimLogger {
         filename += timestamp + ".log";
 
         try {
-            logFile = new FileWriter("Logger/"+filename);
+            logFile = new FileWriter(filename);
         } catch (IOException e) {
             System.err.println("Couldn't open " + filename);
             System.exit(1);
