@@ -9,15 +9,17 @@ import varys.framework.client.ClientListener;
 // VarysListener copied from Stas' Actor code
 public class VarysListener implements ClientListener {
     public void connected(String id) {
-        System.out.println("Log: Connected to master, got client ID " + id);
+        Utils.safePrintln("Log: Connected to master, got client ID " + id);
     }
 
     public void  disconnected() {
-        System.out.println("Log: Disconnected from master");
+        Utils.safePrintln("Log: Disconnected from master");
         //System.exit(0);
     }
 
-    public void coflowRejected(String s, String s1) {
+    public void coflowRejected(int i, String s) {
 
     }
+
+
 }

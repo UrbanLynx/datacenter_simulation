@@ -5,9 +5,13 @@ import Simulation.Data.Reducer;
 import Simulation.Data.SimTask;
 import Simulation.Data.SimulationConfig;
 import Simulation.Logger.SimLogger;
+import varys.framework.CoflowDescription;
+import varys.framework.CoflowType;
 import varys.framework.client.VarysClient;
+import varys.framework.client.VarysOutputStream;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -84,6 +88,117 @@ public class VarysCommunicator {
     }
 
     public void send(SimTask task) {
+        try {
+            VarysListener listener = new VarysListener();
+            VarysClient client = new VarysClient(getSenderId(task), task.masterUrl, listener);
+            client.start();
+
+            CoflowDescription desc = new CoflowDescription("DEFAULT"+task.id, CoflowType.DEFAULT(), -1, -1);
+            int coflowId = client.registerCoflow(desc);
+            //Utils.wait(1000);
+
+            Utils.safePrintln("Master client id " + client.masterClientId());
+
+            DataGenerator generator = new DataGenerator();
+            generator.generateUnitObject(1024);
+
+            for (Reducer reducer: task.reducersArr){
+                Socket socket = Utils.connectTo(reducer.address, reducer.port, 2000);
+
+                ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+                //int coflowId = Integer.parseInt(task.coflowId);
+                Utils.safePrintln("Coflow accept "+coflowId);
+                VarysOutputStream simOOS = new VarysOutputStream(socket, coflowId);
+
+                Utils.safePrintln("Attempting to send " + reducer.sizeBytes() + " bytes to "+ reducer.address +":"+ reducer.port);
+                long timeStamp = System.currentTimeMillis();
+                simOOS.write(generator.generateObject(reducer.sizeKB).getBytes());
+                Utils.logger.log(Level.INFO, String.valueOf(timeStamp)+getSendLogContent(task,reducer));
+                //traditionalCommunicatorLogger.log(Level.INFO, getSendLogContent(task, reducer));
+                //loggers.log(Level.INFO, reducer.address, String.valueOf(timeStamp) + getSendLogContent(task, reducer));
+                simOOS.close();
+                socket.close();
+            }
+
+        } catch ( IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void receive(SimTask task) {
+        try {
+            ServerSocket serverSocket = new ServerSocket(task.currentSlavePort);
+            Utils.safePrintln("Accepting on port "+task.currentSlavePort);
+
+            int receivedNumberTimes = 0;
+            while (receivedNumberTimes != task.mappers.size()){
+                Socket socket = serverSocket.accept();
+
+                ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+                outputStream.flush();
+                //ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+                InputStream inputStream = socket.getInputStream();
+
+                byte[] data = new byte[(int)task.reducers.get(task.currentSlaveId).sizeBytes()];
+                int n = inputStream.read(data);
+                //traditionalCommunicatorLogger.log(Level.INFO, getReceiveLogContent(task));
+                long timeStamp = System.currentTimeMillis();
+                Utils.logger.log(Level.INFO, String.valueOf(timeStamp)+getReceiveLogContent(task,task.reducers.get(task.currentSlaveId)));
+                //loggers.log(Level.INFO, task.reducers.get(task.currentSlaveId).address,
+                //      String.valueOf(timeStamp) + getSendLogContent(task, task.reducers.get(task.currentSlaveId)));
+                inputStream.close();
+                socket.close();
+
+                Utils.safePrintln("[Reducer]: Got " + n + " bytes.");
+
+                receivedNumberTimes++;
+            }
+
+            serverSocket.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+/*    public void receive(SimTask task) {
+        try {
+
+            Utils.safePrintln("Accepting on port "+task.currentSlavePort);
+
+            VarysListener listener = new VarysListener();
+            VarysClient client = new VarysClient(getReceiverId(task), task.masterUrl, listener);
+            client.start();
+
+            ServerSocket serverSocket = new ServerSocket(task.currentSlavePort);
+
+            int receivedNumberTimes = 0;
+            while (receivedNumberTimes != task.mappers.size()){
+                Socket socket = serverSocket.accept();
+
+                ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+                VarysOutputStream outputStream = new VarysOutputStream(socket, Integer.getInteger(task.coflowId));
+
+                //String data = (String) inputStream.readObject();
+                //traditionalCommunicatorLogger.log(Level.INFO, getReceiveLogContent(task));
+                long timeStamp = System.currentTimeMillis();
+                Utils.logger.log(Level.INFO, String.valueOf(timeStamp)+getReceiveLogContent(task,task.reducers.get(task.currentSlaveId)));
+                //loggers.log(Level.INFO, task.reducers.get(task.currentSlaveId).address,
+                //      String.valueOf(timeStamp) + getSendLogContent(task, task.reducers.get(task.currentSlaveId)));
+                inputStream.close();
+                socket.close();
+
+                Utils.safePrintln("[Reducer]: Got " + data.length() + " bytes.");
+
+                receivedNumberTimes++;
+            }
+
+            serverSocket.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }*/
+
+/*    public void send(SimTask task) {
         //task.data.dataId = getDataId(task);
         DataGenerator generator = new DataGenerator();
         generator.generateUnitObject(1024);
@@ -157,5 +272,5 @@ public class VarysCommunicator {
         } catch (Exception e) {
             Utils.safePrintln("[Reducer] error: " + e.toString());
         }
-    }
+    }*/
 }

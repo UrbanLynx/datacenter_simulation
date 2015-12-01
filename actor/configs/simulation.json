@@ -2,8 +2,8 @@
   "taskFile": "configs/tasks",
   "hostsFile": "configs/hosts",
   "startTime": "2015-10-30T23:01:47+00:00",
-  "simulationType": "TRADITIONAL",
-  "masterUrl": "varys://192.168.1.86:1606",
+  "simulationType": "VARYS",
+  "masterUrl": "varys://Stanislavs-MacBook-Air.local:1606",
   "slavePort": 5000,
 
   "doGenerateFiles": true,

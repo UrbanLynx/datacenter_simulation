@@ -28,7 +28,7 @@ public class VarysRegistrator{
     public String registerCoflow() {
         final CountDownLatch latch = new CountDownLatch(1);
 
-        Thread clientThread = new Thread(clientName){
+        final Thread clientThread = new Thread(clientName){
             @Override
             public void run(){
                 int deadlineMillis = 10000;
@@ -37,8 +37,12 @@ public class VarysRegistrator{
                 client = new VarysClient(clientName, masterUrl, listener);
                 client.start();
 
-                CoflowDescription desc = new CoflowDescription("DEFAULT", CoflowType.DEFAULT(), numOfSlaves, size, deadlineMillis);
-                coflowId = client.registerCoflow(desc);
+                Utils.safePrintln("Master client before coflow "+ client.masterClientId());
+
+                CoflowDescription desc = new CoflowDescription("DEFAULT", CoflowType.DEFAULT(), numOfSlaves, size);
+                coflowId = String.valueOf(client.registerCoflow(desc));
+
+                Utils.safePrintln("Master client after coflow "+ client.masterClientId());
 
                 safePrintln("Registered coflow " + coflowId);
 
