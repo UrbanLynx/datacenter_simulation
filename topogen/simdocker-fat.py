@@ -15,6 +15,7 @@ from mininet.log import setLogLevel, info
 import os
 #import logging
 import sys
+import time
 
 #logging.basicConfig(level=logging.DEBUG)
 #logger = logging.getLogger( __name__ )
@@ -79,7 +80,7 @@ class fat_tree_topo(Topo):
         for i in range(0, kval):
             for j in range(0, (kval/2)):
                 for k in range (0, kval/2):
-                    self.host.append(self.addHost('h%d%d%d' % (i, j, k), ip='10.%d.%d.%d/8' % (i, j, (k+2)), cls=Docker, dimage="aborase/simdocker:v2"))
+                    self.host.append(self.addHost('h%d%d%d' % (i, j, k), ip='10.%d.%d.%d/8' % (i, j, (k+2)), cls=Docker, dimage="aborase/simdocker:v2.1"))
 
     def link_setup(self, kval):
         # setup links between core and aggregation swtches
@@ -126,17 +127,21 @@ def enable_stp(kval):
 
 def config_host(net):
     # configure /etc/hosts file of each docker host
+    print("**** Configuring each dockernet host ****\n")
     ent = []
     for h in net.hosts:
+        time.sleep(1)
         name = h.cmd('hostname')
         #print(name[:12])
         ip = h.cmd('ifconfig | awk \'/inet addr/{print substr($2,6)}\' | grep -v \'127.0.0.1\'')
-        #print(ip[:8])
+        #ip = h.cmd('ifconfig | grep -Eo \'inet (addr:)?([0-9]*\\.){3}[0-9]*\' | grep -Eo \'([0-9]*\\.){3}[0-9]*\' | grep -v \'127.0.0.1\'')
         # Collect all ip hostname pairs in a list
         ent.append(ip[:8] + ' ' +name[:12])
         # add entry for localhost in /etc/hosts
         h.cmd('echo \"127.0.0.1 localhost\" >> /etc/hosts')
-    print ent
+
+    for e in ent:
+        print e
 
     # Now add every ent entry to each host's /etc/hosts file
     for h in net.hosts:
@@ -145,29 +150,32 @@ def config_host(net):
 
 def start_varys(net):
     # start varys master on ctrlhost
-    print("**** Starting varys-master daemon on control host h000 ****\n") 
+    print("\n**** Starting varys-master daemon on control host h000 ****\n") 
     h000 = net.get('h000')
     #hctrl.cmd('cd; cd group6/varys-master; ./bin/varys-daemon.sh start varys.framework.master.Master --ip 10.0.0.2 --port 1606 --webui-port 16016')
     result = h000.cmd('cd; cd group6/varys-master; ./bin/start-all.sh')
     print(result)
     # start varys slave on each host
-    print("**** Starting varys-slave daemon on all the  hosts ****\n")
+    print("\n**** Starting varys-slave daemon on all the  hosts ****\n")
     for h in net.hosts:
-        name = h.cmd('hostname')
-        print("starting varys-slave on host %s" % name[:12])
-        result = h.cmd('cd; cd group6/varys-master; ./bin/varys-daemon.sh start varys.framework.slave.Slave varys://10.0.0.2:1606')
-        print(result)
+        time.sleep(1)
+        if h000 != h:
+            name = h.cmd('hostname')
+            print("starting varys-slave on host %s" % name[:12])
+            result = h.cmd('cd; cd group6/varys-master; ./bin/varys-daemon.sh start varys.framework.slave.Slave varys://10.0.0.2:1606')
+            print(result)
 
 def start_simulation(net):
     # start simulation master on ctrlhost
-    print("**** Starting simulation-master daemon on control host h000 ****\n") 
+    print("\n**** Starting simulation-master daemon on control host h000 ****\n") 
     h000 = net.get('h000')
     ip = h000.cmd('ifconfig | awk \'/inet addr/{print substr($2,6)}\' | grep -v \'127.0.0.1\'')
     result = h000.cmd('cd; cd group6/actor; ./utils/start-master.sh %s' % ip[:8])
     print(result)
     # start simulation slave on each host
-    print("**** Starting simulation-slave daemon on all the  hosts ****\n")
+    print("\n**** Starting simulation-slave daemon on all the  hosts ****\n")
     for h in net.hosts:
+        time.sleep(1)
         if h000 != h:
             name = h.cmd('hostname')
             ip = h.cmd('ifconfig | awk \'/inet addr/{print substr($2,6)}\' | grep -v \'127.0.0.1\'')
@@ -175,44 +183,54 @@ def start_simulation(net):
             result = h.cmd('cd; cd group6/actor; ./utils/start-slave.sh %s' % ip[:8])
             print(result)
 
-
 def setup_fattree_topo(kval):
     # setup fat-tree topology
-    print("**** Setting up fat-tree topology ****\n")
+    print("\n**** Setting up fat-tree topology ****\n")
     topo = fat_tree_topo()
     topo.setup_topo(kval)
 
-    print("**** Setting up all the network links ****\n")
+    print("\n**** Setting up all the network links ****\n")
     topo.link_setup(kval)
 
     # instantiate mininet network
-    print("**** Instantiating netwrok ****")
+    print("\n**** Instantiating netwrok ****\n")
     net = Mininet(topo=topo, controller=None)
     net.addController('floodlight', controller=RemoteController, ip="127.0.0.1", port=6653)
 
     # start the netwrok
     net.start()
+    print("\n**** Sleeping for 10 seconds ****\n")
+    time.sleep(10)
 
-    # start sshd on each host
-    #enable_ssh(net)
     # configure the hosts
     config_host(net)
 
-    # enable STP
+    #enable STP
+    print("\n**** Sleeping for 5 seconds ****\n")
+    time.sleep(5)
     enable_stp(kval)
 
+    # check connectivity
+    print("\n**** Sleeping for 5 seconds ****\n")
+    time.sleep(5)
+    net.pingAll()
+
     # start varys daemons
+    print("\n**** Sleeping for 5 seconds ****\n")
+    time.sleep(5)
     start_varys(net)
 
     # start simulation
-    #start_simulation(net)
-
-    #dumpNodeConnections(net.hosts)
-    net.pingAll()
+    print("\n**** Sleeping for 5 seconds ****\n")
+    time.sleep(5)
+    start_simulation(net)
 
     # grab mininet CLI
     CLI(net)
-    #disable_ssh(net)
+
+    # dump logs
+    #collect_data(net)
+
     net.stop()
 
 if __name__ == '__main__':
