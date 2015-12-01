@@ -43,12 +43,12 @@ public class SimLogger {
     }
 
     public void init(String filename) {
-        DateTimeFormatter dtf = DateTimeFormat.forPattern("MM-dd-yyyy_HH:mm:ss");
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("_MM-dd-yyyy_HH:mm:ss");
         String timestamp = new DateTime().toString(dtf);
-        filename += timestamp + ".txt";
+        filename += timestamp + ".log";
 
         try {
-            logFile = new FileWriter(filename);
+            logFile = new FileWriter("Logger/"+filename);
         } catch (IOException e) {
             System.err.println("Couldn't open " + filename);
             System.exit(1);
