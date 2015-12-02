@@ -33,10 +33,10 @@ public class Utils {
             try
             {
                 socket = new Socket();
-                socket.connect(new InetSocketAddress(host, port), timeout);
+                socket.connect(new InetSocketAddress(host, port));
                 scanning=false;
             }
-            catch(ConnectException e) {
+            catch(Exception e) {
                 System.out.println("Connect to "+host+":"+port+" failed, waiting and trying again");
                 try {
                     Thread.sleep(timeout);

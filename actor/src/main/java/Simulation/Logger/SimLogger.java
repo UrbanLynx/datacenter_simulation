@@ -1,5 +1,6 @@
 package Simulation.Logger;
 
+import Simulation.Communicators.Utils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -72,6 +73,7 @@ public class SimLogger {
                 while (latch.getCount() == 1){
                     try {
                         LogWraper wraper = logsQueue.take();
+                        Utils.safePrintln(wraper.toString());
                         writeToFile(wraper);
                     } catch (InterruptedException e) {
                         e.printStackTrace();

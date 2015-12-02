@@ -10,12 +10,11 @@ import varys.framework.CoflowType;
 import varys.framework.client.VarysClient;
 import varys.framework.client.VarysOutputStream;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,30 +39,36 @@ public class VarysCommunicator {
         }
     }
 
-    public String getSendLogContent(SimTask task, Reducer reducer) {
+    public String getSendLogContent(SimTask task, Reducer reducer, String message) throws UnknownHostException {
 
         StringBuilder buf = new StringBuilder();
         buf.append(",SEND");
+        buf.append(",TaskID:"+task.id);
+        buf.append(",MapperAddr:"+InetAddress.getLocalHost().toString());
         buf.append(",CoflowID:"+task.coflowId);
         buf.append(",ReducerID:"+reducer.reducerId);
         buf.append(",ReducerSize:"+reducer.sizeKB);
         buf.append(",ReducerAddress:"+reducer.address);
         buf.append(",ReducerPort:"+reducer.port);
+        buf.append(",Action:"+message);
         buf.append("\n");
 
         return buf.toString();
 
     }
 
-    public String getReceiveLogContent(SimTask task, Reducer reducer) {
+    public String getReceiveLogContent(SimTask task, Reducer reducer, String message) throws UnknownHostException {
 
         StringBuilder buf = new StringBuilder();
         buf.append(",RECIEVE");
+        buf.append(",TaskID:"+task.id);
+        buf.append(",ReducerAddr:"+InetAddress.getLocalHost().toString());
         buf.append(",CoflowID:"+task.coflowId);
         buf.append(",ReducerID:"+reducer.reducerId);
         buf.append(",ReducerSize:"+reducer.sizeKB);
         buf.append(",ReducerAddress:"+reducer.address);
         buf.append(",ReducerPort:"+reducer.port);
+        buf.append(",Action:"+message);
         buf.append("\n");
 
         return buf.toString();
@@ -89,38 +94,45 @@ public class VarysCommunicator {
 
     public void send(SimTask task) {
         try {
+            //Utils.logger.log(Level.INFO, String.format("%1$s, task %2$d, slave %3$d started with coflow %4$d",
+            //        "MAPPER", task.id, task.currentSlaveId, InetAddress.getLocalHost().toString(), task.coflowId));
+
             VarysListener listener = new VarysListener();
             VarysClient client = new VarysClient(getSenderId(task), task.masterUrl, listener);
             client.start();
 
             CoflowDescription desc = new CoflowDescription("DEFAULT"+task.id, CoflowType.DEFAULT(), -1, -1);
             int coflowId = client.registerCoflow(desc);
-            //Utils.wait(1000);
+            //int coflowId = Integer.parseInt(task.coflowId);
 
-            Utils.safePrintln("Master client id " + client.masterClientId());
+
+            //Utils.safePrintln("Master client id " + client.masterClientId());
 
             DataGenerator generator = new DataGenerator();
             generator.generateUnitObject(1024);
 
             for (Reducer reducer: task.reducersArr){
+                Utils.logger.log(Level.INFO, getSendLogContent(task,reducer, "trying to connect"));
                 Socket socket = Utils.connectTo(reducer.address, reducer.port, 2000);
 
-                ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
-                //int coflowId = Integer.parseInt(task.coflowId);
-                Utils.safePrintln("Coflow accept "+coflowId);
+                InputStream inputStream = socket.getInputStream();
+                Utils.logger.log(Level.INFO, getSendLogContent(task,reducer, "connected"));
                 VarysOutputStream simOOS = new VarysOutputStream(socket, coflowId);
 
-                Utils.safePrintln("Attempting to send " + reducer.sizeBytes() + " bytes to "+ reducer.address +":"+ reducer.port);
+                Utils.logger.log(Level.INFO, getSendLogContent(task,reducer, "attempt to send"));
+
                 long timeStamp = System.currentTimeMillis();
                 simOOS.write(generator.generateObject(reducer.sizeKB).getBytes());
-                Utils.logger.log(Level.INFO, String.valueOf(timeStamp)+getSendLogContent(task,reducer));
+                simOOS.flush();
+
+                Utils.logger.log(Level.INFO, String.valueOf(timeStamp)+getSendLogContent(task,reducer, "finished"));
                 //traditionalCommunicatorLogger.log(Level.INFO, getSendLogContent(task, reducer));
                 //loggers.log(Level.INFO, reducer.address, String.valueOf(timeStamp) + getSendLogContent(task, reducer));
                 simOOS.close();
                 socket.close();
             }
 
-        } catch ( IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -128,28 +140,31 @@ public class VarysCommunicator {
     public void receive(SimTask task) {
         try {
             ServerSocket serverSocket = new ServerSocket(task.currentSlavePort);
-            Utils.safePrintln("Accepting on port "+task.currentSlavePort);
+            //Utils.safePrintln("Accepting on port "+task.currentSlavePort);
 
             int receivedNumberTimes = 0;
             while (receivedNumberTimes != task.mappers.size()){
+                Utils.logger.log(Level.INFO, getReceiveLogContent(task,task.reducers.get(task.currentSlaveId), "accepting"));
+
                 Socket socket = serverSocket.accept();
 
-                ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+                OutputStream outputStream = socket.getOutputStream();
                 outputStream.flush();
                 //ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
                 InputStream inputStream = socket.getInputStream();
+                Utils.logger.log(Level.INFO, getReceiveLogContent(task,task.reducers.get(task.currentSlaveId), "connected"));
 
                 byte[] data = new byte[(int)task.reducers.get(task.currentSlaveId).sizeBytes()];
                 int n = inputStream.read(data);
                 //traditionalCommunicatorLogger.log(Level.INFO, getReceiveLogContent(task));
                 long timeStamp = System.currentTimeMillis();
-                Utils.logger.log(Level.INFO, String.valueOf(timeStamp)+getReceiveLogContent(task,task.reducers.get(task.currentSlaveId)));
-                //loggers.log(Level.INFO, task.reducers.get(task.currentSlaveId).address,
-                //      String.valueOf(timeStamp) + getSendLogContent(task, task.reducers.get(task.currentSlaveId)));
+
+                Utils.logger.log(Level.INFO, String.valueOf(timeStamp)+getReceiveLogContent(task,task.reducers.get(task.currentSlaveId), "data received"));
+
                 inputStream.close();
                 socket.close();
 
-                Utils.safePrintln("[Reducer]: Got " + n + " bytes.");
+                //Utils.safePrintln("[Reducer]: Got " + n + " bytes.");
 
                 receivedNumberTimes++;
             }
