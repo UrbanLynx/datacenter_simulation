@@ -28,7 +28,6 @@ import java.util.logging.Logger;
 public class Router {
     Map<Integer, ConnectionDesc> connections;
     SimulationConfig config;
-    Logger masterLogger = Logger.getLogger(Router.class.getName());
 
     public Router(SimulationConfig simConfig) throws IOException {
         config = simConfig;
@@ -37,14 +36,6 @@ public class Router {
         connectToSlaves();
 
         System.out.println("Configuring logger for Master");
-        configureMasterLogger();
-    }
-
-    private void configureMasterLogger() throws IOException {
-
-        masterLogger.addHandler(new FileHandler("masterLog.xml"));
-        masterLogger.setLevel(Level.ALL);
-
     }
 
     private void connectToSlaves() {
@@ -93,7 +84,6 @@ public class Router {
 
     public void sendTaskTo(int hostIndex, SimMessage simMessage) {
         System.out.println("Sending task to host " + hostIndex);
-        masterLogger.log(Level.INFO,getLogContent(simMessage));
 
         try {
             connections.get(hostIndex).oos.writeObject(simMessage);

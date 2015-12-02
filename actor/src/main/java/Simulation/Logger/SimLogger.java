@@ -34,11 +34,19 @@ public class SimLogger {
         }
     }
 
-    FileWriter logFile;
-    BlockingQueue<LogWraper> logsQueue = new LinkedBlockingQueue<LogWraper>();
-    final CountDownLatch latch = new CountDownLatch(1);
+    private String logFolder = "logs";
+    private FileWriter logFile;
+    private BlockingQueue<LogWraper> logsQueue = new LinkedBlockingQueue<LogWraper>();
+    private final CountDownLatch latch = new CountDownLatch(1);
 
-    public SimLogger(String filename) throws FileNotFoundException {
+    private Boolean outputFile;
+    private Boolean outputConsole;
+
+
+
+    public SimLogger(String filename, Boolean outFile, Boolean outConsole) throws FileNotFoundException {
+        outputFile = outFile;
+        outputConsole = outConsole;
         init(filename);
         printToFile();
     }
@@ -49,7 +57,10 @@ public class SimLogger {
         filename += timestamp + ".log";
 
         try {
-            logFile = new FileWriter(filename);
+            File theFile = new File(logFolder);
+            theFile.mkdirs();
+
+            logFile = new FileWriter(logFolder + "/" +filename);
         } catch (IOException e) {
             System.err.println("Couldn't open " + filename);
             System.exit(1);
@@ -73,8 +84,12 @@ public class SimLogger {
                 while (latch.getCount() == 1){
                     try {
                         LogWraper wraper = logsQueue.take();
-                        Utils.safePrintln(wraper.toString());
-                        writeToFile(wraper);
+                        if (outputConsole){
+                            Utils.safePrintln(wraper.logMessage);
+                        }
+                        if (outputFile){
+                            writeToFile(wraper);
+                        }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -89,7 +104,8 @@ public class SimLogger {
 
     public void stopLogger(){
         latch.countDown();
-        System.out.println("Finish work");
+        log(Level.INFO, "logger exit");
+        //System.out.println("Finish work");
     }
 
     private void closeFile() {

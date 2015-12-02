@@ -61,4 +61,5 @@ buildNumber.properties
 .mvn/timing.properties
 
 # ignore log files
-*.log
+/logs
+.log

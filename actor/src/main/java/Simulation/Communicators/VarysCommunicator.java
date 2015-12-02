@@ -24,25 +24,10 @@ import java.util.logging.Logger;
  */
 public class VarysCommunicator {
 
-    public final static Logger varysCommunicatorLogger = Logger.getLogger(VarysCommunicator.class.getName());
-    public SimLogger loggers;
-
-    public VarysCommunicator(SimTask task){
-        //configureVarysLogger(task);
-    }
-
-    private void configureVarysLogger(SimTask task){
-        try {
-            loggers = new SimLogger("configs/hosts");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public String getSendLogContent(SimTask task, Reducer reducer, String message) throws UnknownHostException {
 
         StringBuilder buf = new StringBuilder();
-        buf.append(",SEND");
+        buf.append("SEND");
         buf.append(",TaskID:"+task.id);
         buf.append(",MapperAddr:"+InetAddress.getLocalHost().toString());
         buf.append(",CoflowID:"+task.coflowId);
@@ -60,7 +45,7 @@ public class VarysCommunicator {
     public String getReceiveLogContent(SimTask task, Reducer reducer, String message) throws UnknownHostException {
 
         StringBuilder buf = new StringBuilder();
-        buf.append(",RECIEVE");
+        buf.append("RECIEVE");
         buf.append(",TaskID:"+task.id);
         buf.append(",ReducerAddr:"+InetAddress.getLocalHost().toString());
         buf.append(",CoflowID:"+task.coflowId);
@@ -105,7 +90,6 @@ public class VarysCommunicator {
             int coflowId = client.registerCoflow(desc);
             //int coflowId = Integer.parseInt(task.coflowId);
 
-
             //Utils.safePrintln("Master client id " + client.masterClientId());
 
             DataGenerator generator = new DataGenerator();
@@ -117,24 +101,35 @@ public class VarysCommunicator {
 
                 InputStream inputStream = socket.getInputStream();
                 Utils.logger.log(Level.INFO, getSendLogContent(task,reducer, "connected"));
-                VarysOutputStream simOOS = new VarysOutputStream(socket, coflowId);
+
+                OutputStream output = null;
+                if (doUseCoflow(reducer, task)){
+                    Utils.safePrintln(getSendLogContent(task,reducer, "use coflow"));
+                    output = new VarysOutputStream(socket, coflowId);
+                } else{
+                    Utils.safePrintln(getSendLogContent(task,reducer, "no coflow"));
+                    output = socket.getOutputStream();
+                }
 
                 Utils.logger.log(Level.INFO, getSendLogContent(task,reducer, "attempt to send"));
 
                 long timeStamp = System.currentTimeMillis();
-                simOOS.write(generator.generateObject(reducer.sizeKB).getBytes());
-                simOOS.flush();
+                output.write(generator.generateObject(reducer.sizeKB).getBytes());
+                output.flush();
 
                 Utils.logger.log(Level.INFO, String.valueOf(timeStamp)+getSendLogContent(task,reducer, "finished"));
-                //traditionalCommunicatorLogger.log(Level.INFO, getSendLogContent(task, reducer));
-                //loggers.log(Level.INFO, reducer.address, String.valueOf(timeStamp) + getSendLogContent(task, reducer));
-                simOOS.close();
+
+                output.close();
                 socket.close();
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean doUseCoflow(Reducer reducer, SimTask task) {
+        return !reducer.doNotRegisterFlow.contains(task.currentSlaveTaskIndex);
     }
 
     public void receive(SimTask task) {

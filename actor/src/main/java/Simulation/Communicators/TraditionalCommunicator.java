@@ -19,17 +19,6 @@ import java.util.logging.Logger;
  */
 public class TraditionalCommunicator {
 
-    public final static Logger traditionalCommunicatorLogger = Logger.getLogger(TraditionalCommunicator.class.getName());
-    public SimLogger loggers;
-
-    public TraditionalCommunicator() throws IOException {
-        //configureTraditionalLogger();
-    }
-
-    private void configureTraditionalLogger() throws IOException {
-        loggers = new SimLogger("configs/hosts");
-    }
-
     public String getSendLogContent(SimTask task, Reducer reducer) {
 
         StringBuilder buf = new StringBuilder();

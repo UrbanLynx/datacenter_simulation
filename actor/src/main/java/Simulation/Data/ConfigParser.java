@@ -8,7 +8,9 @@ import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 // import java.util.Iterator;
 
@@ -75,12 +77,21 @@ public class ConfigParser {
                     Reducer reducerItr = new Reducer();
                     String reducer = chunks[lIndex++];
                     reducerItr.reducerId = Integer.parseInt(reducer.split(":")[0]);
-
                     reducerItr.sizeKB = (int) (long) (Double.parseDouble(reducer.split(":")[1]));
 
                     // TODO: change hosts to Map
                     reducerItr.address = config.hosts.get(reducerItr.reducerId).hostName;
                     reducerItr.port = (int) (Double.parseDouble(reducer.split(":")[2]));
+
+                    reducerItr.doNotRegisterFlow = new ArrayList<Integer>();
+                    if (reducer.split(":").length > 3){
+                        String mappersNotRegister = reducer.split(":")[3];
+                        List<String> mappersArr = Arrays.asList(mappersNotRegister.split(","));
+                        for (String mapp: mappersArr){
+                            reducerItr.doNotRegisterFlow.add(Integer.parseInt(mapp));
+                        }
+                    }
+
                     task.reducers.put(reducerItr.reducerId, reducerItr);
                     task.reducersArr.add(reducerItr);
                 }
