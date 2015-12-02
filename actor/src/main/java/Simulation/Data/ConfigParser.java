@@ -7,6 +7,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -61,8 +62,11 @@ public class ConfigParser {
                 // TODO: below src and dst info needs to be moved out of SimTask
 
 
-                task.id = chunks[lIndex++];
+                task.id = Integer.parseInt(chunks[lIndex++]);
                 task.startTime = Integer.parseInt(chunks[lIndex++]);
+
+                task.masterListenerIp = config.masterListenerIp;
+                task.masterListenerPort = config.masterListenerPort;
 
                 task.mapperCount = Integer.parseInt(chunks[lIndex++]);
                 task.mappers = new ArrayList<Integer>();
@@ -147,6 +151,9 @@ public class ConfigParser {
             config.simulationType = SimulationType.valueOf((String) jsonObject.get("simulationType"));
             config.slavePort = ((Long) jsonObject.get("slavePort")).intValue();
             config.varysMasterUrl = (String) jsonObject.get("masterUrl");
+
+            config.masterListenerIp = (String) jsonObject.get("masterListenerIp");
+            config.masterListenerPort = (int) (long) (Long) jsonObject.get("masterListenerPort");
 
             /* TODO: use in case of big objects > 1 MB
             config.doGenerateFiles = (Boolean) jsonObject.get("doGenerateFiles");

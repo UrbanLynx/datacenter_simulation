@@ -25,7 +25,7 @@ public class Utils {
         }
     }
 
-    public static Socket connectTo(String host, int port, int timeout) throws IOException {
+    public static Socket connectTo(String host, int port, int timeout) {
         Socket socket = null;
         boolean scanning=true;
         while(scanning)
@@ -46,6 +46,20 @@ public class Utils {
             }
         }
         return socket;
+    }
+
+    public static void reportFinishToMaster(SimTask task){
+        try{
+            Socket socket = Utils.connectTo(task.masterListenerIp, task.masterListenerPort, 1000);
+            ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
+            output.writeObject(task);
+            output.close();
+            socket.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     public static void wait(int millisec){

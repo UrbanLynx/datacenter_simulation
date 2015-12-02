@@ -1,5 +1,6 @@
 package Simulation.Slave;
 
+import Simulation.Communicators.Utils;
 import Simulation.Data.SimMessage;
 import Simulation.Data.SimTask;
 import Simulation.Data.SimulationConfig;
@@ -41,8 +42,10 @@ public class Router {
             do {
                 System.out.println("Awaiting simulation instructions...\n");
                 message = (SimMessage) ctrlOIS.readObject();
-                message.outputToMaster = ctrlOOS;
-                startNewTask(message);
+                if (message.eventType != SimMessage.SimEventType.TERMINATE){
+                    message.outputToMaster = ctrlOOS;
+                    startNewTask(message);
+                }
             } while (message.eventType != SimMessage.SimEventType.TERMINATE);
 
             ctrlOIS.close();
@@ -53,6 +56,7 @@ public class Router {
         } finally {
             ctrlClientSocket.close();
         }
+        Utils.safePrintln("Slave finished all tasks and exited.");
     }
 
     public void startNewTask(SimMessage message) throws Exception {

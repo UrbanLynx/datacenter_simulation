@@ -28,6 +28,7 @@ public class Main {
         master.conductSimulation(simConfig, simTasks);
 
         Utils.logger.stopLogger();
-
+        System.exit(0);
+        //Utils.safePrintln("Master conducted simulation and exited.");
     }
 }

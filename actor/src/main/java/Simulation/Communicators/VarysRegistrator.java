@@ -69,6 +69,12 @@ public class VarysRegistrator{
 
     public void unregisterCoflow(){
         // TODO: unregister
+        VarysListener listener = new VarysListener();
+        //client = new VarysClient(clientName, masterUrl, listener);
+        //client.start();
+        client.unregisterCoflow(Integer.parseInt(coflowId));
+        client.stop();
+        //client.stop();
     }
 
     public void safePrintln(String s) {

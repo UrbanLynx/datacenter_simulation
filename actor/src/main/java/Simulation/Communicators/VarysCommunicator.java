@@ -82,13 +82,13 @@ public class VarysCommunicator {
             //Utils.logger.log(Level.INFO, String.format("%1$s, task %2$d, slave %3$d started with coflow %4$d",
             //        "MAPPER", task.id, task.currentSlaveId, InetAddress.getLocalHost().toString(), task.coflowId));
 
-            VarysListener listener = new VarysListener();
-            VarysClient client = new VarysClient(getSenderId(task), task.masterUrl, listener);
-            client.start();
+            //VarysListener listener = new VarysListener();
+            //VarysClient client = new VarysClient(getSenderId(task), task.masterUrl, listener);
+            //client.start();
 
-            CoflowDescription desc = new CoflowDescription("DEFAULT"+task.id, CoflowType.DEFAULT(), -1, -1);
-            int coflowId = client.registerCoflow(desc);
-            //int coflowId = Integer.parseInt(task.coflowId);
+            //CoflowDescription desc = new CoflowDescription("DEFAULT"+task.id, CoflowType.DEFAULT(), -1, -1);
+            //int coflowId = client.registerCoflow(desc);
+            int coflowId = Integer.parseInt(task.coflowId);
 
             //Utils.safePrintln("Master client id " + client.masterClientId());
 
@@ -165,6 +165,8 @@ public class VarysCommunicator {
             }
 
             serverSocket.close();
+
+            Utils.reportFinishToMaster(task);
         } catch (Exception e) {
             e.printStackTrace();
         }

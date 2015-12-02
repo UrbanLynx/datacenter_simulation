@@ -10,6 +10,8 @@ import java.util.HashMap;
 
 public class SimTask implements Serializable{
 
+
+
     public SimTask(){}
     public SimTask(SimTask task){
         this.simulationType = task.simulationType;
@@ -26,6 +28,8 @@ public class SimTask implements Serializable{
         this.currentSlavePort = task.currentSlavePort;
         this.id = task.id;
         this.currentSlaveTaskIndex = task.currentSlaveTaskIndex;
+        this.masterListenerPort = task.masterListenerPort;
+        this.masterListenerIp = task.masterListenerIp;
     }
 
     public SimulationType simulationType;
@@ -45,7 +49,10 @@ public class SimTask implements Serializable{
     public int currentSlavePort;
     public int currentSlaveTaskIndex;
 
-    public String id;
+    public Integer id;
+
+    public int masterListenerPort;
+    public String masterListenerIp;
 }
 
 

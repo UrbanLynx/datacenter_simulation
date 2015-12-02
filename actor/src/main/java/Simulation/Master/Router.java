@@ -56,6 +56,18 @@ public class Router {
         printConnections();
     }
 
+    public void closeConnections(){
+        for (ConnectionDesc slave: connections.values()){
+            try {
+                slave.oos.writeObject(new SimMessage(SimMessage.SimEventType.TERMINATE));
+                slave.oos.close();
+                slave.socket.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void printConnections() {
         // print connections made
         for (Map.Entry<Integer, ConnectionDesc> conn: connections.entrySet()) {

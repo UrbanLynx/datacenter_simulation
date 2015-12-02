@@ -6,6 +6,9 @@
   "masterUrl": "varys://192.168.1.86:1606",
   "slavePort": 5000,
 
+  "masterListenerIp": "localhost",
+  "masterListenerPort": 4900,
+
   "doGenerateFiles": true,
   "fileDirectory": "transfer_files",
   "fileSizeKBMin": 1,

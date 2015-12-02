@@ -12,18 +12,21 @@ import java.util.ArrayList;
  */
 public class Master {
     private Router router;
-    private ArrayList<VarysRegistrator> masterClients = new ArrayList<VarysRegistrator>();
+    //private ArrayList<VarysRegistrator> masterClients = new ArrayList<VarysRegistrator>();
+    private TaskListener taskListener = new TaskListener();
     private SimulationConfig config;
     private int timeFromStartSimulation = 0;
 
     public void conductSimulation(SimulationConfig simConfig, ArrayList<SimTask> simTasks) throws IOException {
         config = simConfig;
         router = new Router(config);
+        taskListener.listenForSlaves(config.masterListenerPort);
         //preprocessTaks(simTasks);
         //preparationForSimulation();
 
         for (SimTask task : simTasks){
             waitUntillNextTask(task);
+            taskListener.addTask(task);
             switch (task.simulationType){
                 case TRADITIONAL:
                     executeTraditionalTask(task);
@@ -35,8 +38,11 @@ public class Master {
         }
 
         // TODO: somehow wait for end of simulation
-        System.out.println("All tasks accomplished!");
-        Utils.wait(200000);
+        Utils.safePrintln("All tasks sent! Wait for simulation to finish...");
+        taskListener.waitForFinish();
+        router.closeConnections();
+        Utils.safePrintln("Simulation finished!");
+        //Utils.wait(200000);
     }
 
 
@@ -48,9 +54,12 @@ public class Master {
     }
 
     public void executeTraditionalTask(SimTask simTask){
-        for (Reducer reducer: simTask.reducersArr){
+        for (int i=0; i<simTask.reducersArr.size(); i++){
+            Reducer reducer = simTask.reducersArr.get(i);
             Utils.safePrintln(String.valueOf(reducer.reducerId) +" "+ String.valueOf(reducer.port));
             SimTask sendTask = new SimTask(simTask);
+
+            simTask.currentSlaveTaskIndex = i;
             sendTask.currentSlaveId = reducer.reducerId;
             sendTask.currentSlavePort = reducer.port;
 //            simTask.currentSlaveId = reducer.reducerId;
@@ -83,7 +92,7 @@ public class Master {
     public String registerCoflow(SimTask task){
         // TODO: change sizeKB, name of registrator, number of slaves(senders), config->task
         VarysRegistrator registrator = new VarysRegistrator(config.varysMasterUrl, "ActorMaster"+task.id, -1, -1);
-        masterClients.add(registrator);
+        taskListener.addVarysCoflow(task,registrator);
         return registrator.registerCoflow();
     }
 
