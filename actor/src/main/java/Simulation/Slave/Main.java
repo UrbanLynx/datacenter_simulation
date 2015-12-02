@@ -13,7 +13,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        Utils.logger = new SimLogger("Slave", false, false);
+        Utils.logger = new SimLogger("Slave", true, true);
 
         SimulationConfig config = getDefaultConfig();
         Router router = new Router(config);

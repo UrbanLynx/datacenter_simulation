@@ -2,23 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="757e3bd7-87ea-46cb-9d2a-5ca5e9385f88" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/Simulation/Data/ConfigParser.class" afterPath="$PROJECT_DIR$/target/classes/Simulation/Data/ConfigParser.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/Simulation/Data/Reducer.class" afterPath="$PROJECT_DIR$/target/classes/Simulation/Data/Reducer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/Simulation/Logger/SimLogger.class" afterPath="$PROJECT_DIR$/target/classes/Simulation/Logger/SimLogger.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/Simulation/Master/Main.class" afterPath="$PROJECT_DIR$/target/classes/Simulation/Master/Main.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/Simulation/Slave/Main.class" afterPath="$PROJECT_DIR$/target/classes/Simulation/Slave/Main.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gitignore" afterPath="$PROJECT_DIR$/../.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/configs/tasks" afterPath="$PROJECT_DIR$/configs/tasks" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Simulation/Communicators/TraditionalCommunicator.java" afterPath="$PROJECT_DIR$/src/main/java/Simulation/Communicators/TraditionalCommunicator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Simulation/Communicators/VarysCommunicator.java" afterPath="$PROJECT_DIR$/src/main/java/Simulation/Communicators/VarysCommunicator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Simulation/Data/ConfigParser.java" afterPath="$PROJECT_DIR$/src/main/java/Simulation/Data/ConfigParser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Simulation/Data/Reducer.java" afterPath="$PROJECT_DIR$/src/main/java/Simulation/Data/Reducer.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Simulation/Logger/SimLogger.java" afterPath="$PROJECT_DIR$/src/main/java/Simulation/Logger/SimLogger.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Simulation/Master/Main.java" afterPath="$PROJECT_DIR$/src/main/java/Simulation/Master/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Simulation/Master/Router.java" afterPath="$PROJECT_DIR$/src/main/java/Simulation/Master/Router.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Simulation/Slave/Main.java" afterPath="$PROJECT_DIR$/src/main/java/Simulation/Slave/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Simulation/Slave/Slave.java" afterPath="$PROJECT_DIR$/src/main/java/Simulation/Slave/Slave.java" />
     </list>
     <ignored path="actor.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -40,11 +26,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Simulation/Slave/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="15" column="58" selection-start-line="15" selection-start-column="58" selection-end-line="15" selection-end-column="58" />
+            <state vertical-scroll-proportion="0.20573565">
+              <caret line="15" column="50" selection-start-line="15" selection-start-column="50" selection-end-line="15" selection-end-column="50" />
               <folding />
             </state>
           </provider>
@@ -54,7 +40,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/Simulation/Master/Main.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+              <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -64,12 +50,12 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/Simulation/Logger/SimLogger.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="44" column="0" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
+              <caret line="40" column="12" selection-start-line="40" selection-start-column="12" selection-end-line="40" selection-end-column="12" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1095#1106#0" expanded="true" />
-                <element signature="e#2309#2954#0" expanded="true" />
-                <element signature="e#2953#2954#0" expanded="true" />
+                <element signature="e#1185#1196#0" expanded="true" />
+                <element signature="e#2399#3044#0" expanded="true" />
+                <element signature="e#3043#3044#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -135,10 +121,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tasks" pinned="false" current-in-tab="true">
+      <file leaf-file-name="tasks" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/configs/tasks">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.032119915">
+            <state vertical-scroll-proportion="0.0">
               <caret line="1" column="23" selection-start-line="1" selection-start-column="23" selection-end-line="1" selection-end-column="23" />
               <folding />
             </state>
@@ -181,15 +167,15 @@
         <option value="$PROJECT_DIR$/src/main/java/Simulation/Communicators/VarysRegistrator.java" />
         <option value="$PROJECT_DIR$/src/main/java/Simulation/Data/Reducer.java" />
         <option value="$PROJECT_DIR$/src/main/java/Simulation/Data/ConfigParser.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Simulation/Slave/Main.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Simulation/Master/Main.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Simulation/Logger/SimLogger.java" />
         <option value="$PROJECT_DIR$/src/main/java/Simulation/Master/Master.java" />
         <option value="$PROJECT_DIR$/src/main/java/Simulation/Communicators/VarysCommunicator.java" />
         <option value="$PROJECT_DIR$/src/main/java/Simulation/Communicators/TraditionalCommunicator.java" />
         <option value="$PROJECT_DIR$/src/main/java/Simulation/Slave/Slave.java" />
         <option value="$PROJECT_DIR$/src/main/java/Simulation/Master/Router.java" />
         <option value="$PROJECT_DIR$/configs/tasks" />
+        <option value="$PROJECT_DIR$/src/main/java/Simulation/Logger/SimLogger.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Simulation/Master/Main.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Simulation/Slave/Main.java" />
       </list>
     </option>
   </component>
@@ -820,7 +806,7 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.40361446" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40361446" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1192,32 +1178,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Simulation/Slave/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="15" column="58" selection-start-line="15" selection-start-column="58" selection-end-line="15" selection-end-column="58" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Simulation/Data/ConfigParser.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="89" column="0" selection-start-line="89" selection-start-column="0" selection-end-line="89" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Simulation/Logger/SimLogger.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="44" column="0" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1095#1106#0" expanded="true" />
-            <element signature="e#2309#2954#0" expanded="true" />
-            <element signature="e#2953#2954#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1233,22 +1198,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="19" column="38" selection-start-line="19" selection-start-column="38" selection-end-line="19" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Simulation/Slave/Slave.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="48" column="64" selection-start-line="48" selection-start-column="64" selection-end-line="48" selection-end-column="64" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Simulation/Master/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1271,8 +1220,45 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/configs/tasks">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.032119915">
+        <state vertical-scroll-proportion="0.0">
           <caret line="1" column="23" selection-start-line="1" selection-start-column="23" selection-end-line="1" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Simulation/Logger/SimLogger.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="40" column="12" selection-start-line="40" selection-start-column="12" selection-end-line="40" selection-end-column="12" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1185#1196#0" expanded="true" />
+            <element signature="e#2399#3044#0" expanded="true" />
+            <element signature="e#3043#3044#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Simulation/Master/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Simulation/Slave/Slave.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="48" column="64" selection-start-line="48" selection-start-column="64" selection-end-line="48" selection-end-column="64" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Simulation/Slave/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.20573565">
+          <caret line="15" column="50" selection-start-line="15" selection-start-column="50" selection-end-line="15" selection-end-column="50" />
           <folding />
         </state>
       </provider>

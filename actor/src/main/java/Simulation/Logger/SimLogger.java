@@ -34,6 +34,13 @@ public class SimLogger {
         }
     }
 
+    public enum LogLevel{
+        DEBUG,
+        WARN,
+        ERROR,
+        INFO
+    }
+
     private String logFolder = "logs";
     private FileWriter logFile;
     private BlockingQueue<LogWraper> logsQueue = new LinkedBlockingQueue<LogWraper>();
