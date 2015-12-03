@@ -1,7 +1,6 @@
 package Simulation.Slave;
 
-import Simulation.Communicators.TraditionalCommunicator;
-import Simulation.Communicators.VarysCommunicator;
+import Simulation.Communicators.Communicator;
 import Simulation.Data.*;
 
 import java.io.IOException;
@@ -23,26 +22,25 @@ public class Slave implements Runnable{
         this.message = message;
     }
 
-    public void GenerateData() {
-        task.data = new TaskData(100);
-    }
 
     public void run() {
+        Communicator communicator = new Communicator();
 
         if (this.isSender) {
-            // TODO: generate data FOR EACH reducer (currently it's wrong)
-            GenerateData();
+            communicator.send(task);
+        } else {
+            communicator.receive(task);
         }
 
-        switch(this.task.simulationType){
+        /*switch(this.task.simulationType){
             case VARYS:
 
-                VarysCommunicator varysCommunicator = new VarysCommunicator();
+                Communicator communicator = new Communicator();
 
                 if (this.isSender) {
-                    varysCommunicator.send(task);
+                    communicator.send(task);
                 } else {
-                    varysCommunicator.receive(task);
+                    communicator.receive(task);
                 }
                 break;
             case TRADITIONAL:
@@ -53,7 +51,7 @@ public class Slave implements Runnable{
                     traditionalCommunicator.send(task);
                 }
                 break;
-        }
+        }*/
     }
 
     public void ackToMaster(Confirm.Code code){

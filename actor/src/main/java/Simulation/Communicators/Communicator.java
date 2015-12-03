@@ -1,9 +1,6 @@
 package Simulation.Communicators;
 
-import Simulation.Data.DataGenerator;
-import Simulation.Data.Reducer;
-import Simulation.Data.SimTask;
-import Simulation.Data.SimulationConfig;
+import Simulation.Data.*;
 import Simulation.Logger.SimLogger;
 import Simulation.Logger.LogUtils;
 import varys.framework.CoflowDescription;
@@ -23,7 +20,7 @@ import java.util.logging.Logger;
 /**
  * Created by stanislavmushits on 19/11/15.
  */
-public class VarysCommunicator {
+public class Communicator {
 
     public String getSendLogContent(SimTask task, Reducer reducer, String message) throws UnknownHostException {
 
@@ -83,18 +80,25 @@ public class VarysCommunicator {
             //Utils.logger.log(Level.INFO, String.format("%1$s, task %2$d, slave %3$d started with coflow %4$d",
             //        "MAPPER", task.id, task.currentSlaveId, InetAddress.getLocalHost().toString(), task.coflowId));
 
-            //VarysListener listener = new VarysListener();
-            //VarysClient client = new VarysClient(getSenderId(task), task.masterUrl, listener);
-            //client.start();
 
-            //CoflowDescription desc = new CoflowDescription("DEFAULT"+task.id, CoflowType.DEFAULT(), -1, -1);
-            //int coflowId = client.registerCoflow(desc);
-            int coflowId = Integer.parseInt(task.coflowId);
+
+            int coflowId = 0;
+            //VarysListener listener;
+            //VarysClient client;
+            if (task.simulationType == SimulationType.VARYS){
+                //listener = new VarysListener();
+                //client = new VarysClient(getSenderId(task), task.masterUrl, listener);
+                //client.start();
+                //CoflowDescription desc = new CoflowDescription("DEFAULT"+task.id, CoflowType.DEFAULT(), -1, -1);
+                //int coflowId = client.registerCoflow(desc);
+                coflowId = Integer.parseInt(task.coflowId);
+            }
+
 
             //Utils.safePrintln("Master client id " + client.masterClientId());
 
-            DataGenerator generator = new DataGenerator();
-            generator.generateUnitObject(1024);
+            //DataGenerator generator = new DataGenerator();
+            //generator.generateUnitObject(1024);
 
             for (Reducer reducer: task.reducersArr){
                 //RP removed
@@ -106,20 +110,30 @@ public class VarysCommunicator {
                 //Utils.logger.log(Level.INFO, getSendLogContent(task,reducer, "connected"));
 
                 OutputStream output = null;
-                if (doUseCoflow(reducer, task)){
-                    Utils.safePrintln(getSendLogContent(task,reducer, "use coflow"));
-                    output = new VarysOutputStream(socket, coflowId);
-                } else{
-                    Utils.safePrintln(getSendLogContent(task,reducer, "no coflow"));
+                if (task.simulationType == SimulationType.TRADITIONAL){
                     output = socket.getOutputStream();
+                } else{
+                    if (doUseCoflow(reducer, task)){
+                        Utils.safePrintln(getSendLogContent(task,reducer, "use coflow"));
+                        output = new VarysOutputStream(socket, coflowId);
+
+                    } else{
+                        Utils.safePrintln(getSendLogContent(task,reducer, "no coflow"));
+                        output = socket.getOutputStream();
+                    }
                 }
+
 
                 //RP removed
                 //Utils.logger.log(Level.INFO, getSendLogContent(task,reducer, "attempt to send"));
 
                 //long timeStamp = System.currentTimeMillis();
-                output.write(generator.generateObject(reducer.sizeKB).getBytes());
-                output.flush();
+                byte[] buf = new byte[1024];
+                for (int i=0; i < reducer.sizeKB; i++){
+                    output.write(buf);
+                    output.flush();
+                }
+
 
                 //RP removed
                 //Utils.logger.log(Level.INFO, String.valueOf(timeStamp)+getSendLogContent(task,reducer, "finished"));
@@ -161,9 +175,13 @@ public class VarysCommunicator {
                 //RP removed
                 //Utils.logger.log(Level.INFO, getReceiveLogContent(task,task.reducers.get(task.currentSlaveId), "connected"));
 
-                byte[] data = new byte[(int)task.reducers.get(task.currentSlaveId).sizeBytes()];
-                int n = inputStream.read(data);
-                //traditionalCommunicatorLogger.log(Level.INFO, getReceiveLogContent(task));
+                //byte[] data = new byte[(int)task.reducers.get(task.currentSlaveId).sizeBytes()];
+                byte[] data = new byte[1024];
+                int n = 0;
+                for(int i=0; i< (int)task.reducers.get(task.currentSlaveId).sizeKB; i++){
+                    n += inputStream.read(data);
+                }
+
                 long timeStamp = System.currentTimeMillis();
                 Utils.logger.log(Level.INFO, LogUtils.getSlaveLogContent(task, LogUtils.Event.RECEIVE, Long.toString(timeStamp) ));
 
@@ -173,7 +191,7 @@ public class VarysCommunicator {
                 inputStream.close();
                 socket.close();
 
-                //Utils.safePrintln("[Reducer]: Got " + n + " bytes.");
+                Utils.safePrintln("[Reducer]: Got " + n + " bytes.");
 
                 receivedNumberTimes++;
             }

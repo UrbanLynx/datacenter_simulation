@@ -33,8 +33,8 @@ public class SimTask implements Serializable{
     }
 
     public SimulationType simulationType;
-    public String coflowId;
-    public String masterUrl;
+    public String coflowId = "0";
+    public String masterUrl = "";
     public TaskData data;
 
     public double startTime;

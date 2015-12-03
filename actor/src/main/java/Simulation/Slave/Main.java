@@ -20,7 +20,7 @@ public class Main {
         router.listenForTasks();
 
         Utils.logger.stopLogger();
-
+        System.exit(0);
     }
 
     public static SimulationConfig getDefaultConfig(){

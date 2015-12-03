@@ -39,40 +39,38 @@ private[examples] object VarysExampleServer {
 
     val serverSocket = new ServerSocket(serverPort)
 
-    val i = 2
-    while (i>0){
-      val clientSocket = serverSocket.accept
+    val clientSocket = serverSocket.accept
+  
+    System.out.println("Serving client " + clientSocket)
+    val ois = new ObjectInputStream(clientSocket.getInputStream)
+    val out = new VarysOutputStream(clientSocket, coflowId)
+    // val out = new BufferedOutputStream(clientSocket.getOutputStream)
     
-      System.out.println("Serving client " + clientSocket)
-      val ois = new ObjectInputStream(clientSocket.getInputStream)
-      val out = new VarysOutputStream(clientSocket, 9)
-      // val out = new BufferedOutputStream(clientSocket.getOutputStream)
-      
-      try {
-        val reqSizeMB = ois.readLong
-        val totBytes = reqSizeMB * 1048576       
-        val buf = new Array[Byte](131072)
-        var bytesSent = 0L
-        while (bytesSent < totBytes) {
-          val bytesToSend = 
-            math.min(totBytes - bytesSent, buf.length)
+    try {
+      val reqSizeMB = ois.readLong
+      val totBytes = reqSizeMB * 1048576       
+      val buf = new Array[Byte](131072)
+      var bytesSent = 0L
+      while (bytesSent < totBytes) {
+        val bytesToSend = 
+          math.min(totBytes - bytesSent, buf.length)
 
-          out.write(buf, 0, bytesToSend.toInt)
-          bytesSent += bytesToSend
-          System.out.println("Sent " + bytesSent + " bytes of " + totBytes + " n = " + bytesToSend)
-        }
-      } catch {
-        case e: Exception => {
-          System.out.println("Server had a " + e)
-        }
-      } finally {
-        out.close
-        clientSocket.close
+        out.write(buf, 0, bytesToSend.toInt)
+        bytesSent += bytesToSend
+        System.out.println("Sent " + bytesSent + " bytes of " + totBytes + " n = " + bytesToSend)
       }
+    } catch {
+      case e: Exception => {
+        System.out.println("Server had a " + e)
+      }
+    } finally {
+      out.close
+      clientSocket.close
     }
     
     serverSocket.close
 
+    client.awaitTermination()
     // Finally, unregister coflow
     client.unregisterCoflow(coflowId)
   }  
