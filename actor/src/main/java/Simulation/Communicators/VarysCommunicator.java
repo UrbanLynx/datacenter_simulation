@@ -124,6 +124,7 @@ public class VarysCommunicator {
             }
 
         } catch (Exception e) {
+            Utils.safePrintln(e.getMessage());
             e.printStackTrace();
         }
     }

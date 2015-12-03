@@ -6,6 +6,8 @@ import Simulation.Data.SimTask;
 import Simulation.Data.SimulationType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by stanislavmushits on 02/12/15.
@@ -13,17 +15,19 @@ import java.util.ArrayList;
 public class TaskProgress {
     public SimTask task;
     public VarysRegistrator registrator;
-    public ArrayList<Reducer> nonFinishedReducers = new ArrayList<Reducer>();
+    public Map<Integer, Reducer> nonFinishedReducers = new HashMap<Integer, Reducer>();
     private Boolean isFinished = false;
 
     public TaskProgress(SimTask task) {
         this.task = task;
-        nonFinishedReducers.addAll(task.reducersArr);
+        for(int i=0; i<task.reducersArr.size(); i++){
+            nonFinishedReducers.put(i, task.reducersArr.get(i));
+        }
     }
 
     public void removeReducer(SimTask task) {
-        Reducer reducerToRemove = nonFinishedReducers.get(task.currentSlaveTaskIndex);
-        nonFinishedReducers.remove(reducerToRemove);
+        //Reducer reducerToRemove = nonFinishedReducers.get(task.currentSlaveTaskIndex);
+        nonFinishedReducers.remove(task.currentSlaveTaskIndex);
         checkIsFinished();
     }
 

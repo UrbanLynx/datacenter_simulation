@@ -17,12 +17,14 @@ public class VarysRegistrator{
     private String clientName;
     private int numOfSlaves;
     String coflowId;
+    private int taskId;
 
-    public VarysRegistrator(String url, String name, int numOfSlaves, long size){
+    public VarysRegistrator(String url, String name, int numOfSlaves, long size, int taskId){
         masterUrl = url;
         this.clientName = name;
         this.numOfSlaves = numOfSlaves;
         this.size = size;
+        this.taskId = taskId;
     }
 
     public String registerCoflow() {
@@ -31,25 +33,18 @@ public class VarysRegistrator{
         final Thread clientThread = new Thread(clientName){
             @Override
             public void run(){
-                int deadlineMillis = 10000;
-
                 VarysListener listener = new VarysListener();
                 client = new VarysClient(clientName, masterUrl, listener);
                 client.start();
 
                 Utils.safePrintln("Master client before coflow "+ client.masterClientId());
 
-                CoflowDescription desc = new CoflowDescription("DEFAULT", CoflowType.DEFAULT(), numOfSlaves, size);
+                CoflowDescription desc = new CoflowDescription("TASK_"+taskId, CoflowType.SHUFFLE(), -1, -1);
                 coflowId = String.valueOf(client.registerCoflow(desc));
 
                 Utils.safePrintln("Master client after coflow "+ client.masterClientId());
 
                 safePrintln("Registered coflow " + coflowId);
-
-                // TODO:DELETE
-                //client.putFake("DATA1", coflowId, 1010101L, 1);
-                //System.out.println("[Sender]: Put a fake piece of data of " + 1010101L + " bytes. Now waiting to die.");
-                // TODO:DELETE
 
                 latch.countDown();
                 client.awaitTermination();

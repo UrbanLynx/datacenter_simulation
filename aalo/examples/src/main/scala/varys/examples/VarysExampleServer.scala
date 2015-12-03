@@ -45,7 +45,7 @@ private[examples] object VarysExampleServer {
     
       System.out.println("Serving client " + clientSocket)
       val ois = new ObjectInputStream(clientSocket.getInputStream)
-      val out = new VarysOutputStream(clientSocket, coflowId)
+      val out = new VarysOutputStream(clientSocket, 9)
       // val out = new BufferedOutputStream(clientSocket.getOutputStream)
       
       try {
