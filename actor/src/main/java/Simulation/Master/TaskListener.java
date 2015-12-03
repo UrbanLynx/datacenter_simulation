@@ -40,13 +40,14 @@ public class TaskListener {
                     Utils.safePrintln("Master listening for reports on port"+port);
                     while (latch.getCount() == 1 || taskProgresses.size() > 0){
                         Socket socket = serverSocket.accept();
-                        Utils.safePrintln("Master got report");
+
 
                         ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
                         SimTask task = (SimTask) inputStream.readObject();
                         inputStream.close();
                         socket.close();
 
+                        Utils.safePrintln("Master got report for task " +task.id + " from " + task.currentSlaveTaskIndex);
                         TaskProgress currentTask = taskProgresses.get(task.id);
                         currentTask.removeReducer(task);
                         checkFinishedTasks(currentTask);

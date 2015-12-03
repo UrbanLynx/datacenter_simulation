@@ -61,7 +61,7 @@ public class Master {
             Utils.safePrintln(String.valueOf(reducer.reducerId) +" "+ String.valueOf(reducer.port));
             SimTask sendTask = new SimTask(simTask);
 
-            simTask.currentSlaveTaskIndex = i;
+            sendTask.currentSlaveTaskIndex = i;
             sendTask.currentSlaveId = reducer.reducerId;
             sendTask.currentSlavePort = reducer.port;
 //            simTask.currentSlaveId = reducer.reducerId;
