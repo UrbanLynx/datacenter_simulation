@@ -18,4 +18,12 @@ public class LogUtils {
         buf.append("\n");
         return buf.toString();
     }
+
+    public static String getMasterLogContent(SimTask task, String coflowID) {
+        StringBuilder buf = new StringBuilder();
+        buf.append(task.id+" ");
+        buf.append(coflowID+" ");
+        buf.append("\n");
+        return buf.toString();
+    }
 }

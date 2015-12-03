@@ -3,6 +3,8 @@ package Simulation.Master;
 import Simulation.Communicators.Utils;
 import Simulation.Communicators.VarysRegistrator;
 import Simulation.Data.*;
+import Simulation.Logger.LogUtils;
+import java.util.logging.Level;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -91,10 +93,11 @@ public class Master {
 
     public String registerCoflow(SimTask task){
         // TODO: change sizeKB, name of registrator, number of slaves(senders), config->task
-        //Utils.logger.log(Level.INFO, LogUtils.
         VarysRegistrator registrator = new VarysRegistrator(config.varysMasterUrl, "ActorMaster"+task.id, -1, -1, task.id);
         taskListener.addVarysCoflow(task,registrator);
-        return registrator.registerCoflow();
+        String coflowID = registrator.registerCoflow();
+        Utils.logger.log(Level.INFO, LogUtils.getMasterLogContent(task, coflowID));
+        return coflowID;
     }
 
     public static void processResultsOfSimulation(){
