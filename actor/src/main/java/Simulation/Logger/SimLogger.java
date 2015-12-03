@@ -29,9 +29,8 @@ public class SimLogger {
             this.time = new DateTime();
         }
 
-        public String toString(){
-            return level + "\t" + logMessage;
-        }
+        //public String toString() { return level + "\t" + logMessage; }
+        public String toString() { return logMessage; }
     }
 
     public enum LogLevel{
@@ -111,7 +110,7 @@ public class SimLogger {
 
     public void stopLogger(){
         latch.countDown();
-        log(Level.INFO, "logger exit");
+        //log(Level.INFO, "logger exit");
         //System.out.println("Finish work");
     }
 

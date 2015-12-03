@@ -91,6 +91,7 @@ public class Master {
 
     public String registerCoflow(SimTask task){
         // TODO: change sizeKB, name of registrator, number of slaves(senders), config->task
+        //Utils.logger.log(Level.INFO, LogUtils.
         VarysRegistrator registrator = new VarysRegistrator(config.varysMasterUrl, "ActorMaster"+task.id, -1, -1, task.id);
         taskListener.addVarysCoflow(task,registrator);
         return registrator.registerCoflow();

@@ -5,6 +5,7 @@ import Simulation.Data.Reducer;
 import Simulation.Data.SimTask;
 import Simulation.Data.SimulationConfig;
 import Simulation.Logger.SimLogger;
+import Simulation.Logger.LogUtils;
 import varys.framework.CoflowDescription;
 import varys.framework.CoflowType;
 import varys.framework.client.VarysClient;
@@ -96,11 +97,13 @@ public class VarysCommunicator {
             generator.generateUnitObject(1024);
 
             for (Reducer reducer: task.reducersArr){
-                Utils.logger.log(Level.INFO, getSendLogContent(task,reducer, "trying to connect"));
+                //RP removed
+                //Utils.logger.log(Level.INFO, getSendLogContent(task,reducer, "trying to connect"));
                 Socket socket = Utils.connectTo(reducer.address, reducer.port, 2000);
 
                 InputStream inputStream = socket.getInputStream();
-                Utils.logger.log(Level.INFO, getSendLogContent(task,reducer, "connected"));
+                //RP removed
+                //Utils.logger.log(Level.INFO, getSendLogContent(task,reducer, "connected"));
 
                 OutputStream output = null;
                 if (doUseCoflow(reducer, task)){
@@ -111,13 +114,19 @@ public class VarysCommunicator {
                     output = socket.getOutputStream();
                 }
 
-                Utils.logger.log(Level.INFO, getSendLogContent(task,reducer, "attempt to send"));
+                //RP removed
+                //Utils.logger.log(Level.INFO, getSendLogContent(task,reducer, "attempt to send"));
 
-                long timeStamp = System.currentTimeMillis();
+                //long timeStamp = System.currentTimeMillis();
                 output.write(generator.generateObject(reducer.sizeKB).getBytes());
                 output.flush();
 
-                Utils.logger.log(Level.INFO, String.valueOf(timeStamp)+getSendLogContent(task,reducer, "finished"));
+                //RP removed
+                //Utils.logger.log(Level.INFO, String.valueOf(timeStamp)+getSendLogContent(task,reducer, "finished"));
+
+                // log send time for results analysis
+                long timeStamp = System.currentTimeMillis();
+                Utils.logger.log(Level.INFO, LogUtils.getSlaveLogContent(task, LogUtils.Event.SEND, Long.toString(timeStamp)));
 
                 output.close();
                 socket.close();
@@ -140,7 +149,8 @@ public class VarysCommunicator {
 
             int receivedNumberTimes = 0;
             while (receivedNumberTimes != task.mappers.size()){
-                Utils.logger.log(Level.INFO, getReceiveLogContent(task,task.reducers.get(task.currentSlaveId), "accepting"));
+                //RP removed
+                //Utils.logger.log(Level.INFO, getReceiveLogContent(task,task.reducers.get(task.currentSlaveId), "accepting"));
 
                 Socket socket = serverSocket.accept();
 
@@ -148,14 +158,17 @@ public class VarysCommunicator {
                 outputStream.flush();
                 //ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
                 InputStream inputStream = socket.getInputStream();
-                Utils.logger.log(Level.INFO, getReceiveLogContent(task,task.reducers.get(task.currentSlaveId), "connected"));
+                //RP removed
+                //Utils.logger.log(Level.INFO, getReceiveLogContent(task,task.reducers.get(task.currentSlaveId), "connected"));
 
                 byte[] data = new byte[(int)task.reducers.get(task.currentSlaveId).sizeBytes()];
                 int n = inputStream.read(data);
                 //traditionalCommunicatorLogger.log(Level.INFO, getReceiveLogContent(task));
                 long timeStamp = System.currentTimeMillis();
+                Utils.logger.log(Level.INFO, LogUtils.getSlaveLogContent(task, LogUtils.Event.RECEIVE, Long.toString(timeStamp) ));
 
-                Utils.logger.log(Level.INFO, String.valueOf(timeStamp)+getReceiveLogContent(task,task.reducers.get(task.currentSlaveId), "data received"));
+                //RP removed
+                //Utils.logger.log(Level.INFO, String.valueOf(timeStamp)+getReceiveLogContent(task,task.reducers.get(task.currentSlaveId), "data received"));
 
                 inputStream.close();
                 socket.close();

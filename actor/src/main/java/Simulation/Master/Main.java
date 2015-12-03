@@ -20,7 +20,7 @@ public class Main {
     public static void main(String[] args) throws IOException, ParseException, org.json.simple.parser.ParseException {
 
         Utils.logger = new SimLogger("Master", true, true);
-        Utils.logger.log(Level.INFO, "Master log initiated");
+        //Utils.logger.log(Level.INFO, "Master log initiated");
 
         SimulationConfig simConfig = ConfigParser.parseSimConfigFile("configs/simulation.json");
         ArrayList<SimTask> simTasks = ConfigParser.parseTaskFile(simConfig);
