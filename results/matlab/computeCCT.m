@@ -1,8 +1,4 @@
-clear
-
-% TODO: remove comma from log entries
-
-taskFilename = 'tasks_test';
+function CCT = computeCCT(taskFilename, masterLogFilename, slaveLogFilenames)
 
 [numTasks, totalNumFlows, numSlaves, slaveIDs] = ...
     getSimulationInfo(taskFilename) %;
@@ -12,12 +8,9 @@ taskFilename = 'tasks_test';
 % will be the same, sanity check), SEND/RECEIVE, coflowID, timestamp
 
 % Parse master log
-masterLogFilename = 'master.log';
 taskCoflowMap = parseMasterLog(masterLogFilename);
 
 % Parse slave logs
-% list all slave log file names in a cell array?
-slaveLogFilenames = {'slave1.log', 'slave2.log', 'slave3.log'} % test files
 [sendData, receiveData] = parseSlaveLogs(slaveLogFilenames, totalNumFlows);
 
 % get stats for each coflow (entry in task file)
