@@ -58,9 +58,9 @@ public class SimLogger {
     }
 
     public void init(String filename) {
-        DateTimeFormatter dtf = DateTimeFormat.forPattern("_MM-dd-yyyy_HH:mm:ss");
-        String timestamp = new DateTime().toString(dtf);
-        filename += timestamp + ".log";
+        //DateTimeFormatter dtf = DateTimeFormat.forPattern("_MM-dd-yyyy_HH:mm:ss");
+        //String timestamp = new DateTime().toString(dtf);
+        filename += "data.log";
 
         try {
             File theFile = new File(logFolder);
