@@ -4,6 +4,8 @@ import Simulation.Communicators.Utils;
 import Simulation.Communicators.VarysRegistrator;
 import Simulation.Data.*;
 import Simulation.Logger.LogUtils;
+import Simulation.Logger.SimLogger;
+
 import java.util.logging.Level;
 
 import java.io.IOException;
@@ -96,7 +98,7 @@ public class Master {
         VarysRegistrator registrator = new VarysRegistrator(config.varysMasterUrl, "ActorMaster"+task.id, -1, -1, task.id);
         taskListener.addVarysCoflow(task,registrator);
         String coflowID = registrator.registerCoflow();
-        Utils.logger.log(Level.INFO, LogUtils.getMasterLogContent(task, coflowID));
+        Utils.logger.log(SimLogger.LogLevel.ANALYS, LogUtils.getMasterLogContent(task, coflowID));
         return coflowID;
     }
 

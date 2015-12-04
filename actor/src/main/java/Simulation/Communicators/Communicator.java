@@ -140,7 +140,7 @@ public class Communicator {
 
                 // log send time for results analysis
                 long timeStamp = System.currentTimeMillis();
-                Utils.logger.log(Level.INFO, LogUtils.getSlaveLogContent(task, LogUtils.Event.SEND, Long.toString(timeStamp)));
+                Utils.logger.log(SimLogger.LogLevel.ANALYS, LogUtils.getSlaveLogContent(task, LogUtils.Event.SEND, Long.toString(timeStamp)));
 
                 output.close();
                 socket.close();
@@ -183,7 +183,7 @@ public class Communicator {
                 }
 
                 long timeStamp = System.currentTimeMillis();
-                Utils.logger.log(Level.INFO, LogUtils.getSlaveLogContent(task, LogUtils.Event.RECEIVE, Long.toString(timeStamp) ));
+                Utils.logger.log(SimLogger.LogLevel.ANALYS, LogUtils.getSlaveLogContent(task, LogUtils.Event.RECEIVE, Long.toString(timeStamp) ));
 
                 //RP removed
                 //Utils.logger.log(Level.INFO, String.valueOf(timeStamp)+getReceiveLogContent(task,task.reducers.get(task.currentSlaveId), "data received"));

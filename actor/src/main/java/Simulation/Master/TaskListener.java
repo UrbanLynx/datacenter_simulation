@@ -3,6 +3,7 @@ package Simulation.Master;
 import Simulation.Communicators.Utils;
 import Simulation.Communicators.VarysRegistrator;
 import Simulation.Data.SimTask;
+import Simulation.Logger.SimLogger;
 import Simulation.Master.Utils.TaskProgress;
 
 import java.io.IOException;
@@ -24,6 +25,7 @@ public class TaskListener {
     private final CountDownLatch finishLatch = new CountDownLatch(1);
 
     public void addTask(SimTask task){
+        task.systemStartTime = System.currentTimeMillis();
         TaskProgress progress = new TaskProgress(task);
         taskProgresses.put(task.id, progress);
     }
@@ -80,7 +82,11 @@ public class TaskListener {
 
     private void checkFinishedTasks(TaskProgress currentTask) {
         if (currentTask.isFinished()){
+            long currentTime = System.currentTimeMillis();
+            Utils.logger.log(SimLogger.LogLevel.COMPLETE, currentTask.task.id + " " +
+                    (currentTime - currentTask.task.systemStartTime) + "\n");
             taskProgresses.remove(currentTask.task.id);
+
         }
     }
 

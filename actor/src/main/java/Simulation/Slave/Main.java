@@ -20,6 +20,7 @@ public class Main {
         router.listenForTasks();
 
         Utils.logger.stopLogger();
+        Utils.wait(3000);
         System.exit(0);
     }
 
