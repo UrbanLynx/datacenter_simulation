@@ -90,7 +90,7 @@ class fat_tree_topo(Topo):
         for i in range(0, (kval*kval/4)):
             for j in range(0, kval):
                 x = ((j*kval/2) + (i/(kval/2)))
-                self.addLink(self.csw[i], self.asw[x], bw=2)
+                self.addLink(self.csw[i], self.asw[x], bw=40)
 
         # setup links between aggregation and edge switches
         for i in range(0, kval):
@@ -98,7 +98,7 @@ class fat_tree_topo(Topo):
                 x = ((i*kval/2) + j)
                 for k in range(0, kval/2):
                     y = ((i*kval/2) + k)
-                    self.addLink(self.asw[x], self.esw[y], bw=.5)
+                    self.addLink(self.asw[x], self.esw[y], bw=10)
 
         # setup links between edge switches and end hosts
         for i in range(0, kval):
@@ -106,7 +106,7 @@ class fat_tree_topo(Topo):
                 x = ((i*kval/2) + j)
                 for k in range(0, kval/2):
                     y = ((x*kval/2) + k)
-                    self.addLink(self.esw[x], self.host[y], bw=.1)
+                    self.addLink(self.esw[x], self.host[y], bw=2.5)
                     # control network
                     #self.addLink(self.ctrlsw[0], self.host[y], bw=1)
 
@@ -134,18 +134,18 @@ def enable_stp(kval):
 def config_host(net, hosts, ipaddr, kval):
     # configure /etc/hosts file of each docker host
     print("**** Configuring each dockernet host ****\n")
+    i = 0
     for h in net.hosts:
         time.sleep(1)
         name = h.cmd('hostname')
         #print(name[:12])
-        ip = h.cmd('ifconfig | awk \'/inet addr/{print substr($2,6)}\' | grep -v \'127.0.0.1\'')
         # Collect all ip hostname pairs in a list
         hosts.append(name[:12])
-        ipaddr.append(ip[:8])
         # add entry for localhost in /etc/hosts
         h.cmd('echo \"127.0.0.1 localhost\" >> /etc/hosts')
         h.cmd('echo \"127.0.1.1 %s\" >> /etc/hosts' % name[:12])
-        print(name[:12] + "  " + ip[:8])
+        print(name[:12] + "  " + ipaddr[i])
+        i += 1
 
     # Now add every ent entry to each host's /etc/hosts file
     for h in net.hosts:
@@ -164,8 +164,6 @@ def start_varys(net):
     for h in net.hosts:
         time.sleep(1)
         if h000 != h:
-            name = h.cmd('hostname')
-            print("starting varys-slave on host %s" % name[:12])
             result = h.cmd('cd; cd group6/aalo; ./bin/varys-daemon.sh start varys.framework.slave.Slave varys://10.0.0.2:1606')
             print(result)
         #if h210 == h:
@@ -179,7 +177,7 @@ def start_simulation(net, kval):
     for i in range(0, kval):
         for j in range(0, (kval/2)):
             for k in range (0, kval/2):
-                time.sleep(2)
+                time.sleep(1)
                 host = net.get('h%d%d%d' % (i, j, k))
                 if host != h000:
                     result = host.cmd('cd; cd group6/actor; ./utils/start-slave.sh 10.%d.%d.%d' % (i, j, (k+2)))
@@ -206,7 +204,23 @@ def setup_files(master):
 
 def setup_fattree_topo(kval):
     hosts = []
-    ipaddrs = []
+    ipaddrs = ['10.0.0.2',
+               '10.0.0.3',
+               '10.0.1.2',
+               '10.0.1.3', 
+               '10.1.0.2',
+               '10.1.0.3',
+               '10.1.1.2',
+               '10.1.1.3',
+               '10.2.0.2', 
+               '10.2.0.3',
+               '10.2.1.2',
+               '10.2.1.3',
+               '10.3.0.2',
+               '10.3.0.3',
+               '10.3.1.2',
+               '10.3.1.3']
+
     # setup fat-tree topology
     print("\n**** Setting up fat-tree topology ****\n")
     topo = fat_tree_topo()
@@ -223,31 +237,31 @@ def setup_fattree_topo(kval):
     # start the netwrok
     net.start()
     print("\n**** Sleeping for 10 seconds ****\n")
-    time.sleep(10)
+    time.sleep(5)
 
     # configure the hosts
     config_host(net, hosts, ipaddrs, kval)
 
     #enable STP
     print("\n**** Sleeping for 5 seconds ****\n")
-    time.sleep(5)
+    #time.sleep(5)
     enable_stp(kval)
 
     # TODO: enable STP for control network as well.
     # check connectivity
     print("\n**** Sleeping for 5 seconds ****\n")
-    time.sleep(5)
+    #time.sleep(5)
     net.pingAll()
 
     # start varys daemons
     print("\n**** Sleeping for 5 seconds ****\n")
-    time.sleep(5)
+    #time.sleep(5)
     setup_files(hosts[0])
     start_varys(net)
 
     # start simulation
     print("\n**** Sleeping for 5 seconds ****\n")
-    time.sleep(5)
+    #time.sleep(5)
     start_simulation(net, kval)
 
     # grab mininet CLI
