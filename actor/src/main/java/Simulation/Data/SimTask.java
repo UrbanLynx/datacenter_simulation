@@ -1,5 +1,7 @@
 package Simulation.Data;
 
+import org.joda.time.DateTime;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,14 +32,16 @@ public class SimTask implements Serializable{
         this.currentSlaveTaskIndex = task.currentSlaveTaskIndex;
         this.masterListenerPort = task.masterListenerPort;
         this.masterListenerIp = task.masterListenerIp;
+        this.systemStartTime = task.systemStartTime;
     }
 
     public SimulationType simulationType;
-    public String coflowId;
-    public String masterUrl;
+    public String coflowId = "0";
+    public String masterUrl = "";
     public TaskData data;
 
     public double startTime;
+    public long systemStartTime;
 
     public int mapperCount;
     public ArrayList<Integer> mappers;

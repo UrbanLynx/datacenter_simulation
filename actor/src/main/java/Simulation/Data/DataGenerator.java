@@ -7,7 +7,7 @@ import java.io.PrintWriter;
  */
 public class DataGenerator {
 
-    private String unitObject;
+    public String unitObject;
 
     public void writeToFile(String filename, String object){
         PrintWriter writer = null;

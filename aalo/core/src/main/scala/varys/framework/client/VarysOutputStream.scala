@@ -30,8 +30,8 @@ class VarysOutputStream(
     val coflowId: Int)
   extends OutputStream() with Logging {
 
-  val MIN_NOTIFICATION_THRESHOLD = 
-    System.getProperty("varys.client.individualMinNotificationMB", "10").toLong * 1048576L
+  val MIN_NOTIFICATION_THRESHOLD = 1000L
+    //System.getProperty("varys.client.individualMinNotificationMB", "10").toLong * 1048576L
 
   val dIP = Utils.getIPFromSocketAddress(sock.getRemoteSocketAddress)
 
@@ -46,18 +46,21 @@ class VarysOutputStream(
   val canProceedLock = new Object
 
   override def write(b: Int) = synchronized {
+    logInfo("Varys will write number" + b)
     preWrite()
     rawStream.write(b) 
     postWrite(1)
   }
 
   override def write(b: Array[Byte]) = synchronized {
+    logInfo("Varys will write " + b + "bytes")
     preWrite()
     rawStream.write(b)
     postWrite(b.length)
   }
 
   override def write(b: Array[Byte], off: Int, len: Int) = synchronized {
+    logInfo("Varys will write " + b + " bytes with offset " + off + " and len " + len)
     preWrite()
     rawStream.write(b, off, len)
     postWrite(len)
@@ -78,9 +81,10 @@ class VarysOutputStream(
    * Wait for order from control after the minimum bytes have been transfered
    */
   private def preWrite() {
+    logInfo("Checking preWrite conditions")
     if (bytesWritten >= MIN_NOTIFICATION_THRESHOLD && visId != -1 && 
         VarysOutputStream.slaveClientId != null) {
-
+      logInfo("preWrite conditions satisfied, slaveClientId = " + VarysOutputStream.slaveClientId)
       while (!canProceed.get) {
         canProceedLock.synchronized {
           canProceedLock.wait
@@ -91,9 +95,12 @@ class VarysOutputStream(
 
   private def postWrite(writeLen: Long) {
     bytesWritten += writeLen
+    logInfo("postWrite. " + bytesWritten + "bytes written in total.")
 
     if (bytesWritten >= MIN_NOTIFICATION_THRESHOLD) {
+      logInfo("postWrite. bytesWritten >= MIN_NOTIFICATION_THRESHOLD.")
       if (firstNotification.getAndSet(false)) {
+        logInfo("postWrite. firstNotification.getAndSet(false)")
         visId = VarysOutputStream.register(this, coflowId)
         VarysOutputStream.updateSentSoFar(bytesWritten)
       } else {
@@ -111,8 +118,8 @@ class VarysOutputStream(
 
 private[client] object VarysOutputStream extends Logging {
   // Should be equal to the smallest flow size. Hence...
-  val MIN_LOCAL_UPDATE_BYTES = 
-    System.getProperty("varys.client.combinedMinNotificationMB", "10").toLong * 1048576L
+  val MIN_LOCAL_UPDATE_BYTES = 1000L
+    // System.getProperty("varys.client.combinedMinNotificationMB", "10").toLong * 1048576L
 
   // Same source address for all VOS
   val sIP = Utils.localHostName
@@ -177,6 +184,7 @@ private[client] object VarysOutputStream extends Logging {
   }
 
   def register(vos: VarysOutputStream, coflowId_ : Int): Int = {
+    logInfo("VarysOutputStream.register. Init")
     init(coflowId_)
     val vosId = curVOSId.getAndIncrement()
     activeStreams(vosId) = vos
@@ -192,6 +200,7 @@ private[client] object VarysOutputStream extends Logging {
     } else {
       slaveActor ! StartedFlow(coflowId, sIP, vos.dIP)
     }
+    logInfo("VarysOutputStream.register. End. vosId = " + coflowId)
     vosId
   }
 

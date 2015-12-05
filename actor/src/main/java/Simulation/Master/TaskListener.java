@@ -3,6 +3,7 @@ package Simulation.Master;
 import Simulation.Communicators.Utils;
 import Simulation.Communicators.VarysRegistrator;
 import Simulation.Data.SimTask;
+import Simulation.Logger.SimLogger;
 import Simulation.Master.Utils.TaskProgress;
 
 import java.io.IOException;
@@ -24,6 +25,7 @@ public class TaskListener {
     private final CountDownLatch finishLatch = new CountDownLatch(1);
 
     public void addTask(SimTask task){
+        task.systemStartTime = System.currentTimeMillis();
         TaskProgress progress = new TaskProgress(task);
         taskProgresses.put(task.id, progress);
     }
@@ -40,13 +42,14 @@ public class TaskListener {
                     Utils.safePrintln("Master listening for reports on port"+port);
                     while (latch.getCount() == 1 || taskProgresses.size() > 0){
                         Socket socket = serverSocket.accept();
-                        Utils.safePrintln("Master got report");
+
 
                         ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
                         SimTask task = (SimTask) inputStream.readObject();
                         inputStream.close();
                         socket.close();
 
+                        Utils.safePrintln("Master got report for task " +task.id + " from " + task.currentSlaveTaskIndex);
                         TaskProgress currentTask = taskProgresses.get(task.id);
                         currentTask.removeReducer(task);
                         checkFinishedTasks(currentTask);
@@ -79,7 +82,11 @@ public class TaskListener {
 
     private void checkFinishedTasks(TaskProgress currentTask) {
         if (currentTask.isFinished()){
+            long currentTime = System.currentTimeMillis();
+            Utils.logger.log(SimLogger.LogLevel.COMPLETE, currentTask.task.id + " " +
+                    (currentTime - currentTask.task.systemStartTime) + "\n");
             taskProgresses.remove(currentTask.task.id);
+
         }
     }
 
