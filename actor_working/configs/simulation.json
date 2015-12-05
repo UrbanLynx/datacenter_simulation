@@ -1,7 +1,0 @@
-{
-  "TaskFile": "config/tasks_h1.config",
-  "StartTime": "2015-10-30T23:01:47+00:00",
-  "IsVarys": true,
-  "MasterUrl": "10.0.0.1",
-  "ServerPort": "8080"
-}
