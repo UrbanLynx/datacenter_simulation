@@ -188,15 +188,17 @@ def start_simulation(net, kval):
 def collect_data(hosts):
     timestamp = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     os.system("mkdir ~/varys_%s" % timestamp)
-    os.system("mkdir ~/varys_%s/output" % timestamp)
+    os.system("mkdir ~/varys_%s/console" % timestamp)
     os.system("mkdir ~/varys_%s/data" % timestamp)
     for i in range (0, len(hosts)):
         if i != 0:
-                os.system("docker cp %s:/root/group6/actor/logs/Slavedata.log ~/varys_%s/data/slave_%d.log" % (hosts[i], timestamp, i))
-                os.system("docker cp %s:/root/slave.log ~/varys_%s/output/slave_exec_%d.log" % (hosts[i], timestamp, i))
+                os.system("docker cp %s:/root/group6/actor/logs/ANALYS_Slavedata.log ~/varys_%s/data/analysis_slave_%d.log" % (hosts[i], timestamp, i))
+                os.system("docker cp %s:/root/group6/actor/logs/COMPLETE_Slavedata.log ~/varys_%s/data/complete_slave_%d.log" % (hosts[i], timestamp, i))
+                os.system("docker cp %s:/root/slave.log ~/varys_%s/console/console_slave_%d.log" % (hosts[i], timestamp, i))
         else:
-                os.system("docker cp %s:/root/group6/actor/logs/Masterdata.log ~/varys_%s/data/master_%d.log" % (hosts[i], timestamp, i))
-                os.system("docker cp %s:/root/master.log ~/varys_%s/output/master_exec_%d.log" % (hosts[i], timestamp, i))
+                os.system("docker cp %s:/root/group6/actor/logs/ANALYS_Masterdata.log ~/varys_%s/data/analysis_master_%d.log" % (hosts[i], timestamp, i))
+                os.system("docker cp %s:/root/group6/actor/logs/COMPLETE_Masterdata.log ~/varys_%s/data/complete_master_%d.log" % (hosts[i], timestamp, i))
+                os.system("docker cp %s:/root/master.log ~/varys_%s/console/console_master_%d.log" % (hosts[i], timestamp, i))
 
 def setup_files(master):
     os.system("docker cp ~/group6/actor/configs/tasks %s:/root/group6/actor/configs/tasks" % master)
