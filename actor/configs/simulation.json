@@ -1,0 +1,17 @@
+{
+  "taskFile": "configs/tasks",
+  "hostsFile": "configs/hosts",
+  "startTime": "2015-10-30T23:01:47+00:00",
+  "simulationType": "VARYS",
+  "masterUrl": "varys://137.110.97.119:1606",
+  "slavePort": 5000,
+
+  "masterListenerIp": "localhost",
+  "masterListenerPort": 4900,
+
+  "doGenerateFiles": true,
+  "fileDirectory": "transfer_files",
+  "fileSizeKBMin": 1,
+  "fileSizeKBMax": 20,
+  "fileSizeKBStep": 1
+}

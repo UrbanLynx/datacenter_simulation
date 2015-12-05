@@ -1,0 +1,41 @@
+Docker commands
+
+Docker containers - filesystems are not shared (unlike Mininet hosts), so can have different /etc/host hostname
+
+docker images
+docker run -t -i aborase/simdocker:v3.2 bash
+
+--------------------------------
+
+Docker + Mininet
+In Docker container, go to group6 repo that Amit added to container
+
+Changes in Docker image get pushed to Docker hub 
+
+docker commit -m "message" -a "aborase" dockerID image
+docker commit -m "message" -a "aborase" dockerID aborase/simdocker:v3.3
+
+-------------------------------------
+
+cd floodlight
+sudo java -jar target/floodlight.jar &
+
+sudo python group6/topogen/simdocker-fat1.py <fat tree K-value = 4>
+(python script note: config_host method - ifconfig not working on docker - hard coded in start_simulation)
+
+-------------------------------------------
+Mininet cluster notes
+
+h000 is master
+h000 cat ~/master.log
+h<xxx> cat ~/slave.log
+
+h<xxx> hostname
+docker attach dockerID
+lynx localhost:16016  # to see Varys webpage
+
+Mapping of Mininet host IPs to hostnames
+h310 - 10.3.1.2
+h311 - 10.3.1.3
+hnmp - 10.n.m.p+2
+

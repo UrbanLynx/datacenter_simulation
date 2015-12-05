@@ -3,6 +3,11 @@
 
 # Environment setup script for mininet
 
+echo "Cloning varys"
+cd ~
+git clone https://github.com/coflow/varys
+echo "Varys cloned at ~/varys"
+
 echo "############### Setting up mininet dependencies ###################"
 sudo apt-get update
 sudo apt-get install -y git vim-nox python-setuptools libpython-all-dev flex bison traceroute
@@ -14,6 +19,17 @@ cd ~
 git clone git://github.com/mininet/mininet
 cd mininet
 ./util/install.sh -fnv
+echo "###################################################################"
+echo ""
+
+echo "################ Installing Floodlight Controller #################"
+sudo apt-get install build-essential default-jdk ant python-dev eclipse
+cd ~
+git clone git://github.com/floodlight/floodlight.git
+cd floodlight
+ant
+sudo mkdir /var/lib/floodlight
+sudo chmod 777 /var/lib/floodlight
 echo "###################################################################"
 echo ""
 
@@ -57,7 +73,10 @@ sudo apt-get install python-numpy python-scipy
 git clone https://github.com/fnss/fnss
 cd fnss/core
 sudo python setup.py install
+cd ~
 echo "###################################################################"
 echo ""
 
 echo "DONE!"
+
+
