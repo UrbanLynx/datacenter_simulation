@@ -117,6 +117,8 @@ public class Communicator {
                             InputStream inputStream = socket.getInputStream();
                             //RP removed
                             Utils.logger.log(SimLogger.LogLevel.INFO, getSendLogContent(task,reducer, "connected"));
+                            long timeStamp = System.currentTimeMillis();
+                            Utils.logger.log(SimLogger.LogLevel.ANALYS, LogUtils.getSlaveLogContent(task, LogUtils.Event.SEND, Long.toString(timeStamp)));
 
                             OutputStream output = null;
                             if (task.simulationType == SimulationType.TRADITIONAL){
@@ -148,8 +150,7 @@ public class Communicator {
                             //Utils.logger.log(Level.INFO, String.valueOf(timeStamp)+getSendLogContent(task,reducer, "finished"));
 
                             // log send time for results analysis
-                            long timeStamp = System.currentTimeMillis();
-                            Utils.logger.log(SimLogger.LogLevel.ANALYS, LogUtils.getSlaveLogContent(task, LogUtils.Event.SEND, Long.toString(timeStamp)));
+
 
                             output.close();
                             socket.close();
