@@ -194,7 +194,7 @@ def collect_data(hosts):
     os.system("mkdir ~/varys_%s" % timestamp)
     os.system("mkdir ~/varys_%s/console" % timestamp)
     os.system("mkdir ~/varys_%s/data" % timestamp)
-    os.system("sudo cp ~/group6/actor/config/tasks ~/varys_%s/tasks" % timestamp)
+    os.system("sudo cp ~/group6/actor/configs/tasks ~/varys_%s/tasks" % timestamp)
 
     for i in range (0, len(hosts)):
         if i != 0:
