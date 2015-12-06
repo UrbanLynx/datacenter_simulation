@@ -28,6 +28,7 @@ public class Utils {
     public static Socket connectTo(String host, int port, int timeout) {
         Socket socket = null;
         boolean scanning=true;
+        boolean printedError = false;
         while(scanning)
         {
             try
@@ -37,13 +38,20 @@ public class Utils {
                 scanning=false;
             }
             catch(Exception e) {
-                System.out.println("Connect to "+host+":"+port+" failed, waiting and trying again");
+                if (!printedError){
+                    Utils.logger.log(SimLogger.LogLevel.ERROR, "Connect to "+host+":"+port+" failed, waiting and trying again\n");
+                    printedError = true;
+                }
+
                 try {
-                    Thread.sleep(timeout);
+                    Thread.sleep(1);
                 } catch (InterruptedException ie) {
                     ie.printStackTrace();
                 }
             }
+        }
+        if (printedError){
+            Utils.logger.log(SimLogger.LogLevel.ERROR, "Connect to "+host+":"+port+" success\n");
         }
         return socket;
     }
