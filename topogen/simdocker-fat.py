@@ -83,7 +83,7 @@ class fat_tree_topo(Topo):
         for i in range(0, kval):
             for j in range(0, (kval/2)):
                 for k in range (0, kval/2):
-                    self.host.append(self.addHost('h%d%d%d' % (i, j, k), ip='10.%d.%d.%d/8' % (i, j, (k+2)), cls=Docker, dimage="aborase/simdocker:v4"))
+                    self.host.append(self.addHost('h%d%d%d' % (i, j, k), ip='10.%d.%d.%d/8' % (i, j, (k+2)), cls=Docker, dimage="aborase/simdocker:v4_1mb"))
 
     def link_setup(self, kval):
         # setup links between core and aggregation swtches
@@ -184,12 +184,18 @@ def start_simulation(net, kval):
                 else:
                     result = host.cmd('cd; cd group6/actor; ./utils/start-master.sh 10.0.0.2')
                 print(result)
+def get_times(net):
+    for h in net.hosts:
+        t = h.cmd("date +%s%3N")
+        print(t)
 
 def collect_data(hosts):
     timestamp = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     os.system("mkdir ~/varys_%s" % timestamp)
     os.system("mkdir ~/varys_%s/console" % timestamp)
     os.system("mkdir ~/varys_%s/data" % timestamp)
+    os.system("sudo cp ~/group6/actor/config/tasks ~/varys_%s/tasks" % timestamp)
+
     for i in range (0, len(hosts)):
         if i != 0:
                 os.system("docker cp %s:/root/group6/actor/logs/ANALYS_Slavedata.log ~/varys_%s/data/analysis_slave_%d.log" % (hosts[i], timestamp, i))
@@ -201,6 +207,7 @@ def collect_data(hosts):
                 os.system("docker cp %s:/root/master.log ~/varys_%s/console/console_master_%d.log" % (hosts[i], timestamp, i))
 
 def setup_files(master):
+    #os.system("docker cp ~/group6/actor/configs/hosts %s:/root/group6/actor/configs/hosts" % master)
     os.system("docker cp ~/group6/actor/configs/tasks %s:/root/group6/actor/configs/tasks" % master)
     os.system("docker cp ~/group6/actor/configs/simulation.json %s:/root/group6/actor/configs/simulation.json" % master)
 
@@ -240,10 +247,10 @@ def setup_fattree_topo(kval):
     net.start()
     print("\n**** Sleeping for 10 seconds ****\n")
     time.sleep(5)
-
+    get_times(net)
     # configure the hosts
     config_host(net, hosts, ipaddrs, kval)
-
+    
     #enable STP
     print("\n**** Sleeping for 5 seconds ****\n")
     #time.sleep(5)
