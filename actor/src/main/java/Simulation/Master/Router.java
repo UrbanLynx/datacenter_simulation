@@ -43,7 +43,7 @@ public class Router {
 
         for(SlaveDesc slaveDesc: config.hosts.values()){
             try {
-                Socket socket = Utils.connectTo(slaveDesc.hostName, slaveDesc.portNumber, 1000);
+                Socket socket = Utils.connectTo(slaveDesc.hostName, slaveDesc.portNumber, 1);
                 ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                 ConnectionDesc connectionDesc = new ConnectionDesc(slaveDesc, socket, oos, ois);

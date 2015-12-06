@@ -112,7 +112,7 @@ public class Communicator {
                     public void run(){
                         try{
                             Reducer reducer = newReducer;
-                            Socket socket = Utils.connectTo(reducer.address, reducer.port, 2000);
+                            Socket socket = Utils.connectTo(reducer.address, reducer.port, 1);
 
                             InputStream inputStream = socket.getInputStream();
                             //RP removed

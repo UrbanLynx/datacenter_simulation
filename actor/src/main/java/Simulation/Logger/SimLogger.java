@@ -38,7 +38,8 @@ public class SimLogger {
     public enum LogLevel{
         ANALYS,
         COMPLETE,
-        INFO
+        INFO,
+        ERROR
     }
 
     private String logFolder = "logs";
