@@ -14,8 +14,9 @@ private[framework] object DarkScheduler extends Logging {
   val MAX_DEPTH = System.getProperty("varys.framework.maxDagDepth", "100").toInt
 
   val NUM_JOB_QUEUES = System.getProperty("varys.framework.darkScheduler.numJobQueues", "10").toInt
+  // ! 10Mbit stas ruby
   val INIT_QUEUE_LIMIT = 
-    System.getProperty("varys.framework.darkScheduler.initQueueLimit", "10485760").toDouble
+    System.getProperty("varys.framework.darkScheduler.initQueueLimit", "5242880").toDouble
   val JOB_SIZE_MULT = System.getProperty("varys.framework.darkScheduler.jobSizeMult", "10").toDouble
 
   logTrace("varys.framework.darkScheduler.numJobQueues   = " + NUM_JOB_QUEUES)
