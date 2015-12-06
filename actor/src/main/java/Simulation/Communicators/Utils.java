@@ -58,7 +58,7 @@ public class Utils {
 
     public static void reportFinishToMaster(SimTask task){
         try{
-            Socket socket = Utils.connectTo(task.masterListenerIp, task.masterListenerPort, 1000);
+            Socket socket = Utils.connectTo(task.masterListenerIp, task.masterListenerPort, 1);
             ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
             output.writeObject(task);
             output.close();
