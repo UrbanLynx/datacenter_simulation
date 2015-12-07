@@ -1,0 +1,1020 @@
+Connecting to each simulation slave
+Connect to 10.0.0.3:5000 failed, waiting and trying again
+
+Connect to 10.0.0.3:5000 success
+
+Connect to 10.1.0.2:5000 failed, waiting and trying again
+
+Connect to 10.1.0.2:5000 success
+
+Connect to 10.1.0.3:5000 failed, waiting and trying again
+
+Connect to 10.1.0.3:5000 success
+
+Connect to 10.1.1.2:5000 failed, waiting and trying again
+
+Connect to 10.1.1.2:5000 success
+
+Connect to 10.1.1.3:5000 failed, waiting and trying again
+
+Connect to 10.1.1.3:5000 success
+
+Connect to 10.2.0.2:5000 failed, waiting and trying again
+
+Connect to 10.2.0.2:5000 success
+
+Connect to 10.2.0.3:5000 failed, waiting and trying again
+
+Connect to 10.2.0.3:5000 success
+
+Connect to 10.2.1.2:5000 failed, waiting and trying again
+
+Connect to 10.2.1.2:5000 success
+
+Connect to 10.2.1.3:5000 failed, waiting and trying again
+
+Connect to 10.2.1.3:5000 success
+
+Connect to 10.3.0.2:5000 failed, waiting and trying again
+
+Connect to 10.3.0.2:5000 success
+
+Connect to 10.3.0.3:5000 failed, waiting and trying again
+
+Connect to 10.3.0.3:5000 success
+
+Connect to 10.3.1.2:5000 failed, waiting and trying again
+
+Connect to 10.3.1.2:5000 success
+
+Connect to 10.3.1.3:5000 failed, waiting and trying again
+
+Connect to 10.3.1.3:5000 success
+
+Connection Simulation.Master.Utils.SlaveDesc@7002ee59 10.0.0.3:5000
+Connection Simulation.Master.Utils.SlaveDesc@506e4e82 10.1.0.2:5000
+Connection Simulation.Master.Utils.SlaveDesc@79e4620e 10.1.0.3:5000
+Connection Simulation.Master.Utils.SlaveDesc@e1c3a7 10.1.1.2:5000
+Connection Simulation.Master.Utils.SlaveDesc@65f40964 10.1.1.3:5000
+Connection Simulation.Master.Utils.SlaveDesc@7894b886 10.2.0.2:5000
+Connection Simulation.Master.Utils.SlaveDesc@6bdea342 10.2.0.3:5000
+Connection Simulation.Master.Utils.SlaveDesc@65b07961 10.2.1.2:5000
+Connection Simulation.Master.Utils.SlaveDesc@24f1036f 10.2.1.3:5000
+Connection Simulation.Master.Utils.SlaveDesc@4b187f5b 10.3.0.2:5000
+Connection Simulation.Master.Utils.SlaveDesc@355155e1 10.3.0.3:5000
+Connection Simulation.Master.Utils.SlaveDesc@6edd421f 10.3.1.2:5000
+Connection Simulation.Master.Utils.SlaveDesc@203a16 10.3.1.3:5000
+Connection Simulation.Master.Utils.SlaveDesc@43c57a6a 10.0.1.2:5000
+Connection Simulation.Master.Utils.SlaveDesc@59e7e7e8 10.0.1.3:5000
+Configuring logger for Master
+Master listening for reports on port4900
+15/12/07 01:36:25 INFO slf4j.Slf4jLogger: Slf4jLogger started
+Master client before coflow null
+15/12/07 01:36:25 INFO client.VarysClient$ClientActor: Connecting to master varys://10.0.0.2:1606
+Log: Connected to master, got client ID CLIENT-000000
+15/12/07 01:36:26 INFO client.VarysClient$ClientActor: Registered to master in 171 milliseconds.
+Master client after coflow CLIENT-000000
+Registered coflow 0
+2 6000
+1 0 
+
+Sending task to host 2
+3 6000
+Sending task to host 3
+4 6000
+Sending task to host 4
+5 6000
+Sending task to host 5
+6 6000
+Sending task to host 6
+7 6000
+Sending task to host 7
+8 6000
+Sending task to host 8
+9 6000
+Sending task to host 9
+10 6000
+Sending task to host 10
+11 6000
+Sending task to host 11
+Sending task to host 1
+15/12/07 01:36:26 INFO slf4j.Slf4jLogger: Slf4jLogger started
+Master client before coflow null
+15/12/07 01:36:26 INFO client.VarysClient$ClientActor: Connecting to master varys://10.0.0.2:1606
+Log: Connected to master, got client ID CLIENT-000001
+15/12/07 01:36:26 INFO client.VarysClient$ClientActor: Registered to master in 70 milliseconds.
+Master client after coflow CLIENT-000001
+Registered coflow 100
+2 6011
+Sending task to host 2
+2 100 
+
+3 6011
+Sending task to host 3
+4 6011
+Sending task to host 4
+5 6011
+Sending task to host 5
+6 6011
+Sending task to host 6
+7 6011
+Sending task to host 7
+8 6011
+Sending task to host 8
+9 6011
+Sending task to host 9
+10 6011
+Sending task to host 10
+11 6011
+Sending task to host 11
+Sending task to host 1
+Master got report for task 2 from 4
+Master got report for task 2 from 3
+Master got report for task 2 from 9
+Master got report for task 2 from 1
+Master got report for task 2 from 8
+Master got report for task 2 from 5
+Master got report for task 2 from 2
+Master got report for task 2 from 6
+Master got report for task 2 from 0
+Master got report for task 2 from 7
+Log: Disconnected from master
+2 7305
+
+Master got report for task 1 from 0
+Master got report for task 1 from 5
+Master got report for task 1 from 8
+Master got report for task 1 from 1
+Master got report for task 1 from 7
+Master got report for task 1 from 3
+Master got report for task 1 from 4
+Master got report for task 1 from 2
+Master got report for task 1 from 9
+Master got report for task 1 from 6
+Log: Disconnected from master
+1 39439
+
+15/12/07 01:37:06 INFO slf4j.Slf4jLogger: Slf4jLogger started
+Master client before coflow null
+15/12/07 01:37:06 INFO client.VarysClient$ClientActor: Connecting to master varys://10.0.0.2:1606
+Log: Connected to master, got client ID CLIENT-000002
+15/12/07 01:37:06 INFO client.VarysClient$ClientActor: Registered to master in 23 milliseconds.
+Master client after coflow CLIENT-000002
+Registered coflow 200
+2 6001
+Sending task to host 2
+3 200 
+
+3 6001
+Sending task to host 3
+4 6001
+Sending task to host 4
+5 6001
+Sending task to host 5
+6 6001
+Sending task to host 6
+7 6001
+Sending task to host 7
+8 6001
+Sending task to host 8
+9 6001
+Sending task to host 9
+10 6001
+Sending task to host 10
+11 6001
+Sending task to host 11
+Sending task to host 1
+15/12/07 01:37:06 INFO slf4j.Slf4jLogger: Slf4jLogger started
+Master client before coflow null
+15/12/07 01:37:06 INFO client.VarysClient$ClientActor: Connecting to master varys://10.0.0.2:1606
+Log: Connected to master, got client ID CLIENT-000003
+15/12/07 01:37:06 INFO client.VarysClient$ClientActor: Registered to master in 35 milliseconds.
+Master client after coflow CLIENT-000003
+Registered coflow 300
+2 6012
+Sending task to host 2
+3 6012
+Sending task to host 3
+4 300 
+
+4 6012
+Sending task to host 4
+5 6012
+Sending task to host 5
+6 6012
+Sending task to host 6
+7 6012
+Sending task to host 7
+8 6012
+Sending task to host 8
+9 6012
+Sending task to host 9
+10 6012
+Sending task to host 10
+11 6012
+Sending task to host 11
+Sending task to host 1
+Master got report for task 4 from 4
+Master got report for task 4 from 0
+Master got report for task 4 from 9
+Master got report for task 4 from 1
+Master got report for task 4 from 8
+Master got report for task 4 from 5
+Master got report for task 4 from 7
+Master got report for task 4 from 2
+Master got report for task 4 from 3
+Master got report for task 4 from 6
+Log: Disconnected from master
+4 10006
+
+Master got report for task 3 from 0
+Master got report for task 3 from 5
+Master got report for task 3 from 3
+Master got report for task 3 from 7
+Master got report for task 3 from 2
+Master got report for task 3 from 6
+Master got report for task 3 from 4
+Master got report for task 3 from 9
+Master got report for task 3 from 8
+Master got report for task 3 from 1
+Log: Disconnected from master
+3 37467
+
+15/12/07 01:37:46 INFO slf4j.Slf4jLogger: Slf4jLogger started
+Master client before coflow null
+15/12/07 01:37:46 INFO client.VarysClient$ClientActor: Connecting to master varys://10.0.0.2:1606
+Log: Connected to master, got client ID CLIENT-000004
+15/12/07 01:37:46 INFO client.VarysClient$ClientActor: Registered to master in 26 milliseconds.
+Master client after coflow CLIENT-000004
+Registered coflow 400
+2 6002
+Sending task to host 2
+5 400 
+
+3 6002
+Sending task to host 3
+4 6002
+Sending task to host 4
+5 6002
+Sending task to host 5
+6 6002
+Sending task to host 6
+7 6002
+Sending task to host 7
+8 6002
+Sending task to host 8
+9 6002
+Sending task to host 9
+10 6002
+Sending task to host 10
+11 6002
+Sending task to host 11
+Sending task to host 1
+15/12/07 01:37:46 INFO slf4j.Slf4jLogger: Slf4jLogger started
+Master client before coflow null
+15/12/07 01:37:46 INFO client.VarysClient$ClientActor: Connecting to master varys://10.0.0.2:1606
+Log: Connected to master, got client ID CLIENT-000005
+15/12/07 01:37:47 INFO client.VarysClient$ClientActor: Registered to master in 50 milliseconds.
+Master client after coflow CLIENT-000005
+Registered coflow 500
+2 6013
+Sending task to host 2
+6 500 
+
+3 6013
+Sending task to host 3
+4 6013
+Sending task to host 4
+5 6013
+Sending task to host 5
+6 6013
+Sending task to host 6
+7 6013
+Sending task to host 7
+8 6013
+Sending task to host 8
+9 6013
+Sending task to host 9
+10 6013
+Sending task to host 10
+11 6013
+Sending task to host 11
+Sending task to host 1
+Master got report for task 6 from 7
+Master got report for task 6 from 0
+Master got report for task 6 from 6
+Master got report for task 6 from 2
+Master got report for task 6 from 8
+Master got report for task 6 from 4
+Master got report for task 6 from 3
+Master got report for task 6 from 9
+Master got report for task 6 from 5
+Master got report for task 6 from 1
+Log: Disconnected from master
+6 10483
+
+Master got report for task 5 from 1
+Master got report for task 5 from 0
+Master got report for task 5 from 3
+Master got report for task 5 from 5
+Master got report for task 5 from 4
+Master got report for task 5 from 8
+Master got report for task 5 from 6
+Master got report for task 5 from 7
+Master got report for task 5 from 2
+Master got report for task 5 from 9
+Log: Disconnected from master
+5 37067
+
+15/12/07 01:38:27 INFO slf4j.Slf4jLogger: Slf4jLogger started
+Master client before coflow null
+15/12/07 01:38:27 INFO client.VarysClient$ClientActor: Connecting to master varys://10.0.0.2:1606
+Log: Connected to master, got client ID CLIENT-000006
+15/12/07 01:38:27 INFO client.VarysClient$ClientActor: Registered to master in 20 milliseconds.
+Master client after coflow CLIENT-000006
+Registered coflow 600
+2 6003
+Sending task to host 2
+7 600 
+
+3 6003
+Sending task to host 3
+4 6003
+Sending task to host 4
+5 6003
+Sending task to host 5
+6 6003
+Sending task to host 6
+7 6003
+Sending task to host 7
+8 6003
+Sending task to host 8
+9 6003
+Sending task to host 9
+10 6003
+Sending task to host 10
+11 6003
+Sending task to host 11
+Sending task to host 1
+15/12/07 01:38:27 INFO slf4j.Slf4jLogger: Slf4jLogger started
+Master client before coflow null
+15/12/07 01:38:27 INFO client.VarysClient$ClientActor: Connecting to master varys://10.0.0.2:1606
+Log: Connected to master, got client ID CLIENT-000007
+15/12/07 01:38:27 INFO client.VarysClient$ClientActor: Registered to master in 26 milliseconds.
+Master client after coflow CLIENT-000007
+Registered coflow 700
+2 6014
+Sending task to host 2
+8 700 
+
+3 6014
+Sending task to host 3
+4 6014
+Sending task to host 4
+5 6014
+Sending task to host 5
+6 6014
+Sending task to host 6
+7 6014
+Sending task to host 7
+8 6014
+Sending task to host 8
+9 6014
+Sending task to host 9
+10 6014
+Sending task to host 10
+11 6014
+Sending task to host 11
+Sending task to host 1
+Master got report for task 8 from 0
+Master got report for task 8 from 1
+Master got report for task 8 from 2
+Master got report for task 8 from 7
+Master got report for task 8 from 9
+Master got report for task 8 from 8
+Master got report for task 8 from 5
+Master got report for task 8 from 4
+Master got report for task 8 from 3
+Master got report for task 8 from 6
+Log: Disconnected from master
+8 10624
+
+Master got report for task 7 from 1
+Master got report for task 7 from 6
+Master got report for task 7 from 3
+Master got report for task 7 from 4
+Master got report for task 7 from 5
+Master got report for task 7 from 7
+Master got report for task 7 from 8
+Master got report for task 7 from 9
+Master got report for task 7 from 0
+Master got report for task 7 from 2
+Log: Disconnected from master
+7 37514
+
+15/12/07 01:39:07 INFO slf4j.Slf4jLogger: Slf4jLogger started
+Master client before coflow null
+15/12/07 01:39:07 INFO client.VarysClient$ClientActor: Connecting to master varys://10.0.0.2:1606
+Log: Connected to master, got client ID CLIENT-000008
+15/12/07 01:39:07 INFO client.VarysClient$ClientActor: Registered to master in 18 milliseconds.
+Master client after coflow CLIENT-000008
+Registered coflow 800
+2 6004
+9 800 
+
+Sending task to host 2
+3 6004
+Sending task to host 3
+4 6004
+Sending task to host 4
+5 6004
+Sending task to host 5
+6 6004
+Sending task to host 6
+7 6004
+Sending task to host 7
+8 6004
+Sending task to host 8
+9 6004
+Sending task to host 9
+10 6004
+Sending task to host 10
+11 6004
+Sending task to host 11
+Sending task to host 1
+15/12/07 01:39:07 INFO slf4j.Slf4jLogger: Slf4jLogger started
+Master client before coflow null
+15/12/07 01:39:07 INFO client.VarysClient$ClientActor: Connecting to master varys://10.0.0.2:1606
+Log: Connected to master, got client ID CLIENT-000009
+15/12/07 01:39:07 INFO client.VarysClient$ClientActor: Registered to master in 21 milliseconds.
+Master client after coflow CLIENT-000009
+Registered coflow 900
+2 6015
+Sending task to host 2
+10 900 
+
+3 6015
+Sending task to host 3
+4 6015
+Sending task to host 4
+5 6015
+Sending task to host 5
+6 6015
+Sending task to host 6
+7 6015
+Sending task to host 7
+8 6015
+Sending task to host 8
+9 6015
+Sending task to host 9
+10 6015
+Sending task to host 10
+11 6015
+Sending task to host 11
+Sending task to host 1
+Master got report for task 10 from 1
+Master got report for task 10 from 5
+Master got report for task 10 from 2
+Master got report for task 10 from 8
+Master got report for task 10 from 4
+Master got report for task 10 from 0
+Master got report for task 10 from 7
+Master got report for task 10 from 3
+Master got report for task 10 from 9
+Master got report for task 10 from 6
+Log: Disconnected from master
+10 10492
+
+Master got report for task 9 from 0
+Master got report for task 9 from 1
+Master got report for task 9 from 5
+Master got report for task 9 from 3
+Master got report for task 9 from 6
+Master got report for task 9 from 7
+Master got report for task 9 from 8
+Master got report for task 9 from 9
+Master got report for task 9 from 4
+Master got report for task 9 from 2
+Log: Disconnected from master
+9 37623
+
+15/12/07 01:39:47 INFO slf4j.Slf4jLogger: Slf4jLogger started
+Master client before coflow null
+15/12/07 01:39:47 INFO client.VarysClient$ClientActor: Connecting to master varys://10.0.0.2:1606
+Log: Connected to master, got client ID CLIENT-000010
+15/12/07 01:39:47 INFO client.VarysClient$ClientActor: Registered to master in 20 milliseconds.
+Master client after coflow CLIENT-000010
+Registered coflow 1000
+2 6005
+11 1000 
+
+Sending task to host 2
+3 6005
+Sending task to host 3
+4 6005
+Sending task to host 4
+5 6005
+Sending task to host 5
+6 6005
+Sending task to host 6
+7 6005
+Sending task to host 7
+8 6005
+Sending task to host 8
+9 6005
+Sending task to host 9
+10 6005
+Sending task to host 10
+11 6005
+Sending task to host 11
+Sending task to host 1
+15/12/07 01:39:47 INFO slf4j.Slf4jLogger: Slf4jLogger started
+Master client before coflow null
+15/12/07 01:39:47 INFO client.VarysClient$ClientActor: Connecting to master varys://10.0.0.2:1606
+Log: Connected to master, got client ID CLIENT-000011
+15/12/07 01:39:47 INFO client.VarysClient$ClientActor: Registered to master in 19 milliseconds.
+Master client after coflow CLIENT-000011
+Registered coflow 1100
+2 6016
+Sending task to host 2
+12 1100 
+
+3 6016
+Sending task to host 3
+4 6016
+Sending task to host 4
+5 6016
+Sending task to host 5
+6 6016
+Sending task to host 6
+7 6016
+Sending task to host 7
+8 6016
+Sending task to host 8
+9 6016
+Sending task to host 9
+10 6016
+Sending task to host 10
+11 6016
+Sending task to host 11
+Sending task to host 1
+Master got report for task 12 from 2
+Master got report for task 12 from 3
+Master got report for task 12 from 0
+Master got report for task 12 from 1
+Master got report for task 12 from 4
+Master got report for task 12 from 7
+Master got report for task 12 from 5
+Master got report for task 12 from 8
+Master got report for task 12 from 9
+Master got report for task 12 from 6
+Log: Disconnected from master
+12 10187
+
+Master got report for task 11 from 2
+Master got report for task 11 from 3
+Master got report for task 11 from 5
+Master got report for task 11 from 6
+Master got report for task 11 from 9
+Master got report for task 11 from 0
+Master got report for task 11 from 4
+Master got report for task 11 from 1
+Master got report for task 11 from 7
+Master got report for task 11 from 8
+Log: Disconnected from master
+11 37626
+
+15/12/07 01:40:27 INFO slf4j.Slf4jLogger: Slf4jLogger started
+Master client before coflow null
+15/12/07 01:40:27 INFO client.VarysClient$ClientActor: Connecting to master varys://10.0.0.2:1606
+Log: Connected to master, got client ID CLIENT-000012
+15/12/07 01:40:27 INFO client.VarysClient$ClientActor: Registered to master in 18 milliseconds.
+Master client after coflow CLIENT-000012
+Registered coflow 1200
+2 6006
+Sending task to host 2
+13 1200 
+
+3 6006
+Sending task to host 3
+4 6006
+Sending task to host 4
+5 6006
+Sending task to host 5
+6 6006
+Sending task to host 6
+7 6006
+Sending task to host 7
+8 6006
+Sending task to host 8
+9 6006
+Sending task to host 9
+10 6006
+Sending task to host 10
+11 6006
+Sending task to host 11
+Sending task to host 1
+15/12/07 01:40:27 INFO slf4j.Slf4jLogger: Slf4jLogger started
+Master client before coflow null
+15/12/07 01:40:27 INFO client.VarysClient$ClientActor: Connecting to master varys://10.0.0.2:1606
+Log: Connected to master, got client ID CLIENT-000013
+15/12/07 01:40:27 INFO client.VarysClient$ClientActor: Registered to master in 18 milliseconds.
+Master client after coflow CLIENT-000013
+Registered coflow 1300
+2 6017
+Sending task to host 2
+14 1300 
+
+3 6017
+Sending task to host 3
+4 6017
+Sending task to host 4
+5 6017
+Sending task to host 5
+6 6017
+Sending task to host 6
+7 6017
+Sending task to host 7
+8 6017
+Sending task to host 8
+9 6017
+Sending task to host 9
+10 6017
+Sending task to host 10
+11 6017
+Sending task to host 11
+Sending task to host 1
+Master got report for task 14 from 0
+Master got report for task 14 from 1
+Master got report for task 14 from 3
+Master got report for task 14 from 4
+Master got report for task 14 from 6
+Master got report for task 14 from 7
+Master got report for task 14 from 5
+Master got report for task 14 from 2
+Master got report for task 14 from 8
+Master got report for task 14 from 9
+Log: Disconnected from master
+14 11167
+
+Master got report for task 13 from 1
+Master got report for task 13 from 2
+Master got report for task 13 from 0
+Master got report for task 13 from 4
+Master got report for task 13 from 3
+Master got report for task 13 from 5
+Master got report for task 13 from 6
+Master got report for task 13 from 8
+Master got report for task 13 from 9
+Master got report for task 13 from 7
+Log: Disconnected from master
+13 37638
+
+15/12/07 01:41:07 INFO slf4j.Slf4jLogger: Slf4jLogger started
+Master client before coflow null
+15/12/07 01:41:07 INFO client.VarysClient$ClientActor: Connecting to master varys://10.0.0.2:1606
+Log: Connected to master, got client ID CLIENT-000014
+15/12/07 01:41:07 INFO client.VarysClient$ClientActor: Registered to master in 19 milliseconds.
+Master client after coflow CLIENT-000014
+Registered coflow 1400
+2 6007
+Sending task to host 2
+15 1400 
+
+3 6007
+Sending task to host 3
+4 6007
+Sending task to host 4
+5 6007
+Sending task to host 5
+6 6007
+Sending task to host 6
+7 6007
+Sending task to host 7
+8 6007
+Sending task to host 8
+9 6007
+Sending task to host 9
+10 6007
+Sending task to host 10
+11 6007
+Sending task to host 11
+Sending task to host 1
+15/12/07 01:41:07 INFO slf4j.Slf4jLogger: Slf4jLogger started
+Master client before coflow null
+15/12/07 01:41:08 INFO client.VarysClient$ClientActor: Connecting to master varys://10.0.0.2:1606
+Log: Connected to master, got client ID CLIENT-000015
+15/12/07 01:41:08 INFO client.VarysClient$ClientActor: Registered to master in 26 milliseconds.
+Master client after coflow CLIENT-000015
+Registered coflow 1500
+2 6018
+Sending task to host 2
+16 1500 
+
+3 6018
+Sending task to host 3
+4 6018
+Sending task to host 4
+5 6018
+Sending task to host 5
+6 6018
+Sending task to host 6
+7 6018
+Sending task to host 7
+8 6018
+Sending task to host 8
+9 6018
+Sending task to host 9
+10 6018
+Sending task to host 10
+11 6018
+Sending task to host 11
+Sending task to host 1
+Master got report for task 16 from 0
+Master got report for task 16 from 4
+Master got report for task 16 from 5
+Master got report for task 16 from 6
+Master got report for task 16 from 1
+Master got report for task 16 from 2
+Master got report for task 16 from 8
+Master got report for task 16 from 9
+Master got report for task 16 from 7
+Master got report for task 16 from 3
+Log: Disconnected from master
+16 11100
+
+Master got report for task 15 from 1
+Master got report for task 15 from 0
+Master got report for task 15 from 3
+Master got report for task 15 from 2
+Master got report for task 15 from 5
+Master got report for task 15 from 6
+Master got report for task 15 from 8
+Master got report for task 15 from 7
+Master got report for task 15 from 4
+Master got report for task 15 from 9
+Log: Disconnected from master
+15 36975
+
+15/12/07 01:41:48 INFO slf4j.Slf4jLogger: Slf4jLogger started
+Master client before coflow null
+15/12/07 01:41:48 INFO client.VarysClient$ClientActor: Connecting to master varys://10.0.0.2:1606
+Log: Connected to master, got client ID CLIENT-000016
+15/12/07 01:41:48 INFO client.VarysClient$ClientActor: Registered to master in 28 milliseconds.
+Master client after coflow CLIENT-000016
+Registered coflow 1600
+2 6008
+Sending task to host 2
+17 1600 
+
+3 6008
+Sending task to host 3
+4 6008
+Sending task to host 4
+5 6008
+Sending task to host 5
+6 6008
+Sending task to host 6
+7 6008
+Sending task to host 7
+8 6008
+Sending task to host 8
+9 6008
+Sending task to host 9
+10 6008
+Sending task to host 10
+11 6008
+Sending task to host 11
+Sending task to host 1
+15/12/07 01:41:48 INFO slf4j.Slf4jLogger: Slf4jLogger started
+Master client before coflow null
+15/12/07 01:41:48 INFO client.VarysClient$ClientActor: Connecting to master varys://10.0.0.2:1606
+Log: Connected to master, got client ID CLIENT-000017
+15/12/07 01:41:48 INFO client.VarysClient$ClientActor: Registered to master in 22 milliseconds.
+Master client after coflow CLIENT-000017
+Registered coflow 1700
+2 6019
+Sending task to host 2
+18 1700 
+
+3 6019
+Sending task to host 3
+4 6019
+Sending task to host 4
+5 6019
+Sending task to host 5
+6 6019
+Sending task to host 6
+7 6019
+Sending task to host 7
+8 6019
+Sending task to host 8
+9 6019
+Sending task to host 9
+10 6019
+Sending task to host 10
+11 6019
+Sending task to host 11
+Sending task to host 1
+Master got report for task 18 from 4
+Master got report for task 18 from 1
+Master got report for task 18 from 2
+Master got report for task 18 from 3
+Master got report for task 18 from 0
+Master got report for task 18 from 6
+Master got report for task 18 from 8
+Master got report for task 18 from 5
+Master got report for task 18 from 9
+Master got report for task 18 from 7
+Log: Disconnected from master
+18 10797
+
+Master got report for task 17 from 0
+Master got report for task 17 from 1
+Master got report for task 17 from 2
+Master got report for task 17 from 5
+Master got report for task 17 from 4
+Master got report for task 17 from 3
+Master got report for task 17 from 6
+Master got report for task 17 from 8
+Master got report for task 17 from 9
+Master got report for task 17 from 7
+Log: Disconnected from master
+17 37605
+
+15/12/07 01:42:28 INFO slf4j.Slf4jLogger: Slf4jLogger started
+Master client before coflow null
+15/12/07 01:42:28 INFO client.VarysClient$ClientActor: Connecting to master varys://10.0.0.2:1606
+Log: Connected to master, got client ID CLIENT-000018
+15/12/07 01:42:28 INFO client.VarysClient$ClientActor: Registered to master in 31 milliseconds.
+Master client after coflow CLIENT-000018
+Registered coflow 1800
+2 6009
+Sending task to host 2
+19 1800 
+
+3 6009
+Sending task to host 3
+4 6009
+Sending task to host 4
+5 6009
+Sending task to host 5
+6 6009
+Sending task to host 6
+7 6009
+Sending task to host 7
+8 6009
+Sending task to host 8
+9 6009
+Sending task to host 9
+10 6009
+Sending task to host 10
+11 6009
+Sending task to host 11
+Sending task to host 1
+15/12/07 01:42:28 INFO slf4j.Slf4jLogger: Slf4jLogger started
+Master client before coflow null
+15/12/07 01:42:28 INFO client.VarysClient$ClientActor: Connecting to master varys://10.0.0.2:1606
+Log: Connected to master, got client ID CLIENT-000019
+15/12/07 01:42:28 INFO client.VarysClient$ClientActor: Registered to master in 41 milliseconds.
+Master client after coflow CLIENT-000019
+Registered coflow 1900
+2 6020
+Sending task to host 2
+20 1900 
+
+3 6020
+Sending task to host 3
+4 6020
+Sending task to host 4
+5 6020
+Sending task to host 5
+6 6020
+Sending task to host 6
+7 6020
+Sending task to host 7
+8 6020
+Sending task to host 8
+9 6020
+Sending task to host 9
+10 6020
+Sending task to host 10
+11 6020
+Sending task to host 11
+Sending task to host 1
+Master got report for task 20 from 4
+Master got report for task 20 from 3
+Master got report for task 20 from 2
+Master got report for task 20 from 6
+Master got report for task 20 from 1
+Master got report for task 20 from 0
+Master got report for task 20 from 8
+Master got report for task 20 from 5
+Master got report for task 20 from 9
+Master got report for task 20 from 7
+Log: Disconnected from master
+20 11116
+
+Master got report for task 19 from 1
+Master got report for task 19 from 5
+Master got report for task 19 from 4
+Master got report for task 19 from 0
+Master got report for task 19 from 2
+Master got report for task 19 from 6
+Master got report for task 19 from 7
+Master got report for task 19 from 9
+Master got report for task 19 from 3
+Master got report for task 19 from 8
+Log: Disconnected from master
+19 37667
+
+15/12/07 01:43:08 INFO slf4j.Slf4jLogger: Slf4jLogger started
+Master client before coflow null
+15/12/07 01:43:08 INFO client.VarysClient$ClientActor: Connecting to master varys://10.0.0.2:1606
+Log: Connected to master, got client ID CLIENT-000020
+15/12/07 01:43:08 INFO client.VarysClient$ClientActor: Registered to master in 57 milliseconds.
+Master client after coflow CLIENT-000020
+Registered coflow 2000
+2 6010
+Sending task to host 2
+21 2000 
+
+3 6010
+Sending task to host 3
+4 6010
+Sending task to host 4
+5 6010
+Sending task to host 5
+6 6010
+Sending task to host 6
+7 6010
+Sending task to host 7
+8 6010
+Sending task to host 8
+9 6010
+Sending task to host 9
+10 6010
+Sending task to host 10
+11 6010
+Sending task to host 11
+Sending task to host 1
+15/12/07 01:43:08 INFO slf4j.Slf4jLogger: Slf4jLogger started
+Master client before coflow null
+15/12/07 01:43:08 INFO client.VarysClient$ClientActor: Connecting to master varys://10.0.0.2:1606
+Log: Connected to master, got client ID CLIENT-000021
+15/12/07 01:43:08 INFO client.VarysClient$ClientActor: Registered to master in 16 milliseconds.
+Master client after coflow CLIENT-000021
+Registered coflow 2100
+2 6021
+Sending task to host 2
+22 2100 
+
+3 6021
+Sending task to host 3
+4 6021
+Sending task to host 4
+5 6021
+Sending task to host 5
+6 6021
+Sending task to host 6
+7 6021
+Sending task to host 7
+8 6021
+Sending task to host 8
+9 6021
+Sending task to host 9
+10 6021
+Sending task to host 10
+11 6021
+Sending task to host 11
+Sending task to host 1
+All tasks sent! Wait for simulation to finish...
+Master waits for finishing
+Master got report for task 22 from 0
+Master got report for task 22 from 9
+Master got report for task 22 from 7
+Master got report for task 22 from 3
+Master got report for task 22 from 1
+Master got report for task 22 from 2
+Master got report for task 22 from 8
+Master got report for task 22 from 5
+Master got report for task 22 from 6
+Master got report for task 22 from 4
+Log: Disconnected from master
+22 10722
+
+Master got report for task 21 from 5
+Master got report for task 21 from 6
+Master got report for task 21 from 0
+Master got report for task 21 from 1
+Master got report for task 21 from 7
+Master got report for task 21 from 4
+Master got report for task 21 from 8
+Master got report for task 21 from 9
+Master got report for task 21 from 3
+Master got report for task 21 from 2
+Log: Disconnected from master
+21 37675
+
+Simulation finished!
+logger exit
