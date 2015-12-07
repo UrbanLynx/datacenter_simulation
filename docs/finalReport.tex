@@ -28,6 +28,12 @@ Coflow scheduling, Data center networks
 
 \section{Related work}
 
+One of the preliminary task was to create a suitable environment to simulate and run the network. We did a survey of possible network simulators carefully looking for the features it provided and its suitability for our objective. For the baseline network simulation we decided to go for mininet\cite{Mininet}. There are other options like NS2 simulator etc. Support for python programming coupled with integration support with many VMs made our choice of picking up mininet easier. Moreover there is a huge community involvement and documentation for the tool.
+
+The second decision was to decide on a network topology over which we should be running the simulation. Our aim was to ensure that rather than sticking to naive network topologies, we should rather read up on production quality network topologies, that is actually useful in real world scenario. Keeping that in mind and considering the pragmatic implications, we used fat-tree based network topology. Fat tree topology ensures that the end hosts receive full bisection bandwidth and there would be multiple path from a host to core server, ensuring higher bandwidth and reliability. Most of the fat tree implementation requires some method of hashing, usually ECMP to ensure that the multiple paths are effectively utilized. Our search for an SDN controller with ECMP support did not bear the fruit. The next best option was to find a controller that learns MAC addresses for efficient switching. Openflow Floodlight\cite{Floodlight} controller was selected for this purpose. Firstly floodlight supports learning based data forwarding and secondly provides Java based API. We were able to successfully create and deploy a fat tree topology with parameter K = 4, ensuring that we have 16 hosts connected to each other.
+
+We ran the network in our allotted UCSD cluster machines. However we came across a problem when we tried to assign individual IP addresses to each mininet hosts. Mininet host will take IP`s based on the host name, which while running on a single VM is the same. To resolve this, we had to look for other means. After quite a bit of research, we decided to use Docker\cite{Docker} containers for deploying mininet hosts. Docker containers are essentially virtual machines without hypervisor. This essentially means that we were able to create Docker based software containers for individual mininet hosts and was deployed on our cluster virtual machines. Docket provide APIs that enables us to monitor, trigger and execute process in individual containers from the host machine. We used python based API for our interaction with docker containers.
+
 \section{Design}
 
 \section{Evaluation}
@@ -37,6 +43,18 @@ Coflow scheduling, Data center networks
 \section*{Acknowledgment}
 
 \begin{thebibliography}{10}
+
+\bibitem{Mininet}
+Mininet - rapid prototyping for SDN
+\textit{https://github.com/mininet/mininet}
+
+\bibitem{Floodlight}
+Flood light SDN controller
+\textit{https://github.com/floodlight/floodlight}
+
+\bibitem{Docker}
+Docker
+\textit{https://www.docker.com/}
 
 \end{thebibliography}
 
