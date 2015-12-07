@@ -1,3 +1,0 @@
-#!/bin/bash
-export VARYS_HOME=$(cd "$(dirname $0)/.."; pwd)
-java -Xmx1200M -jar $VARYS_HOME/sbt/sbt-launch-*.jar "$@"
