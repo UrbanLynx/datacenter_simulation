@@ -83,7 +83,7 @@ class fat_tree_topo(Topo):
         for i in range(0, kval):
             for j in range(0, (kval/2)):
                 for k in range (0, kval/2):
-                    self.host.append(self.addHost('h%d%d%d' % (i, j, k), ip='10.%d.%d.%d/8' % (i, j, (k+2)), cls=Docker, dimage="aborase/simdocker:v4_mod"))
+                    self.host.append(self.addHost('h%d%d%d' % (i, j, k), ip='10.%d.%d.%d/8' % (i, j, (k+2)), cls=Docker, dimage="aborase/simdocker:v4_fix"))
 
     def link_setup(self, kval):
         # setup links between core and aggregation swtches
@@ -156,7 +156,7 @@ def start_varys(net):
     # start varys master on ctrlhost
     print("\n**** Starting varys-master daemon on control host h000 ****\n") 
     h000 = net.get('h000')
-    result = h000.cmd('cd; cd group6/aalo100Kb-1Mb; ./bin/start-all.sh')
+    result = h000.cmd('cd; cd group6/aalo1mb; ./bin/start-all.sh')
     print(result)
     # start varys slave on each host
     print("\n**** Starting varys-slave daemon on all the  hosts ****\n")
@@ -164,7 +164,7 @@ def start_varys(net):
     for h in net.hosts:
         time.sleep(1)
         if h000 != h:
-            result = h.cmd('cd; cd group6/aalo100Kb-1Mb; ./bin/varys-daemon.sh start varys.framework.slave.Slave varys://10.0.0.2:1606')
+            result = h.cmd('cd; cd group6/aalo1mb; ./bin/varys-daemon.sh start varys.framework.slave.Slave varys://10.0.0.2:1606')
             print(result)
         #if h210 == h:
         #    break
@@ -207,7 +207,7 @@ def collect_data(hosts):
                 os.system("docker cp %s:/root/master.log ~/varys_%s/console/console_master_%d.log" % (hosts[i], timestamp, i))
 
 def setup_files(master):
-    #os.system("docker cp ~/group6/actor/configs/hosts %s:/root/group6/actor/configs/hosts" % master)
+    os.system("docker cp ~/group6/actor/configs/hosts %s:/root/group6/actor/configs/hosts" % master)
     os.system("docker cp ~/group6/actor/configs/tasks %s:/root/group6/actor/configs/tasks" % master)
     os.system("docker cp ~/group6/actor/configs/simulation.json %s:/root/group6/actor/configs/simulation.json" % master)
 
