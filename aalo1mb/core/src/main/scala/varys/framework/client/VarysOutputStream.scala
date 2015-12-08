@@ -32,7 +32,7 @@ class VarysOutputStream(
 
   // ! Stas ruby threshold 10Mbit
   val MIN_NOTIFICATION_THRESHOLD = 
-  System.getProperty("varys.client.individualMinNotificationMB", "1").toLong * 1048576L
+  System.getProperty("varys.client.individualMinNotificationMB", "1").toLong * 104857L
 
   val dIP = Utils.getIPFromSocketAddress(sock.getRemoteSocketAddress)
 
@@ -121,7 +121,7 @@ private[client] object VarysOutputStream extends Logging {
   // Should be equal to the smallest flow size. Hence...
   // ! Stas ruby threshold 10Mbit
   val MIN_LOCAL_UPDATE_BYTES = 
-     System.getProperty("varys.client.combinedMinNotificationMB", "1").toLong * 1048576L
+     System.getProperty("varys.client.combinedMinNotificationMB", "1").toLong * 104857L
 
   // Same source address for all VOS
   val sIP = Utils.localHostName
