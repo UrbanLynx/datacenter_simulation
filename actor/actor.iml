@@ -125,8 +125,8 @@
     <orderEntry type="library" name="Maven: org.objenesis:objenesis:1.2" level="project" />
     <orderEntry type="library" name="Maven: junit:junit:4.8.2" level="project" />
     <orderEntry type="library" name="Maven: org.mongodb:mongo-java-driver:3.0.4" level="project" />
-    <orderEntry type="library" name="Maven: net.openhft:chronicle:3.2.4" level="project" />
-    <orderEntry type="library" name="Maven: net.openhft:lang:6.4.6" level="project" />
+    <orderEntry type="library" name="Maven: net.openhft:chronicle:3.2.5" level="project" />
+    <orderEntry type="library" name="Maven: net.openhft:lang:6.4.10" level="project" />
     <orderEntry type="module-library">
       <library name="Maven: com.sun.java:tools:1.8.0_40-release">
         <CLASSES>
@@ -137,7 +137,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="Maven: net.openhft:compiler:2.2.0" level="project" />
-    <orderEntry type="library" name="Maven: net.openhft:affinity:2.1.1" level="project" />
+    <orderEntry type="library" name="Maven: net.openhft:affinity:2.1.2" level="project" />
     <orderEntry type="library" name="Maven: net.java.dev.jna:jna:4.1.0" level="project" />
     <orderEntry type="library" name="Maven: net.java.dev.jna:jna-platform:4.1.0" level="project" />
     <orderEntry type="library" name="Maven: org.kohsuke.jetbrains:annotations:9.0" level="project" />
