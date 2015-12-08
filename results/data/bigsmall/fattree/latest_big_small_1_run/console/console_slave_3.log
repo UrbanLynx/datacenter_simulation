@@ -1,0 +1,114 @@
+Awaiting simulation instructions...
+
+Awaiting simulation instructions...
+
+Awaiting simulation instructions...
+
+3 RECEIVE 100 1449531973875 
+
+[Reducer1]: Got 185856 bytes.
+[Reducer1]: Got 955168 bytes.
+3 RECEIVE 0 1449532000398 
+
+Awaiting simulation instructions...
+
+Awaiting simulation instructions...
+
+[Reducer1]: Got 187128 bytes.
+3 RECEIVE 300 1449532027871 
+
+3 RECEIVE 200 1449532045051 
+
+[Reducer1]: Got 959672 bytes.
+Awaiting simulation instructions...
+
+Awaiting simulation instructions...
+
+3 RECEIVE 500 1449532079574 
+
+[Reducer1]: Got 186280 bytes.
+3 RECEIVE 400 1449532094793 
+
+[Reducer1]: Got 957448 bytes.
+Awaiting simulation instructions...
+
+Awaiting simulation instructions...
+
+3 RECEIVE 700 1449532128875 
+
+[Reducer1]: Got 186280 bytes.
+3 RECEIVE 600 1449532147003 
+
+[Reducer1]: Got 958312 bytes.
+Awaiting simulation instructions...
+
+Awaiting simulation instructions...
+
+3 RECEIVE 900 1449532178477 
+
+[Reducer1]: Got 187128 bytes.
+3 RECEIVE 800 1449532196249 
+
+[Reducer1]: Got 958312 bytes.
+Awaiting simulation instructions...
+
+Awaiting simulation instructions...
+
+3 RECEIVE 1100 1449532229419 
+
+[Reducer1]: Got 187128 bytes.
+3 RECEIVE 1000 1449532249130 
+
+[Reducer1]: Got 958488 bytes.
+Awaiting simulation instructions...
+
+Awaiting simulation instructions...
+
+3 RECEIVE 1300 1449532280662 
+
+[Reducer1]: Got 185256 bytes.
+[Reducer1]: Got 957448 bytes.
+3 RECEIVE 1200 1449532295418 
+
+Awaiting simulation instructions...
+
+Awaiting simulation instructions...
+
+3 RECEIVE 1500 1449532329236 
+
+[Reducer1]: Got 186280 bytes.
+3 RECEIVE 1400 1449532343722 
+
+[Reducer1]: Got 958824 bytes.
+Awaiting simulation instructions...
+
+Awaiting simulation instructions...
+
+3 RECEIVE 1700 1449532379997 
+
+[Reducer1]: Got 187128 bytes.
+3 RECEIVE 1600 1449532394407 
+
+[Reducer1]: Got 956000 bytes.
+Awaiting simulation instructions...
+
+Awaiting simulation instructions...
+
+3 RECEIVE 1900 1449532430684 
+
+[Reducer1]: Got 187128 bytes.
+3 RECEIVE 1800 1449532443849 
+
+[Reducer1]: Got 956000 bytes.
+Awaiting simulation instructions...
+
+Awaiting simulation instructions...
+
+3 RECEIVE 2100 1449532479210 
+
+[Reducer1]: Got 186280 bytes.
+3 RECEIVE 2000 1449532497148 
+
+[Reducer1]: Got 959336 bytes.
+Slave finished all tasks and exited.
+logger exit
