@@ -64,7 +64,7 @@ At the beginning of our research we decided to built a simulation system which w
 Mininet is network emulation orchestration system, which creates a network of virtual hosts, switches, controllers, and links, that run on single Linux kernel underneath and share host file-system and other components. It uses lightweight virtualization to make a single system look like a complete network, running the same kernel, system, and user code. In short, mininet simulates all the hardware entities of network using software. Mininet exports powerful python API’s that could be used readily to design complex network topologies along with the required routing solution. We chose mininet to simulate network, mainly because of its fast deployability and customizability.
 
 \subsubsection{Topology}
-Fat-tree topologies are widely prevalent in today’s data center network environments. Since the Coflow scheduling is largely effective in the isolated network environments such as data-centers, we decided to use fat-tree topology to simulate the data-center network. One of the many advantages posed by fat-tree topology is the availability of multiple equal cost paths, but that meant we needed to write our own routing solution loosely based on the 2-level routing table solution described in. The strict time-constraint of the project meant we had to yield to a more ineffective routing solution such as ‘learning switch’, which does not take full advantage of all equal cost paths available and instead routes traffic through learnt paths only. 
+Fat-tree topologies are widely prevalent in today's data center network environments. Since the Coflow scheduling is largely effective in the isolated network environments such as data-centers, we decided to use fat-tree topology to simulate the data-center network. One of the many advantages posed by the fat-tree topology is the availability of multiple equal cost paths, but that meant we needed to write our own routing solution loosely based on the 2-level routing table solution\cite{fattree}. The strict time-constraint of the project meant we had to yield to a more ineffective routing solution such as ‘learning switch’, which does not take full advantage of all equal cost paths available and instead routes traffic through learnt paths only. 
 
 Additionally, we tried to have an out-of-band and fast control network, but that meant we introduce loops in the topology and disturb the existing routing solution. Hence we decided to have an in-band control network by assigning the first host the sole role of scheduler and simulator controller. All our experiments were done on fat-tree topology with k-value of 4, that meant we had 16 hosts in the network.
 
@@ -106,9 +106,9 @@ During the initial phase of deployment with the coflow scheduler, we found out t
 
 Docker is an upcoming technology that allows packaging of an application with all of it’s dependencies into a single container, that works out-of-box and can be readily deployed on any docker environment regardless of the underlying hardware. Docker container thus built wrap up a piece of software along with a complete filesystem that contains everything it needs to run: code, runtime, system tools, system libraries. 
 
-This meant that each docker container instance gets assigned an unique hostname, which made sure that we were not needed to make to any cosmetic changes to the coflow-scheduler code. Additionally  docker container allowed us to package both, coflow scheduler and simulator into a single image that could be readily uploaded and deployed on any machine as long as it ran Ubuntu system. This allowed us to carry out some of our experimentation on faster amazon EC2 instances without any additional setup requirements.
+This meant that each docker container instance gets assigned a unique hostname, which ensured that we didn't needed to make any cosmetic changes to the coflow-scheduler code. Additionally  docker container allowed us to package both, coflow scheduler and simulator into a single image that could be readily uploaded and deployed on any machine as long as it ran Ubuntu system. This allowed us to carry out some of our experimentation on faster amazon EC2 instances without any additional setup requirements.
 
-We used publicly available fork package of mininet \textit{https://github.com/mpeuster/dockernet}\cite{dockernet} that replaces mininet hosts with docker containers.
+We used publicly available fork package of mininet \cite{dockernet} that replaces mininet hosts with docker containers.
 
 \section{Experiment}
 
@@ -160,15 +160,15 @@ We would like to thank our instructor Prof. George Porter for his support throug
 
 \bibitem{aalo}
 Efficient Coflow Scheduling Without Prior Knowledge, 
-\textit{Mosharaf Chowdhury, Ion Stoica, SIGCOMM, 2015.}
+\textit{Mosharaf Chowdhury and Ion Stoica, SIGCOMM, 2015.}
 
 \bibitem{varys}
 Efficient Coflow Scheduling with Varys, 
-\textit{Mosharaf Chowdhury, Yuan Zhong, Ion Stoica, ACM SIGCOMM, 2014.}
+\textit{Mosharaf Chowdhury, Yuan Zhong and Ion Stoica, ACM SIGCOMM, 2014.}
 
 \bibitem{coflow}
 Coflow: A Networking Abstraction for Cluster Applications, 
-\textit{Chowdhury, Mosharaf and Ion Stoica, ACM Hotnets, 2012.}
+\textit{Mosharaf Chowdhury and Ion Stoica, ACM Hotnets, 2012.}
 
 \bibitem{Mininet}
 Mininet - rapid prototyping for SDN
@@ -185,6 +185,10 @@ Docker
 \bibitem{dockernet}
 Dockernet
 \textit{https://github.com/mpeuster/dockernet}
+
+\bibitem{fattree}
+A scalable, commodity data center network architecture, 
+\textit{Mohammad Al-Fares, Alexander Loukissas and Amin Vahdat, SIGCOMM, 2008.}
 
 \end{thebibliography}
 
