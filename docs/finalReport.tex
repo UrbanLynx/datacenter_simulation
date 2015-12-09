@@ -106,7 +106,7 @@ During the initial phase of deployment with the coflow scheduler, we found out t
 
 Docker is an upcoming technology that allows packaging of an application with all of it’s dependencies into a single container, that works out-of-box and can be readily deployed on any docker environment regardless of the underlying hardware. Docker container thus built wrap up a piece of software along with a complete filesystem that contains everything it needs to run: code, runtime, system tools, system libraries. 
 
-This meant that each docker container instance gets assigned a unique hostname, which ensured that we didn't needed to make any cosmetic changes to the coflow-scheduler code. Additionally  docker container allowed us to package both, coflow scheduler and simulator into a single image that could be readily uploaded and deployed on any machine as long as it ran Ubuntu system. This allowed us to carry out some of our experimentation on faster amazon EC2 instances without any additional setup requirements.
+This meant that each docker container instance gets assigned a unique hostname, which ensured that we didn't need to make any cosmetic changes to the coflow-scheduler code. Additionally  docker container allowed us to package both, coflow scheduler and simulator into a single image that could be readily uploaded and deployed on any machine as long as it ran Ubuntu system. This allowed us to carry out some of our experimentation on faster amazon EC2 instances without any additional setup requirements.
 
 We used publicly available fork package of mininet \cite{dockernet} that replaces mininet hosts with docker containers.
 
