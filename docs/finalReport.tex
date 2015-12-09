@@ -29,7 +29,7 @@ Coflow scheduling, Data center networks
 
 \section{Related work}
 
-Our primary work was to study the coflow scheduler work in detail. Network scheduling mostly ignores application level requirements, especially in intensive data parallel applications. At the application layer flow completion time would be the most important metric. Coflow abstraction represents collection of related flows in data network, and improving the coflow completion time is equivalent to improving the application performance. Improving application performance by minimizing coflow completion time (CCT), and ensuring that individual flows meet deadlines is a NP hard problem. Varys is a coflow scheduling algorithm that uses heuristic approach to minimize coflow completion time of the system. The algorithm uses Smallest-Effective-Bottleneck-First (SEBF) heuristic, that schedules coflow based on bottleneck flow`s completion time. Minimum-Allocation-for-Desired-Duration (MADD) algorithm is used to allocate rate for individual flows. MADD slows down all the flows in a coflow to match the completion time of the flow that will take the longest to finish. Working together, these algorithm effectively implements a heuristic that reduces the coflow completion time. Varys coflow scheduler works based on the aformentioned principles. Varys scheduler is designed to be clairvoyant scheduler, meaning it knows the flows and flow structure in advance. However the authors proposed a new algorithm called Aalo, which is non clairvoyant, which in turn translates to a more pragmatic approach in coflow scheudling. Aalo uses multi-level queue structure with a threshold value to effectively reduce flow completion time. The aalo scheduler uses a predefined threshold \(X\) for highest priority queue, and subsequent lower priority queues each multiplied by a factor of \(E^N\). All coflows enter the higher priority queue first. When the flow crosses the threshold it gets de prioritized into lower level queues. This ensures that shorter coflows will get effective bandwidth and is not greatly affected by larger flows. Within a queue, scheduler follows a First In First Out (FIFO) principle.
+Our primary work was to study the coflow scheduler work in detail. Network scheduling mostly ignores application level requirements, especially in intensive data parallel applications. At the application layer flow completion time would be the most important metric. Coflow abstraction represents collection of related flows in data network, and improving the coflow completion time is equivalent to improving the application performance. Improving application performance by minimizing coflow completion time (CCT), and ensuring that individual flows meet deadlines is a NP hard problem. Varys\cite{varys} is a coflow scheduling algorithm that uses heuristic approach to minimize coflow completion time of the system. The algorithm uses Smallest-Effective-Bottleneck-First (SEBF) heuristic, that schedules coflow based on bottleneck flow`s completion time. Minimum-Allocation-for-Desired-Duration (MADD) algorithm is used to allocate rate for individual flows. MADD slows down all the flows in a coflow to match the completion time of the flow that will take the longest to finish. Working together, these algorithm effectively implements a heuristic that reduces the coflow completion time. Varys coflow scheduler works based on the aformentioned principles. Varys scheduler is designed to be clairvoyant scheduler, meaning it knows the flows and flow structure in advance. However the authors proposed a new scheduling algorithm called Aalo\cite{aalo}, which is non clairvoyant, which in turn translates to a more pragmatic approach in coflow scheudling. Aalo uses multi-level queue structure with a threshold value to effectively reduce flow completion time. The aalo scheduler uses a predefined threshold \(X\) for highest priority queue, and subsequent lower priority queues each multiplied by a factor of \(E^N\). All coflows enter the higher priority queue first. When the flow crosses the threshold it gets de prioritized into lower level queues. This ensures that shorter coflows will get effective bandwidth and is not greatly affected by larger flows. Within a queue, scheduler follows a First In First Out (FIFO) principle.
 
 One of the preliminary task was to create a suitable environment to simulate and run the network. We did a survey of possible network simulators carefully looking for the features it provided and its suitability for our objective. For the baseline network simulation we decided to go for mininet\cite{Mininet}. There are other options like NS2 simulator etc. Support for python programming coupled with integration support with many VMs made our choice of picking up mininet easier. Moreover there is a huge community involvement and documentation for the tool.
 
@@ -87,7 +87,7 @@ Docker is an upcoming technology that allows packaging of an application with al
 
 This meant that each docker container instance gets assigned an unique hostname, which made sure that we were not needed to make to any cosmetic changes to the coflow-scheduler code. Additionally  docker container allowed us to package both, coflow scheduler and simulator into a single image that could be readily uploaded and deployed on any machine as long as it ran Ubuntu system. This allowed us to carry out some of our experimentation on faster amazon EC2 instances without any additional setup requirements.
 
-We used publicly available fork package of mininet \textit{https://github.com/mpeuster/dockernet} that replaces mininet hosts with docker containers.
+We used publicly available fork package of mininet \textit{https://github.com/mpeuster/dockernet}\cite{dockernet} that replaces mininet hosts with docker containers.
 
 
 \section{Evaluation}
@@ -97,7 +97,15 @@ We used publicly available fork package of mininet \textit{https://github.com/mp
 \section*{Acknowledgment}
 We would like to thank our instructor Prof. George Porter for his support through out the project and his valuable insights over time. We also would like to thank our TA Yashar for helping us many a times. 
 
-\begin{thebibliography}{10}
+\begin{thebibliography}{99}
+
+\bibitem{aalo}
+Efficient Coflow Scheduling Without Prior Knowledge, 
+\textit{Mosharaf Chowdhury, Ion Stoica, SIGCOMM, 2015.}
+
+\bibitem{varys}
+Efficient Coflow Scheduling with Varys, 
+\textit{Mosharaf Chowdhury, Yuan Zhong, Ion Stoica, ACM SIGCOMM, 2014.}
 
 \bibitem{Mininet}
 Mininet - rapid prototyping for SDN
@@ -110,6 +118,10 @@ Flood light SDN controller
 \bibitem{Docker}
 Docker
 \textit{https://www.docker.com/}
+
+\bibitem{dockernet}
+Dockernet
+\textit{https://github.com/mpeuster/dockernet}
 
 \end{thebibliography}
 
