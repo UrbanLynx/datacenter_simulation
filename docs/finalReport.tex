@@ -17,7 +17,7 @@
 
 \begin{abstract}
 %\boldmath
-\blindtext[1]
+Current coflow schedulers require coflows to be explicitly identified by the programmer to the scheduler via an API. This is not ideal as it depends on the programmer manually identifying all coflows completely and accurately, which is not a reasonable assumption. This paper attempts to evaluate the performance of existing coflow schedulers in the case where coflows are incompletely identified.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -25,7 +25,11 @@ Coflow scheduling, Data center networks
 \end{IEEEkeywords}
 
 \section{Introduction}
+The main bottleneck for data parallel applications arises from slow network connections. Traditional network scheduling techniques do not take advantage of the rich semantics available from such applications. Therefore, the \textit{coflow abstraction} \cite{coflow} was introduced, for the applications to easily convey their communication semantics so the network can better optimize common communication patterns. Coflow scheduling uses this abstraction to schedule flows in such a way as to decrease communication time of data-intensive jobs and guarantee predictable communication time.
 
+Current coflow schedulers include Varys \cite{varys} and Aalo \cite{aalo}. Varys is based on heuristics that draw on insights about characteristics of an optimal coflow scheduler that minimises the coflow completion time (CCT) or ensures that flows meet their deadlines. This approach requires prior knowledge about the coflows in the system thus limiting Varys' applicability. Aalo, on the other hand, efficiently schedules coflow without this prior knowledge.
+
+One major drawback of these schedulers is that they require coflows in the system to be identified manually. Therefore, in this paper, we attempt to evaluate the performance of these schedulers when coflows are incompletely identified.
 
 \section{Related work}
 
@@ -89,8 +93,26 @@ This meant that each docker container instance gets assigned an unique hostname,
 
 We used publicly available fork package of mininet \textit{https://github.com/mpeuster/dockernet}\cite{dockernet} that replaces mininet hosts with docker containers.
 
+\begin{figure}
+\includegraphics[width=0.5\textwidth]{setup.png}\caption{System Setup}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=0.5\textwidth]{queues.png}\caption{Scheduler Queues}
+\end{figure}
 
 \section{Evaluation}
+\begin{figure}
+\includegraphics[width=0.5\textwidth]{graph1.png}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=0.5\textwidth]{graph2.png}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=0.5\textwidth]{graph3.png}
+\end{figure}
 
 \section{Conclusion}
 
@@ -98,6 +120,10 @@ We used publicly available fork package of mininet \textit{https://github.com/mp
 We would like to thank our instructor Prof. George Porter for his support through out the project and his valuable insights over time. We also would like to thank our TA Yashar for helping us many a times. 
 
 \begin{thebibliography}{99}
+
+\bibitem{coflow}
+Coflow: A Networking Abstraction for Cluster Applications
+\textit{Mosharaf Chowdhury, Ion Stoica, SIGCOMM, 2012}
 
 \bibitem{aalo}
 Efficient Coflow Scheduling Without Prior Knowledge, 
@@ -131,5 +157,3 @@ Dockernet
 \end{IEEEbiography}
 
 \end{document}
-
-
